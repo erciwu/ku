@@ -48,10 +48,14 @@
             padding: 24px 36px;
             background: rgba(255, 255, 255, 0.5);
             border-bottom: 1px solid rgba(60, 60, 67, 0.08);
-            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        h1 {
+        .header-left h1 {
             font-size: 2rem;
             font-weight: 600;
             letter-spacing: -0.02em;
@@ -67,6 +71,40 @@
             font-weight: 400;
             color: #6c6c70;
             margin-left: 2px;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 4px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .lang-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: transparent;
+            color: #6c6c70;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .lang-btn.active {
+            background: #007aff;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(0, 0, 0, 0.05);
         }
 
         /* 控制栏 */
@@ -203,7 +241,7 @@
             background: white;
             overflow-y: auto;
             line-height: 1.6;
-            font-family: -apple-system, '微软雅黑', 'Microsoft YaHei', Arial, sans-serif;
+            font-family: -apple-system, '微软雅黑', 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
             font-size: 12pt;
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.02);
             border: 0.5px solid rgba(0, 0, 0, 0.03);
@@ -393,90 +431,262 @@
 <body>
     <div class="container">
         <header>
-            <h1>🍎 Markdown 转 Word · 乐英版本</h1>
-            <p class="subtitle">项目符号与汉字完美垂直对齐 · 真正的 DOCX 导出</p>
+            <div class="header-left">
+                <h1>🌸 Markdown2docx</h1>
+                <p class="subtitle" id="subtitle">灵感流转，文档新生</p>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="zh" id="btnZh">中文</button>
+                <button class="lang-btn" data-lang="en" id="btnEn">English</button>
+            </div>
         </header>
 
         <div class="controls">
-            <button onclick="convertMarkdown()" class="convert-btn">
-                <span>🔄</span> 转换
+            <button onclick="convertMarkdown()" class="convert-btn" id="btnConvert">
+                <span>🔄</span> <span class="i18n" data-key="convert">转换</span>
             </button>
-            <button onclick="copyToWord()" class="copy-btn">
-                <span>📋</span> 复制到Word
+            <button onclick="copyToWord()" class="copy-btn" id="btnCopy">
+                <span>📋</span> <span class="i18n" data-key="copy">复制到Word</span>
             </button>
-            <button onclick="clearAll()" class="clear-btn">
-                <span>🗑️</span> 清空
+            <button onclick="clearAll()" class="clear-btn" id="btnClear">
+                <span>🗑️</span> <span class="i18n" data-key="clear">清空</span>
             </button>
         </div>
 
         <div class="editor-container">
             <div class="editor-panel">
                 <div class="panel-header">
-                    <h3>📘 DeepSeek内容 (Markdown)</h3>
+                    <h3 class="i18n" data-key="editorTitle">📘 DeepSeek内容 (Markdown)</h3>
                 </div>
-                <textarea id="markdownInput" placeholder="粘贴Markdown内容..."># 项目进度报告
-
-                        ## 项目概述
-                        本项目旨在开发一个**智能数据分析平台**，用于处理大规模数据集并提供可视化分析。
-
-                        ## 团队分工
-                        | 姓名 | 角色 | 负责模块 | 进度 | 状态 |
-                        |------|------|----------|------|------|
-                        | 张三 | 项目经理 | 项目管理 | 100% | ✅ 已完成 |
-                        | 李四 | 前端工程师 | 用户界面 | 85% | ⚠️ 进行中 |
-                        | 王五 | 后端工程师 | 数据处理 | 90% | ⚠️ 进行中 |
-                        | 赵六 | 数据科学家 | 算法开发 | 75% | ⚠️ 进行中 |
-
-                        ## 详细进度表
-                        | 时间节点 | 里程碑 | 负责人 | 完成情况 | 备注 |
-                        |----------|--------|--------|----------|------|
-                        | 2024-01-15 | 需求分析完成 | 张三 | 100% | 需求已确认 |
-                        | 2024-02-28 | 原型设计完成 | 李四 | 100% | UI设计通过 |
-                        | 2024-03-31 | 核心功能开发 | 王五 | 85% | 单元测试进行中 |
-                        | 2024-04-30 | 数据集成测试 | 赵六 | 70% | 数据清洗完成 |
-                        | 2024-05-31 | 系统上线 | 全体 | 0% | 等待部署 |
-
-                        ## 技术要点
-                        1. **前端技术栈**：Vue 3 + TypeScript + Element Plus
-                        2. **后端技术栈**：Python + FastAPI + PostgreSQL
-                        3. **数据处理**：Pandas + NumPy + Scikit-learn
-                        4. **部署方案**：Docker + Kubernetes
-
-                        ## 风险与挑战
-                        - **数据安全**：需要强化加密机制
-                        - **性能优化**：大数据量下的响应速度
-                        - **用户体验**：界面的易用性和美观度
-
-                        > 注意：本报告每周更新一次，所有数据截止到当前时间。
-
-                        ---
-
-                        **生成时间**：2024年1月17日</textarea>
+                <textarea id="markdownInput" placeholder="粘贴Markdown内容..."></textarea>
             </div>
 
             <div class="preview-panel">
                 <div class="panel-header">
-                    <h3>📄 Word友好预览</h3>
+                    <h3 class="i18n" data-key="previewTitle">📄 Word友好预览</h3>
                     <div class="preview-actions">
-                        <button onclick="exportDocx()" style="background:#e9e9ed;">📎 导出 DOCX</button>
+                        <button onclick="exportDocx()" style="background:#e9e9ed;" id="btnExport">
+                            📎 <span class="i18n" data-key="export">导出 DOCX</span>
+                        </button>
                     </div>
                 </div>
                 <div id="preview">
-                    <p>转换结果将显示在这里...</p>
+                    <p class="i18n" data-key="previewPlaceholder">转换结果将显示在这里...</p>
                 </div>
             </div>
         </div>
 
         <div class="status">
-            <span>字符数: <span id="charCount">0</span></span>
-            <span>行数: <span id="lineCount">0</span></span>
-            <span>表格: <span id="tableCount">0</span> 个</span>
+            <span><span class="i18n" data-key="charCount">字符数</span>: <span id="charCount">0</span></span>
+            <span><span class="i18n" data-key="lineCount">行数</span>: <span id="lineCount">0</span></span>
+            <span><span class="i18n" data-key="tableCount">表格</span>: <span id="tableCount">0</span> 个</span>
         </div>
 
         <div id="notification" class="notification"></div>
     </div>
 
     <script>
+        // ==================== 国际化文本配置 ====================
+        const i18n = {
+            zh: {
+                subtitle: '灵感流转，文档新生',
+                convert: '转换',
+                copy: '复制到Word',
+                clear: '清空',
+                editorTitle: '📘 DeepSeek内容 (Markdown)',
+                previewTitle: '📄 Word友好预览',
+                export: '导出 DOCX',
+                previewPlaceholder: '转换结果将显示在这里...',
+                charCount: '字符数',
+                lineCount: '行数',
+                tableCount: '表格',
+                // 通知消息
+                emptyInput: '请输入Markdown内容',
+                convertSuccess: '转换成功！列表垂直对齐已优化',
+                parseError: '解析出错：',
+                copyFirst: '请先转换内容',
+                copySuccess: '已复制！可直接粘贴到Word (Ctrl+V)',
+                manualCopy: '手动复制：\n1. 选中预览区内容\n2. 按 Ctrl+C 复制\n3. 到Word中粘贴',
+                exportFirst: '请先转换内容',
+                docxLibError: 'DOCX 导出组件未加载，请刷新页面后重试',
+                fileSaveError: '文件保存组件未加载，请刷新页面后重试',
+                exportSuccess: 'DOCX 导出完成（纯正格式，不会产生 .files 文件夹）',
+                exportFail: '导出失败：',
+                clearConfirm: '确定清空所有内容？',
+                cleared: '已清空',
+                // 默认示例
+                defaultMarkdown: `# 项目进度报告
+
+## 项目概述
+本项目旨在开发一个**智能数据分析平台**，用于处理大规模数据集并提供可视化分析。
+
+## 团队分工
+| 姓名 | 角色 | 负责模块 | 进度 | 状态 |
+|------|------|----------|------|------|
+| 张三 | 项目经理 | 项目管理 | 100% | ✅ 已完成 |
+| 李四 | 前端工程师 | 用户界面 | 85% | ⚠️ 进行中 |
+| 王五 | 后端工程师 | 数据处理 | 90% | ⚠️ 进行中 |
+| 赵六 | 数据科学家 | 算法开发 | 75% | ⚠️ 进行中 |
+
+## 详细进度表
+| 时间节点 | 里程碑 | 负责人 | 完成情况 | 备注 |
+|----------|--------|--------|----------|------|
+| 2024-01-15 | 需求分析完成 | 张三 | 100% | 需求已确认 |
+| 2024-02-28 | 原型设计完成 | 李四 | 100% | UI设计通过 |
+| 2024-03-31 | 核心功能开发 | 王五 | 85% | 单元测试进行中 |
+| 2024-04-30 | 数据集成测试 | 赵六 | 70% | 数据清洗完成 |
+| 2024-05-31 | 系统上线 | 全体 | 0% | 等待部署 |
+
+## 技术要点
+1. **前端技术栈**：Vue 3 + TypeScript + Element Plus
+2. **后端技术栈**：Python + FastAPI + PostgreSQL
+3. **数据处理**：Pandas + NumPy + Scikit-learn
+4. **部署方案**：Docker + Kubernetes
+
+## 风险与挑战
+- **数据安全**：需要强化加密机制
+- **性能优化**：大数据量下的响应速度
+- **用户体验**：界面的易用性和美观度
+
+> 注意：本报告每周更新一次，所有数据截止到当前时间。
+
+---
+
+**生成时间**：2024年1月17日`
+            },
+            en: {
+                subtitle: 'Where ideas flow, documents come alive',
+                convert: 'Convert',
+                copy: 'Copy to Word',
+                clear: 'Clear',
+                editorTitle: '📘 DeepSeek Content (Markdown)',
+                previewTitle: '📄 Word-Friendly Preview',
+                export: 'Export DOCX',
+                previewPlaceholder: 'Conversion results will appear here...',
+                charCount: 'Characters',
+                lineCount: 'Lines',
+                tableCount: 'Tables',
+                emptyInput: 'Please enter Markdown content',
+                convertSuccess: 'Conversion successful! List vertical alignment optimized',
+                parseError: 'Parsing error: ',
+                copyFirst: 'Please convert the content first',
+                copySuccess: 'Copied! You can paste directly into Word (Ctrl+V)',
+                manualCopy: 'Manual copy:\n1. Select the preview content\n2. Press Ctrl+C to copy\n3. Paste into Word',
+                exportFirst: 'Please convert the content first',
+                docxLibError: 'DOCX export component not loaded, please refresh the page and try again',
+                fileSaveError: 'File saving component not loaded, please refresh the page and try again',
+                exportSuccess: 'DOCX export complete (native format, no .files folder)',
+                exportFail: 'Export failed: ',
+                clearConfirm: 'Are you sure you want to clear all content?',
+                cleared: 'Cleared',
+                defaultMarkdown: `# Project Progress Report
+
+## Project Overview
+This project aims to develop an **intelligent data analysis platform** for processing large-scale datasets and providing visual analytics.
+
+## Team Assignments
+| Name | Role | Module | Progress | Status |
+|------|------|----------|------|------|
+| John Smith | Project Manager | Project Management | 100% | ✅ Completed |
+| Lisa Chen | Frontend Engineer | User Interface | 85% | ⚠️ In Progress |
+| Mike Wang | Backend Engineer | Data Processing | 90% | ⚠️ In Progress |
+| David Zhao | Data Scientist | Algorithm Development | 75% | ⚠️ In Progress |
+
+## Detailed Timeline
+| Timeline | Milestone | Lead | Completion | Notes |
+|----------|--------|--------|----------|------|
+| 2024-01-15 | Requirements Analysis Complete | John | 100% | Requirements confirmed |
+| 2024-02-28 | Prototype Design Complete | Lisa | 100% | UI design approved |
+| 2024-03-31 | Core Feature Development | Mike | 85% | Unit testing in progress |
+| 2024-04-30 | Data Integration Testing | David | 70% | Data cleaning complete |
+| 2024-05-31 | System Launch | All | 0% | Awaiting deployment |
+
+## Technical Highlights
+1. **Frontend Stack**: Vue 3 + TypeScript + Element Plus
+2. **Backend Stack**: Python + FastAPI + PostgreSQL
+3. **Data Processing**: Pandas + NumPy + Scikit-learn
+4. **Deployment**: Docker + Kubernetes
+
+## Risks & Challenges
+- **Data Security**: Need to strengthen encryption mechanisms
+- **Performance Optimization**: Response speed with large datasets
+- **User Experience**: Interface usability and aesthetics
+
+> Note: This report is updated weekly. All data is current as of the present time.
+
+---
+
+**Generated**: January 17, 2024`
+            }
+        };
+
+        // 当前语言
+        let currentLang = 'zh';
+
+        // ------------------- 语言切换功能 -------------------
+        function setLanguage(lang) {
+            if (!i18n[lang]) return;
+            currentLang = lang;
+            localStorage.setItem('markdown2docx_lang', lang);
+
+            // 更新语言切换按钮样式
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // 更新所有带 data-key 的元素
+            document.querySelectorAll('.i18n[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                if (i18n[lang][key]) {
+                    el.textContent = i18n[lang][key];
+                }
+            });
+
+            // 更新副标题
+            document.getElementById('subtitle').textContent = i18n[lang].subtitle;
+
+            // 更新 textarea 的 placeholder
+            const textarea = document.getElementById('markdownInput');
+            textarea.placeholder = i18n[lang].editorTitle.replace('📘 ', '');
+
+            // 更新预览占位符（如果预览区仍显示占位内容）
+            const preview = document.getElementById('preview');
+            if (preview.innerHTML.trim() === i18n[getOtherLang(lang)].previewPlaceholder ||
+                preview.innerHTML.includes('转换结果将显示在这里') ||
+                preview.innerHTML.includes('Conversion results will appear here')) {
+                preview.innerHTML = `<p>${i18n[lang].previewPlaceholder}</p>`;
+            }
+
+            // 如果 textarea 的内容是旧语言的默认示例，则替换为新语言的默认示例
+            const oldDefault = i18n[getOtherLang(lang)].defaultMarkdown;
+            const newDefault = i18n[lang].defaultMarkdown;
+            if (textarea.value === oldDefault || textarea.value === '' || textarea.value === i18n[lang].defaultMarkdown) {
+                textarea.value = newDefault;
+                // 自动转换一次
+                convertMarkdown();
+            } else {
+                // 用户自定义内容，只重新渲染预览以保证语言一致性
+                if (textarea.value.trim()) {
+                    convertMarkdown();
+                }
+            }
+
+            // 更新页面标题
+            document.title = lang === 'zh' ? 'Markdown转Word · 乐英版 · 完美垂直对齐' : 'Markdown to Word · Leying Edition · Perfect Vertical Alignment';
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        function getOtherLang(lang) {
+            return lang === 'zh' ? 'en' : 'zh';
+        }
+
+        // 初始化语言按钮事件
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setLanguage(btn.dataset.lang);
+            });
+        });
+
         // ----------------------------------- 通知 -----------------------------------
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -561,7 +771,7 @@
 
         // ---------- 智能解析：表格用原生生成，其余交给 marked ----------
         function parseMarkdown(text) {
-            if (!text.trim()) return '<p>转换结果将显示在这里...</p>';
+            if (!text.trim()) return `<p>${i18n[currentLang].previewPlaceholder}</p>`;
 
             const lines = text.split('\n');
             let inCodeBlock = false;
@@ -641,24 +851,24 @@
                 const input = document.getElementById('markdownInput');
                 const preview = document.getElementById('preview');
                 if (!input.value.trim()) {
-                    showNotification('请输入Markdown内容', 'error');
+                    showNotification(i18n[currentLang].emptyInput, 'error');
                     return;
                 }
                 const html = parseMarkdown(input.value);
                 preview.innerHTML = html;
                 updateStats();
-                showNotification('转换成功！列表垂直对齐已优化');
+                showNotification(i18n[currentLang].convertSuccess);
             } catch (e) {
                 console.error(e);
-                showNotification('解析出错：' + e.message, 'error');
+                showNotification(i18n[currentLang].parseError + e.message, 'error');
             }
         }
 
         // ----------------------------------- 复制到Word -----------------------------------
         function copyToWord() {
             const preview = document.getElementById('preview');
-            if (preview.innerHTML.includes('转换结果将显示在这里')) {
-                showNotification('请先转换内容', 'error');
+            if (preview.innerHTML.includes(i18n[currentLang].previewPlaceholder)) {
+                showNotification(i18n[currentLang].copyFirst, 'error');
                 return;
             }
 
@@ -667,7 +877,7 @@
             tempDiv.style.left = '-9999px';
             tempDiv.style.top = '0';
             tempDiv.style.width = '21cm';
-            tempDiv.style.fontFamily = '-apple-system, "Microsoft YaHei", Arial, sans-serif';
+            tempDiv.style.fontFamily = '-apple-system, "Microsoft YaHei", "Segoe UI", Arial, sans-serif';
             tempDiv.style.fontSize = '12pt';
             tempDiv.innerHTML = preview.innerHTML;
 
@@ -683,7 +893,7 @@
                 selection.removeAllRanges();
                 document.body.removeChild(tempDiv);
                 if (successful) {
-                    showNotification('已复制！可直接粘贴到Word (Ctrl+V)');
+                    showNotification(i18n[currentLang].copySuccess);
                 } else {
                     fallbackCopy();
                 }
@@ -694,36 +904,33 @@
         }
 
         function fallbackCopy() {
-            alert('手动复制：\n1. 选中预览区内容\n2. 按 Ctrl+C 复制\n3. 到Word中粘贴');
+            alert(i18n[currentLang].manualCopy);
         }
 
         // ----------------------------------- 导出 DOCX（已修正） -----------------------------------
         function exportDocx() {
             const preview = document.getElementById('preview');
-            if (!preview || preview.innerHTML.includes('转换结果将显示在这里')) {
-                showNotification('请先转换内容', 'error');
+            if (!preview || preview.innerHTML.includes(i18n[currentLang].previewPlaceholder)) {
+                showNotification(i18n[currentLang].exportFirst, 'error');
                 return;
             }
 
-            // 检查依赖库是否已加载
             if (typeof htmlDocx === 'undefined' || typeof htmlDocx.asBlob !== 'function') {
-                showNotification('DOCX 导出组件未加载，请刷新页面后重试', 'error');
+                showNotification(i18n[currentLang].docxLibError, 'error');
                 return;
             }
             if (typeof saveAs === 'undefined') {
-                showNotification('文件保存组件未加载，请刷新页面后重试', 'error');
+                showNotification(i18n[currentLang].fileSaveError, 'error');
                 return;
             }
 
-            // 提取预览相关样式，并移除 #preview 前缀（预览区外不携带 id）
             const allStyles = document.querySelector('style').innerHTML;
             let exportStyles = allStyles
-                .replace(/#preview\s+/g, '') // #preview h1 → h1
-                .replace(/#preview>/g, '') // #preview>li → >li (实际上很少)
-                .replace(/#preview\s*,\s*/g, '') // 多选择器中的 #preview 清理
-                .replace(/#preview/g, ''); // 残余的 #preview 全部移除
+                .replace(/#preview\s+/g, '')
+                .replace(/#preview>/g, '')
+                .replace(/#preview\s*,\s*/g, '')
+                .replace(/#preview/g, '');
 
-            // 额外保证：移除所有无法在 Word 中生效的伪元素规则
             exportStyles = exportStyles.replace(/::before\s*\{[^}]*\}/g, '');
             exportStyles = exportStyles.replace(/::marker\s*\{[^}]*\}/g, '');
 
@@ -739,7 +946,7 @@
                     padding: 36pt;
                     margin: 0;
                     background: white;
-                    font-family: -apple-system, 'Microsoft YaHei', Arial, sans-serif;
+                    font-family: -apple-system, 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
                     font-size: 12pt;
                     line-height: 1.6;
                 }
@@ -759,41 +966,50 @@
         </html>`;
 
             try {
-                // 使用 html-docx-js 生成真正的 DOCX Blob
                 const blob = htmlDocx.asBlob(fullHTML);
-                // 使用 FileSaver 保存为 .docx 文件
                 saveAs(blob, 'document.docx');
-                showNotification('DOCX 导出完成（纯正格式，不会产生 .files 文件夹）');
+                showNotification(i18n[currentLang].exportSuccess);
             } catch (e) {
                 console.error('DOCX 导出失败:', e);
-                showNotification('导出失败：' + e.message, 'error');
+                showNotification(i18n[currentLang].exportFail + e.message, 'error');
             }
         }
 
         // ----------------------------------- 清空 -----------------------------------
         function clearAll() {
-            if (confirm('确定清空所有内容？')) {
+            if (confirm(i18n[currentLang].clearConfirm)) {
                 document.getElementById('markdownInput').value = '';
-                document.getElementById('preview').innerHTML = '<p>转换结果将显示在这里...</p>';
+                document.getElementById('preview').innerHTML = `<p>${i18n[currentLang].previewPlaceholder}</p>`;
                 updateStats();
-                showNotification('已清空');
+                showNotification(i18n[currentLang].cleared);
             }
         }
 
         // ----------------------------------- 初始化 -----------------------------------
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('markdownInput').addEventListener('input', updateStats);
-            setTimeout(() => {
-                updateStats();
-                convertMarkdown();
-            }, 120);
+            // 从 localStorage 读取语言偏好，默认为中文
+            const savedLang = localStorage.getItem('markdown2docx_lang') || 'zh';
+            // 设置默认示例内容为对应语言的版本
+            const textarea = document.getElementById('markdownInput');
+            textarea.value = i18n[savedLang].defaultMarkdown;
 
+            // 应用语言设置
+            setLanguage(savedLang);
+
+            // 监听输入以更新统计
+            textarea.addEventListener('input', updateStats);
+
+            // 快捷键 Ctrl+Enter 转换
             document.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.key === 'Enter') {
                     e.preventDefault();
                     convertMarkdown();
                 }
             });
+
+            // 初始统计与转换
+            updateStats();
+            convertMarkdown();
         });
     </script>
 </body>
