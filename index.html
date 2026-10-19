@@ -27,7 +27,7 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 
 .quick-links{display:flex;align-items:center;gap:6px;flex:0 0 auto;position:relative;padding:3px;border-radius:10px;transition:background .15s ease,box-shadow .15s ease}
 .quick-links.drop-target{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
-.quick-item{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;position:relative;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.quick-item{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;position:relative;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);line-height:1}
 .quick-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.3);box-shadow:0 4px 10px rgba(0,0,0,.18)}
 .quick-item .quick-del{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#e05252;color:#fff;border:none;font-size:11px;line-height:1;font-weight:700;display:grid;place-items:center;cursor:pointer;font-family:inherit;box-shadow:0 2px 4px rgba(0,0,0,.2);z-index:2}
 .quick-add-hint{font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;padding-left:4px;border-left:1px dashed rgba(255,255,255,.35);margin-left:4px;line-height:1.3;max-width:100px}
@@ -59,13 +59,13 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 
 /* 主体 */
 .main-content{display:flex;flex:1;overflow:hidden;background:var(--surface-2)}
-/* 侧栏：隐藏滚动条，行距加大 */
 .sidebar{width:230px;flex:0 0 230px;background:var(--surface);border-right:1px solid var(--line);padding:14px 13px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
 .sidebar::-webkit-scrollbar{display:none;width:0;height:0}
 .date-display{background:var(--ico-bg);padding:9px 14px;border-radius:15px;margin-bottom:12px;color:var(--ico-color);font-weight:500;display:flex;align-items:center;justify-content:space-between;font-size:12.5px;border:1px solid var(--ico-border)}
+
 .category-list{list-style:none}
-.category-item{margin-bottom:4px}
-.category-link{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:22px;color:var(--txt);text-decoration:none;font-size:12.5px;font-weight:500;transition:background .15s ease,color .15s ease;background:transparent;border:1px solid transparent;cursor:pointer}
+.category-item{display:flex;align-items:center;gap:4px;margin-bottom:4px}
+.category-link{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:22px;color:var(--txt);text-decoration:none;font-size:12.5px;font-weight:500;transition:background .15s ease,color .15s ease;background:transparent;border:1px solid transparent;cursor:pointer}
 .category-link:hover{background:var(--surface-3);border-color:var(--line-2)}
 .category-link.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 .category-link.active i{color:#fff}
@@ -74,7 +74,13 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .category-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .category-count{margin-left:auto;background:var(--surface-3);padding:1px 7px;border-radius:20px;font-size:10.5px;color:var(--txt-2);border:1px solid var(--line-2);flex:0 0 auto}
 
-/* 内容区：底部留白一行 */
+.nav-movers{display:flex;flex-direction:column;gap:1px;flex:0 0 auto}
+.nav-move{width:20px;height:15px;border-radius:5px;display:grid;place-items:center;background:var(--surface-3);border:1px solid var(--line);color:var(--txt-3);cursor:pointer;font-family:inherit;font-size:8px;line-height:1;transition:.14s;padding:0}
+.nav-move:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+.nav-move:disabled{opacity:.25;cursor:not-allowed}
+.nav-move:disabled:hover{background:var(--surface-3);border-color:var(--line);color:var(--txt-3)}
+
+/* 内容区 */
 .websites-container{flex:1;padding:16px 22px 90px;overflow-y:auto;background:var(--surface-2);scroll-behavior:smooth}
 .category-section{margin-bottom:24px;scroll-margin-top:8px}
 .category-section:last-child{margin-bottom:0}
@@ -89,16 +95,17 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .cat-mini-btn:hover{background:var(--surface-3);border-color:var(--line-2);color:var(--txt)}
 .cat-mini-btn.danger:hover{background:#c96b6b;border-color:#c96b6b;color:#fff}
 
-.websites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;min-height:40px}
+/* ★ 默认 3 列 */
+.websites-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:40px}
 .websites-grid.drop-end{outline:2px dashed var(--brand);outline-offset:4px;border-radius:10px}
 
-.website-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:11px 14px;display:flex;align-items:center;gap:12px;min-height:72px;transition:box-shadow .18s ease,border-color .18s ease,opacity .18s ease,min-height .2s ease,padding .2s ease;cursor:default;position:relative}
+.website-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:11px 14px;display:flex;align-items:center;gap:12px;min-height:72px;transition:box-shadow .18s ease,border-color .18s ease,opacity .18s ease,min-height .2s ease,padding .2s ease;cursor:default;position:relative;min-width:0}
 .website-card:hover{border-color:var(--line-2);box-shadow:var(--shadow-h)}
 .website-card.health-ok{border-color:#2e9e64 !important;border-width:2px}
 .website-card.health-fail{border-color:#dc2626 !important;border-width:2px;background:rgba(220,38,38,.03)}
 .website-card.health-unknown{border-color:#d97706 !important;border-width:2px;background:rgba(217,119,6,.03)}
 
-.website-icon{width:44px;height:44px;flex:0 0 44px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:700;color:var(--ico-color);background:var(--ico-bg);border:1px solid var(--ico-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:width .2s ease,height .2s ease,font-size .2s ease}
+.website-icon{width:44px;height:44px;flex:0 0 44px;border-radius:50%;display:grid;place-items:center;font-size:17px;font-weight:700;color:var(--ico-color);background:var(--ico-bg);border:1px solid var(--ico-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);line-height:1;overflow:hidden;transition:width .2s ease,height .2s ease,font-size .2s ease}
 .website-info{flex:1;min-width:0}
 .website-name{font-size:14px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
 .website-url{font-size:11px;color:var(--txt-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -116,7 +123,7 @@ body[data-mode="dark"] .visit-count.has-visit{background:rgba(46,158,100,.16);co
 .website-card.editing.dragging{opacity:.4}
 .website-card.editing.insert-before{box-shadow:-3px 0 0 0 var(--brand)}
 .website-card.editing.insert-after{box-shadow:3px 0 0 0 var(--brand)}
-.website-card.editing .website-icon{width:34px;height:34px;flex:0 0 34px;font-size:12.5px;pointer-events:none}
+.website-card.editing .website-icon{width:34px;height:34px;flex:0 0 34px;font-size:13.5px;pointer-events:none}
 .edit-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .edit-fields input{font-family:inherit;font-size:12.5px;color:var(--txt);background:var(--surface-3);border:1px solid transparent;border-radius:6px;padding:4px 8px;outline:none;min-width:0;transition:.14s;cursor:text}
 .edit-fields input::placeholder{color:var(--txt-3)}
@@ -131,13 +138,14 @@ body[data-mode="dark"] .visit-count.has-visit{background:rgba(46,158,100,.16);co
 
 .no-results{text-align:center;padding:70px 20px;color:var(--txt-2);font-size:15px;background:var(--surface);border-radius:20px;border:1px solid var(--line)}
 
+/* 紧凑模式：4 列 */
 body[data-density="compact"] .website-card{min-height:56px;padding:8px 12px;gap:10px;border-radius:12px}
-body[data-density="compact"] .website-icon{width:36px;height:36px;flex:0 0 36px;font-size:13.5px}
+body[data-density="compact"] .website-icon{width:36px;height:36px;flex:0 0 36px;font-size:14px}
 body[data-density="compact"] .website-name{font-size:13px}
 body[data-density="compact"] .website-url{font-size:10px}
 body[data-density="compact"] .visit-btn{padding:5px 10px;font-size:11px;border-radius:16px}
 body[data-density="compact"] .visit-count{font-size:10px;min-width:56px;padding:2px 7px}
-body[data-density="compact"] .websites-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
+body[data-density="compact"] .websites-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 body[data-density="compact"] .category-section{margin-bottom:18px}
 body[data-density="compact"] .add-card{min-height:56px;padding:8px 12px;border-radius:12px}
 
@@ -150,8 +158,8 @@ body[data-density="compact"] .add-card{min-height:56px;padding:8px 12px;border-r
 
 .dock-items{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none;padding:4px 0}
 .dock-items::-webkit-scrollbar{display:none}
-.dock-item{flex:0 0 auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ico-bg);border:1px solid var(--ico-border);color:var(--ico-color);font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;position:relative;transition:transform .16s cubic-bezier(.2,.8,.3,1),box-shadow .16s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
-.dock-item:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 8px 16px rgba(10,87,199,.24)}
+.dock-item{flex:0 0 auto;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ico-bg);border:1px solid var(--ico-border);color:var(--ico-color);font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;position:relative;transition:transform .16s cubic-bezier(.2,.8,.3,1),box-shadow .16s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);line-height:1}
+.dock-item:hover{transform:translateY(-4px) scale(1.05);box-shadow:0 8px 16px rgba(10,87,199,.24),inset 0 1px 0 rgba(255,255,255,.28)}
 @keyframes dock-bounce{0%{transform:translateY(-4px) scale(1.05)}35%{transform:translateY(-10px) scale(1.18)}65%{transform:translateY(-6px) scale(1.1)}100%{transform:translateY(-4px) scale(1.05)}}
 .dock-item.bouncing{animation:dock-bounce .4s cubic-bezier(.34,1.56,.64,1)}
 .dock-empty{font-size:12px;color:var(--txt-3);padding-left:4px}
@@ -177,7 +185,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 .work-block.done i,.work-block.done b{color:#2e9e64}
 .work-block.weekend i,.work-block.weekend b{color:#d97706}
 
-/* 回到顶部 */
 .back-top{position:fixed;right:28px;bottom:84px;z-index:80;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:var(--brand);color:#fff;border:none;box-shadow:0 6px 16px rgba(10,87,199,.35);opacity:0;pointer-events:none;transform:translateY(10px);transition:.2s;font-family:inherit;font-size:15px}
 .back-top.show{opacity:1;pointer-events:auto;transform:none}
 .back-top:hover{background:var(--brand-dark)}
@@ -197,14 +204,86 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
 
-@media (max-width:1480px){.stats-inline{font-size:11.5px}.stats-inline b{font-size:12px}}
-@media (max-width:1380px){.websites-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}.stats-inline .stat-cat-label{display:none}}
-@media (max-width:1280px){.year-block{display:none}.dock-sep{display:none}}
-@media (max-width:1260px){.stats-inline{display:none}}
-@media (max-width:1200px){.topbar{gap:12px;padding:0 18px}.sidebar{width:210px;flex:0 0 210px}.websites-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}.baidu-search{max-width:340px}.quick-add-hint{display:none}.work-block .worktime{display:none}.work-block .work-dot{display:none}}
-@media (max-width:1024px){.main-content{flex-direction:column}.sidebar{width:100%;flex:0 0 auto;border-right:none;border-bottom:1px solid var(--line);max-height:170px;overflow-y:auto;padding:12px}.category-list{display:flex;flex-wrap:wrap;gap:5px}.category-item{margin-bottom:0}.category-link{padding:6px 12px;border-radius:20px;font-size:12.5px}.category-link i{width:auto;flex:0 0 auto}.category-name{flex:0 0 auto}.category-count{display:none}.date-display{margin-bottom:10px}.topbar{height:auto;flex-wrap:wrap;padding:10px 18px;row-gap:8px}.brand{order:1}.header-tools{order:2;margin-left:auto}.quick-links{order:3}.baidu-search{order:4;flex:1 1 100%;max-width:none;margin:0}.clock-inline{order:5;margin-left:auto}.dock{padding:0 16px;height:58px;gap:10px}.dock-item{width:36px;height:36px;font-size:13px}.dock-extra{display:none}.back-top{bottom:74px;right:16px}.websites-container{padding-bottom:60px}}
-@media (max-width:820px){body{padding:10px}.container{border-radius:18px;height:96vh}.topbar{padding:10px 14px;gap:10px}.logo{width:32px;height:32px;font-size:17px}.brand h1{font-size:15px}.quick-item{width:30px;height:30px;font-size:12px}.baidu-search input{height:35px;font-size:13px}.baidu-search button{height:27px;padding:0 13px;font-size:12px}.sidebar{max-height:150px;padding:10px}.websites-container{padding:12px 14px 50px}.websites-grid{grid-template-columns:1fr;gap:9px}.website-card{min-height:68px;padding:10px 12px}.website-icon{width:42px;height:42px;flex:0 0 42px;font-size:15px}.website-name{font-size:13.5px}.visit-btn{padding:5px 11px;font-size:11px}.visit-count{font-size:10px;padding:2px 7px;min-width:56px}.dock{padding:0 12px;height:56px;gap:8px}.dock-label{font-size:11px;padding-right:10px}.dock-item{width:34px;height:34px;font-size:12.5px}.theme-pop{right:14px;top:60px}.back-top{bottom:70px;right:14px;width:36px;height:36px}}
-@media (max-width:560px){.quick-links{order:5;flex:1 1 100%;justify-content:center;flex-wrap:wrap}.clock-inline{order:6;flex:1 1 100%;justify-content:center}.website-card{flex-wrap:wrap}.website-actions{margin-left:54px;width:100%;margin-top:4px;justify-content:flex-start}.dock-item{width:32px;height:32px;font-size:12px}}
+/* 响应式 */
+@media (max-width:1480px){
+  .stats-inline{font-size:11.5px}
+  .stats-inline b{font-size:12px}
+  .stats-inline .stat-cat-label{display:none}
+}
+@media (max-width:1280px){
+  .year-block{display:none}
+  .dock-sep{display:none}
+}
+@media (max-width:1260px){
+  .stats-inline{display:none}
+}
+@media (max-width:1200px){
+  .topbar{gap:12px;padding:0 18px}
+  .sidebar{width:210px;flex:0 0 210px}
+  .websites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-density="compact"] .websites-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .baidu-search{max-width:340px}
+  .quick-add-hint{display:none}
+  .work-block .worktime{display:none}
+  .work-block .work-dot{display:none}
+}
+@media (max-width:1024px){
+  .main-content{flex-direction:column}
+  .sidebar{width:100%;flex:0 0 auto;border-right:none;border-bottom:1px solid var(--line);max-height:170px;overflow-y:auto;padding:12px}
+  .category-list{display:flex;flex-wrap:wrap;gap:5px}
+  .category-item{margin-bottom:0}
+  .category-link{padding:6px 12px;border-radius:20px;font-size:12.5px}
+  .category-link i{width:auto;flex:0 0 auto}
+  .category-name{flex:0 0 auto}
+  .category-count{display:none}
+  .nav-movers{display:none !important}
+  .date-display{margin-bottom:10px}
+  .topbar{height:auto;flex-wrap:wrap;padding:10px 18px;row-gap:8px}
+  .brand{order:1}
+  .header-tools{order:2;margin-left:auto}
+  .quick-links{order:3}
+  .baidu-search{order:4;flex:1 1 100%;max-width:none;margin:0}
+  .clock-inline{order:5;margin-left:auto}
+  .dock{padding:0 16px;height:58px;gap:10px}
+  .dock-item{width:36px;height:36px;font-size:14px}
+  .dock-extra{display:none}
+  .back-top{bottom:74px;right:16px}
+  .websites-container{padding-bottom:60px}
+  .websites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-density="compact"] .websites-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  body{padding:10px}
+  .container{border-radius:18px;height:96vh}
+  .topbar{padding:10px 14px;gap:10px}
+  .logo{width:32px;height:32px;font-size:17px}
+  .brand h1{font-size:15px}
+  .quick-item{width:30px;height:30px;font-size:12px}
+  .baidu-search input{height:35px;font-size:13px}
+  .baidu-search button{height:27px;padding:0 13px;font-size:12px}
+  .sidebar{max-height:150px;padding:10px}
+  .websites-container{padding:12px 14px 50px}
+  .websites-grid{grid-template-columns:1fr;gap:9px}
+  body[data-density="compact"] .websites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .website-card{min-height:68px;padding:10px 12px}
+  .website-icon{width:42px;height:42px;flex:0 0 42px;font-size:16px}
+  .website-name{font-size:13.5px}
+  .visit-btn{padding:5px 11px;font-size:11px}
+  .visit-count{font-size:10px;padding:2px 7px;min-width:56px}
+  .dock{padding:0 12px;height:56px;gap:8px}
+  .dock-label{font-size:11px;padding-right:10px}
+  .dock-item{width:34px;height:34px;font-size:13px}
+  .theme-pop{right:14px;top:60px}
+  .back-top{bottom:70px;right:14px;width:36px;height:36px}
+}
+@media (max-width:560px){
+  .quick-links{order:5;flex:1 1 100%;justify-content:center;flex-wrap:wrap}
+  .clock-inline{order:6;flex:1 1 100%;justify-content:center}
+  .website-card{flex-wrap:wrap}
+  .website-actions{margin-left:54px;width:100%;margin-top:4px;justify-content:flex-start}
+  .dock-item{width:32px;height:32px;font-size:12px}
+  body[data-density="compact"] .websites-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body data-theme="cloud" data-mode="light" data-density="comfortable">
@@ -293,43 +372,132 @@ const THEMES = {cloud:{name:'云雾灰',swatch:'linear-gradient(145deg,#f0f4f8,#
 
 const DEFAULT_FOLDERS = [
   { key:'tech', name:'AI 与科技', icon:'fas fa-microchip', sites:[
-    {n:'DeepSeek', u:'https://chat.deepseek.com'},{n:'通义千问', u:'https://www.qianwen.com/'},{n:'豆包', u:'https://www.doubao.com'},{n:'即梦', u:'https://jimeng.jianying.com/ai-tool/home'},{n:'WorkBuddy', u:'https://www.workbuddy.cn/app'},{n:'纳米AI', u:'https://www.n.cn'},{n:'36氪', u:'https://36kr.com'},{n:'虎嗅网', u:'https://www.huxiu.com'},{n:'艾瑞咨询', u:'https://www.iresearch.com.cn'},{n:'站长之家', u:'https://www.chinaz.com/'},{n:'快科技', u:'https://www.mydrivers.com/'},{n:'爱范儿', u:'https://www.ifanr.com'},{n:'华为', u:'https://www.huawei.com/cn'},{n:'苹果', u:'https://apple.com.cn'},{n:'小米商城', u:'https://www.mi.com'},{n:'GitHub', u:'https://github.com/'},{n:'Chrome', u:'https://www.google.cn/chrome/'}
-  ]},
-  { key:'news', name:'新闻资讯', icon:'fas fa-newspaper', sites:[
-    {n:'央视网', u:'https://www.cctv.cn/'},{n:'腾讯新闻', u:'https://news.qq.com'},{n:'腾讯网', u:'https://www.qq.com'},{n:'今日头条', u:'https://www.toutiao.com'},{n:'ZAKER新闻', u:'https://www.myzaker.com'}
-  ]},
-  { key:'finance', name:'财经金融', icon:'fas fa-chart-line', sites:[
-    {n:'东方财富', u:'https://www.eastmoney.com'},{n:'财经网', u:'https://www.caijing.com.cn'},{n:'金融界', u:'https://jrj.com.cn'},{n:'中国人民银行', u:'http://www.pbc.gov.cn'},{n:'中国农业银行', u:'http://www.abchina.com'},{n:'招商银行', u:'https://www.cmbchina.com'}
-  ]},
-  { key:'tax', name:'财务税务', icon:'fas fa-file-invoice-dollar', sites:[
-    {n:'增值税发票查验', u:'https://inv-veri.chinatax.gov.cn'},{n:'电子税务局', u:'https://etax.chinatax.gov.cn'},{n:'自然人电子税务局', u:'https://etax.chinatax.gov.cn'},{n:'12366纳税服务平台', u:'https://12366.chinatax.gov.cn'},{n:'税屋网', u:'https://www.shui5.cn'}
-  ]},
-  { key:'law', name:'法律合规', icon:'fas fa-gavel', sites:[
-    {n:'北大法宝', u:'https://www.pkulaw.com'},{n:'国家法律法规数据库', u:'https://flk.npc.gov.cn'},{n:'中国裁判文书网', u:'https://wenshu.court.gov.cn'},{n:'法信', u:'https://www.faxin.cn'},{n:'全国12315平台', u:'https://www.12315.cn'},{n:'法天使合同库', u:'https://www.fatianshi.cn'},{n:'大连律师协会', u:'https://www.dllawyers.org/home-page.html'}
-  ]},
-  { key:'gov', name:'政务采购', icon:'fas fa-landmark', sites:[
-    {n:'中国政府网', u:'https://www.gov.cn'},{n:'大连市人民政府', u:'https://www.dl.gov.cn'},{n:'国家政务服务平台', u:'https://gjzwfw.www.gov.cn/'},{n:'辽宁省政务服务网', u:'https://www.lnzwfw.gov.cn'},{n:'大连政务服务网', u:'https://zwfw.dl.gov.cn/'},{n:'中国政府采购网', u:'http://www.ccgp.gov.cn'},{n:'辽宁政府采购网', u:'http://www.ccgp-liaoning.gov.cn/portalindex'},{n:'辽宁公共资源交易', u:'http://www.lnggzy.gov.cn'},{n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home'},{n:'大连公共资源交易', u:'https://ggzyjy.dl.gov.cn/'},{n:'大连国企阳光采购', u:'https://www.dlygcg.com/'},{n:'大连机电采购', u:'https://dljd.lecaiyun.com/'},{n:'建行龙集采', u:'https://ibuy.ccb.com/cms/index.html#/bbc/index'},{n:'信用中国', u:'https://www.creditchina.gov.cn/'},{n:'执行信息公开', u:'https://zxgk.court.gov.cn/'},{n:'违法失信查询', u:'https://www.ccgp.gov.cn/search/cr/'},{n:'国家企业信用公示', u:'https://www.gsxt.gov.cn/index.html'},{n:'企查查', u:'https://www.qcc.com/'}
+    {n:'DeepSeek', u:'https://chat.deepseek.com'},
+    {n:'通义千问', u:'https://www.qianwen.com/'},
+    {n:'豆包', u:'https://www.doubao.com'},
+    {n:'即梦', u:'https://jimeng.jianying.com/ai-tool/home'},
+    {n:'WorkBuddy', u:'https://www.workbuddy.cn/app'},
+    {n:'纳米AI', u:'https://www.n.cn'},
+    {n:'36氪', u:'https://36kr.com'},
+    {n:'虎嗅网', u:'https://www.huxiu.com'},
+    {n:'艾瑞咨询', u:'https://www.iresearch.com.cn'},
+    {n:'站长之家', u:'https://www.chinaz.com/'},
+    {n:'快科技', u:'https://www.mydrivers.com/'},
+    {n:'爱范儿', u:'https://www.ifanr.com'},
+    {n:'华为', u:'https://www.huawei.com/cn'},
+    {n:'苹果', u:'https://apple.com.cn'},
+    {n:'小米商城', u:'https://www.mi.com'},
+    {n:'GitHub', u:'https://github.com/'},
+    {n:'Chrome', u:'https://www.google.cn/chrome/'}
   ]},
   { key:'office', name:'职场办公', icon:'fas fa-briefcase', sites:[
-    {n:'智联招聘', u:'https://www.zhaopin.com'},{n:'BOSS直聘', u:'https://www.zhipin.com'},{n:'前程无忧', u:'https://www.51job.com'},{n:'飞书', u:'https://www.feishu.cn'},{n:'企业微信', u:'https://work.weixin.qq.com'},{n:'钉钉', u:'https://www.dingtalk.com'},{n:'百度', u:'https://www.baidu.com'},{n:'PDF24', u:'https://tools.pdf24.org/zh/'},{n:'懒人Excel', u:'https://www.lanrenexcel.com/'},{n:'163邮箱', u:'https://mail.163.com/'},{n:'QQ邮箱', u:'https://mail.qq.com/'}
+    {n:'智联招聘', u:'https://www.zhaopin.com'},
+    {n:'BOSS直聘', u:'https://www.zhipin.com'},
+    {n:'前程无忧', u:'https://www.51job.com'},
+    {n:'飞书', u:'https://www.feishu.cn'},
+    {n:'企业微信', u:'https://work.weixin.qq.com'},
+    {n:'钉钉', u:'https://www.dingtalk.com'},
+    {n:'百度', u:'https://www.baidu.com'},
+    {n:'PDF24', u:'https://tools.pdf24.org/zh/'},
+    {n:'懒人Excel', u:'https://www.lanrenexcel.com/'},
+    {n:'163邮箱', u:'https://mail.163.com/'},
+    {n:'QQ邮箱', u:'https://mail.qq.com/'}
+  ]},
+  { key:'news', name:'新闻资讯', icon:'fas fa-newspaper', sites:[
+    {n:'央视网', u:'https://www.cctv.cn/'},
+    {n:'腾讯新闻', u:'https://news.qq.com'},
+    {n:'腾讯网', u:'https://www.qq.com'},
+    {n:'今日头条', u:'https://www.toutiao.com'},
+    {n:'ZAKER新闻', u:'https://www.myzaker.com'}
+  ]},
+  { key:'finance', name:'财经金融', icon:'fas fa-chart-line', sites:[
+    {n:'东方财富', u:'https://www.eastmoney.com'},
+    {n:'财经网', u:'https://www.caijing.com.cn'},
+    {n:'金融界', u:'https://jrj.com.cn'},
+    {n:'中国人民银行', u:'http://www.pbc.gov.cn'},
+    {n:'中国农业银行', u:'http://www.abchina.com'},
+    {n:'招商银行', u:'https://www.cmbchina.com'}
+  ]},
+  { key:'tax', name:'财务税务', icon:'fas fa-file-invoice-dollar', sites:[
+    {n:'增值税发票查验', u:'https://inv-veri.chinatax.gov.cn'},
+    {n:'电子税务局', u:'https://etax.chinatax.gov.cn'},
+    {n:'自然人电子税务局', u:'https://etax.chinatax.gov.cn'},
+    {n:'12366纳税服务平台', u:'https://12366.chinatax.gov.cn'},
+    {n:'税屋网', u:'https://www.shui5.cn'}
+  ]},
+  { key:'law', name:'法律合规', icon:'fas fa-gavel', sites:[
+    {n:'北大法宝', u:'https://www.pkulaw.com'},
+    {n:'国家法律法规数据库', u:'https://flk.npc.gov.cn'},
+    {n:'中国裁判文书网', u:'https://wenshu.court.gov.cn'},
+    {n:'法信', u:'https://www.faxin.cn'},
+    {n:'全国12315平台', u:'https://www.12315.cn'},
+    {n:'法天使合同库', u:'https://www.fatianshi.cn'},
+    {n:'大连律师协会', u:'https://www.dllawyers.org/home-page.html'}
+  ]},
+  { key:'gov', name:'政务采购', icon:'fas fa-landmark', sites:[
+    {n:'中国政府网', u:'https://www.gov.cn'},
+    {n:'大连市人民政府', u:'https://www.dl.gov.cn'},
+    {n:'国家政务服务平台', u:'https://gjzwfw.www.gov.cn/'},
+    {n:'辽宁省政务服务网', u:'https://www.lnzwfw.gov.cn'},
+    {n:'大连政务服务网', u:'https://zwfw.dl.gov.cn/'},
+    {n:'中国政府采购网', u:'http://www.ccgp.gov.cn'},
+    {n:'辽宁政府采购网', u:'http://www.ccgp-liaoning.gov.cn/portalindex'},
+    {n:'辽宁公共资源交易', u:'http://www.lnggzy.gov.cn'},
+    {n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home'},
+    {n:'大连公共资源交易', u:'https://ggzyjy.dl.gov.cn/'},
+    {n:'大连国企阳光采购', u:'https://www.dlygcg.com/'},
+    {n:'大连机电采购', u:'https://dljd.lecaiyun.com/'},
+    {n:'建行龙集采', u:'https://ibuy.ccb.com/cms/index.html#/bbc/index'},
+    {n:'信用中国', u:'https://www.creditchina.gov.cn/'},
+    {n:'执行信息公开', u:'https://zxgk.court.gov.cn/'},
+    {n:'违法失信查询', u:'https://www.ccgp.gov.cn/search/cr/'},
+    {n:'国家企业信用公示', u:'https://www.gsxt.gov.cn/index.html'},
+    {n:'爱企查', u:'https://aiqicha.baidu.com'}
   ]},
   { key:'study', name:'读书学习', icon:'fas fa-book', sites:[
-    {n:'古文岛', u:'https://www.guwendao.net/default_1.aspx'},{n:'网易公开课', u:'https://open.163.com'},{n:'国家图书馆', u:'https://www.nlc.cn/web/index.shtml'},{n:'国家中小学智慧教育平台', u:'https://basic.smartedu.cn'},{n:'国家哲学社会科学文献中心', u:'https://www.ncpssd.org/'}
+    {n:'古文岛', u:'https://www.guwendao.net/default_1.aspx'},
+    {n:'网易公开课', u:'https://open.163.com'},
+    {n:'国家图书馆', u:'https://www.nlc.cn/web/index.shtml'},
+    {n:'国家中小学智慧教育平台', u:'https://basic.smartedu.cn'},
+    {n:'国家哲学社会科学文献中心', u:'https://www.ncpssd.org/'}
   ]},
   { key:'life', name:'生活娱乐', icon:'fas fa-comments', sites:[
-    {n:'小红书', u:'https://www.xiaohongshu.com/'},{n:'豆瓣', u:'https://www.douban.com/'},{n:'微博', u:'https://weibo.com/'},{n:'知乎', u:'https://www.zhihu.com/'},{n:'QQ空间', u:'https://qzone.qq.com'},{n:'12306', u:'https://www.12306.cn/index'},{n:'携程网', u:'https://www.ctrip.com'},{n:'汽车之家', u:'https://www.autohome.com.cn'},{n:'QQ音乐', u:'https://y.qq.com/'},{n:'酷我音乐', u:'https://www.kuwo.cn'},{n:'抖音', u:'https://www.douyin.com/'},{n:'B站', u:'https://www.bilibili.com/'},{n:'爱奇艺', u:'https://www.iqiyi.com/'},{n:'腾讯视频', u:'https://v.qq.com/'},{n:'央视直播', u:'https://tv.cctv.com/live/cctv1/'},{n:'咪咕视频', u:'https://www.miguvideo.com'},{n:'鸟网论坛', u:'https://www.birdnet.cn/forum.php'}
+    {n:'小红书', u:'https://www.xiaohongshu.com/'},
+    {n:'豆瓣', u:'https://www.douban.com/'},
+    {n:'微博', u:'https://weibo.com/'},
+    {n:'知乎', u:'https://www.zhihu.com/'},
+    {n:'QQ空间', u:'https://qzone.qq.com'},
+    {n:'12306', u:'https://www.12306.cn/index'},
+    {n:'携程网', u:'https://www.ctrip.com'},
+    {n:'汽车之家', u:'https://www.autohome.com.cn'},
+    {n:'QQ音乐', u:'https://y.qq.com/'},
+    {n:'酷我音乐', u:'https://www.kuwo.cn'},
+    {n:'抖音', u:'https://www.douyin.com/'},
+    {n:'B站', u:'https://www.bilibili.com/'},
+    {n:'爱奇艺', u:'https://www.iqiyi.com/'},
+    {n:'腾讯视频', u:'https://v.qq.com/'},
+    {n:'央视直播', u:'https://tv.cctv.com/live/cctv1/'},
+    {n:'咪咕视频', u:'https://www.miguvideo.com'},
+    {n:'鸟网论坛', u:'https://www.birdnet.cn/forum.php'}
   ]},
   { key:'design', name:'设计创意', icon:'fas fa-palette', sites:[
-    {n:'站酷', u:'https://www.zcool.com.cn'},{n:'Iconfont', u:'https://www.iconfont.cn'}
+    {n:'站酷', u:'https://www.zcool.com.cn'},
+    {n:'Iconfont', u:'https://www.iconfont.cn'}
   ]}
 ];
 
 const DEFAULT_QUICK = [
-  { n:'百度', u:'https://www.baidu.com' },{ n:'DeepSeek', u:'https://chat.deepseek.com' },{ n:'快科技', u:'https://www.mydrivers.com/' },{ n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home' },{ n:'腾讯新闻', u:'https://news.qq.com' },{ n:'知乎', u:'https://www.zhihu.com/' },{ n:'B站', u:'https://www.bilibili.com/' }
+  { n:'百度', u:'https://www.baidu.com' },
+  { n:'DeepSeek', u:'https://chat.deepseek.com' },
+  { n:'快科技', u:'https://www.mydrivers.com/' },
+  { n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home' },
+  { n:'腾讯新闻', u:'https://news.qq.com' },
+  { n:'知乎', u:'https://www.zhihu.com/' },
+  { n:'B站', u:'https://www.bilibili.com/' }
 ];
 
 /* ==================== 存储键 ==================== */
-const KEY = 'juzi-nav-v26';
+const KEY = 'juzi-nav-v33';
 const MODE_KEY = 'juzi-mode';
 const RECENT_KEY = 'juzi-recent';
 const OFFWORK_KEY = 'juzi-offwork';
@@ -350,6 +518,10 @@ function domain(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch
 function allSites(){ return state.folders.flatMap(f => f.sites); }
 function pad2(n){ return String(n).padStart(2,'0'); }
 
+function iconHTML(s){
+  return `<div class="website-icon">${esc(first(s.n))}</div>`;
+}
+
 /* ==================== 数据加载 ==================== */
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
@@ -360,7 +532,12 @@ function load(){
     if(raw){
       const d = JSON.parse(raw);
       if(d && Array.isArray(d.folders) && d.folders.length){
-        d.folders.forEach(f => { if(!f.id) f.id = uid(); if(!f.key) f.key = f.id; if(!f.icon) f.icon = 'fas fa-folder'; if(!Array.isArray(f.sites)) f.sites = []; });
+        d.folders.forEach(f => {
+          if(!f.id) f.id = uid();
+          if(!f.key) f.key = f.id;
+          if(!f.icon) f.icon = 'fas fa-folder';
+          if(!Array.isArray(f.sites)) f.sites = [];
+        });
         if(!d.theme || !THEMES[d.theme]) d.theme = 'cloud';
         return d;
       }
@@ -408,7 +585,9 @@ function saveQuick(){ try{ localStorage.setItem(QUICK_KEY, JSON.stringify(quickL
 function renderQuickLinks(){
   const el = document.getElementById('quickLinks');
   if(!el) return;
-  el.innerHTML = quickLinks.map((q,i) => `<a class="quick-item" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`).join('') + (editMode ? `<span class="quick-add-hint">拖网站到这里</span>` : '');
+  el.innerHTML = quickLinks.map((q,i) =>
+    `<a class="quick-item" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`
+  ).join('') + (editMode ? `<span class="quick-add-hint">拖网站到这里</span>` : '');
 }
 
 /* ==================== 最近访问 ==================== */
@@ -430,7 +609,8 @@ function renderDock(){
   const valid = arr.filter(r => sites.some(s => s.u === r.u)).slice(0, DOCK_SHOW);
   if(!valid.length){ el.innerHTML = '<span class="dock-empty">访问过的网站会出现在这里</span>'; return; }
   el.innerHTML = valid.map(r => {
-    const s = sites.find(x => x.u === r.u); const name = s ? s.n : r.n;
+    const s = sites.find(x => x.u === r.u);
+    const name = s ? s.n : r.n;
     return `<a class="dock-item" href="${esc(r.u)}" data-url="${esc(r.u)}" title="${esc(name)}">${esc(first(name))}</a>`;
   }).join('');
 }
@@ -526,12 +706,59 @@ function setActiveNav(id){
   currentFilter = id;
   document.querySelectorAll('.category-link').forEach(a => a.classList.toggle('active', a.dataset.category === id));
 }
+
+function moveFolder(fid, dir){
+  const idx = state.folders.findIndex(f => f.id === fid);
+  if(idx < 0) return;
+  const to = idx + dir;
+  if(to < 0 || to >= state.folders.length) return;
+  [state.folders[idx], state.folders[to]] = [state.folders[to], state.folders[idx]];
+  save();
+  renderSidebar();
+  renderSections();
+  renderDock();
+  setTimeout(() => {
+    const sec = document.querySelector(`.category-section[data-id="${fid}"]`);
+    if(sec){
+      const secRect = sec.getBoundingClientRect();
+      const cRect = websitesContainer.getBoundingClientRect();
+      const top = websitesContainer.scrollTop + (secRect.top - cRect.top) - 8;
+      navLockUntil = Date.now() + 700;
+      websitesContainer.scrollTo({ top, behavior:'smooth' });
+    }
+  }, 30);
+}
+
 function renderSidebar(){
   const list = document.getElementById('category-list');
   const total = state.folders.reduce((a,f) => a + f.sites.length, 0);
-  let html = `<li class="category-item"><a class="category-link${currentFilter === 'all' ? ' active' : ''}" data-category="all"><i class="fas fa-globe"></i><span class="category-name">全部网站</span><span class="category-count">${total}</span></a></li>`;
-  html += state.folders.map(f => `<li class="category-item"><a class="category-link${currentFilter === f.id ? ' active' : ''}" data-category="${f.id}"><i class="${f.icon}"></i><span class="category-name">${esc(f.name)}</span><span class="category-count">${f.sites.length}</span></a></li>`).join('');
+  let html = `<li class="category-item">
+    <a class="category-link${currentFilter === 'all' ? ' active' : ''}" data-category="all">
+      <i class="fas fa-globe"></i>
+      <span class="category-name">全部网站</span>
+      <span class="category-count">${total}</span>
+    </a>
+  </li>`;
+
+  html += state.folders.map((f, idx) => {
+    const isFirst = idx === 0;
+    const isLast = idx === state.folders.length - 1;
+    const movers = editMode ? `<div class="nav-movers">
+      <button class="nav-move" data-fid="${f.id}" data-dir="-1" ${isFirst ? 'disabled' : ''} title="上移">▲</button>
+      <button class="nav-move" data-fid="${f.id}" data-dir="1" ${isLast ? 'disabled' : ''} title="下移">▼</button>
+    </div>` : '';
+    return `<li class="category-item">
+      <a class="category-link${currentFilter === f.id ? ' active' : ''}" data-category="${f.id}">
+        <i class="${f.icon}"></i>
+        <span class="category-name">${esc(f.name)}</span>
+        <span class="category-count">${f.sites.length}</span>
+      </a>
+      ${movers}
+    </li>`;
+  }).join('');
+
   list.innerHTML = html;
+
   list.querySelectorAll('.category-link').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -551,6 +778,15 @@ function renderSidebar(){
       }
     });
   });
+
+  list.querySelectorAll('.nav-move').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      moveFolder(btn.dataset.fid, +btn.dataset.dir);
+    });
+  });
+
   document.getElementById('stat-cats').textContent = state.folders.length;
   document.getElementById('stat-total').textContent = total;
 }
@@ -570,10 +806,10 @@ function renderSections(){
 }
 function cardHTML(s){
   const count = getTodayCount(s.u), hasVisit = count > 0;
-  return `<div class="website-card" data-url="${esc(s.u)}"><div class="website-icon">${esc(first(s.n))}</div><div class="website-info"><div class="website-name" title="${esc(s.n)}">${esc(s.n)}</div><div class="website-url">${esc(domain(s.u))}</div></div><div class="website-actions"><button class="visit-btn" data-url="${esc(s.u)}"><i class="fas fa-external-link-alt"></i> 访问</button><span class="visit-count${hasVisit ? ' has-visit' : ''}">今日 ${count} 次</span></div></div>`;
+  return `<div class="website-card" data-url="${esc(s.u)}">${iconHTML(s)}<div class="website-info"><div class="website-name" title="${esc(s.n)}">${esc(s.n)}</div><div class="website-url">${esc(domain(s.u))}</div></div><div class="website-actions"><button class="visit-btn" data-url="${esc(s.u)}"><i class="fas fa-external-link-alt"></i> 访问</button><span class="visit-count${hasVisit ? ' has-visit' : ''}">今日 ${count} 次</span></div></div>`;
 }
 function editCardHTML(f, s, idx){
-  return `<div class="website-card editing" draggable="true" data-fid="${f.id}" data-i="${idx}" data-url="${esc(s.u)}"><div class="website-icon">${esc(first(s.n))}</div><div class="edit-fields"><input class="e-n" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.n)}" placeholder="网站名称" spellcheck="false"><input class="e-u" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.u)}" placeholder="https://…" spellcheck="false"></div><button class="e-del" data-fid="${f.id}" data-i="${idx}" title="删除">×</button></div>`;
+  return `<div class="website-card editing" draggable="true" data-fid="${f.id}" data-i="${idx}" data-url="${esc(s.u)}">${iconHTML(s)}<div class="edit-fields"><input class="e-n" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.n)}" placeholder="网站名称" spellcheck="false"><input class="e-u" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.u)}" placeholder="https://…" spellcheck="false"></div><button class="e-del" data-fid="${f.id}" data-i="${idx}" title="删除">×</button></div>`;
 }
 
 /* ==================== 打开网站 ==================== */
@@ -715,7 +951,9 @@ btnEdit.addEventListener('click', () => {
   editMode = !editMode;
   btnEdit.classList.toggle('on', editMode);
   document.getElementById('btnHealth').style.display = editMode ? '' : 'none';
-  renderQuickLinks(); renderSections();
+  renderSidebar();
+  renderQuickLinks();
+  renderSections();
 });
 
 document.getElementById('btnDensity').addEventListener('click', () => {
