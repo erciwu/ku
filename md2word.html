@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown 转 Word · 公文格式版</title>
+
+<!-- marked 解析 -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<!-- FileSaver -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<!-- html-docx-js -->
+<script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+
+<style>
+/* ============================ 基础与主题 ============================ */
+:root{
+  --bg:#eef1f5;
+  --surface:#ffffff;
+  --border:rgba(20,20,30,.09);
+  --text:#1b1c1f;
+  --text-2:#6b6f76;
+  --accent:#0a84ff;
+  --accent-dark:#0066d6;
+  --danger:#ff453a;
+  --radius:18px;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+  --shadow-md:0 8px 24px rgba(16,24,40,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Roboto,sans-serif;
+  background:radial-gradient(1200px 600px at 10% -10%,#dbe7ff 0%,transparent 55%),
+             radial-gradient(900px 500px at 100% 0%,#e6f4ff 0%,transparent 50%),
+             var(--bg);
+  color:var(--text);
+  padding:22px;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ============================ 布局 ============================ */
+.app{
+  max-width:1560px;height:calc(100vh - 44px);margin:0 auto;
+  display:flex;flex-direction:column;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-md);
+  overflow:hidden;
+}
+
+/* ---------- 顶部 ---------- */
+.topbar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:14px 22px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.55);
+}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto;}
+.logo{
+  width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+  background:linear-gradient(140deg,#0a84ff,#5e5ce6);
+  color:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:15px;letter-spacing:-.5px;
+  box-shadow:0 4px 12px rgba(10,132,255,.32);
+}
+.brand h1{font-size:16px;font-weight:650;letter-spacing:-.2px;}
+.brand p{font-size:11.5px;color:var(--text-2);margin-top:1px;}
+
+.actions{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 15px;border-radius:10px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);
+  font-size:13px;font-weight:500;font-family:inherit;
+  cursor:pointer;white-space:nowrap;
+  transition:background .16s,box-shadow .16s,transform .1s,color .16s;
+  box-shadow:var(--shadow-sm);
+}
+.btn:hover{background:#fff;box-shadow:0 3px 10px rgba(16,24,40,.1);}
+.btn:active{transform:scale(.97);}
+.btn.primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(10,132,255,.28);}
+.btn.primary:hover{background:var(--accent-dark);}
+.btn.danger{color:var(--danger);}
+.btn.danger:hover{background:#fff5f5;border-color:rgba(255,69,58,.28);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* ---------- 编辑区 ---------- */
+.workspace{
+  flex:1;display:grid;grid-template-columns:minmax(300px,1fr) minmax(420px,2fr);
+  gap:0;min-height:0;
+}
+.pane{display:flex;flex-direction:column;min-height:0;min-width:0;}
+.pane + .pane{border-left:1px solid var(--border);}
+.pane-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 20px 10px;flex:0 0 auto;
+}
+.pane-head h2{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px;}
+.pane-head .dot{width:7px;height:7px;border-radius:50%;background:#34c759;}
+.pane-head .dot.blue{background:#0a84ff;}
+.hint{font-size:11.5px;color:var(--text-2);}
+kbd{
+  font-family:inherit;font-size:10.5px;padding:1px 5px;border-radius:4px;
+  background:#eceef2;border:1px solid #dde0e6;color:#4a4f57;
+}
+
+textarea,.preview{
+  flex:1;min-height:0;margin:0 20px 20px;border-radius:14px;
+  border:1px solid var(--border);background:#fff;
+  box-shadow:inset 0 1px 3px rgba(16,24,40,.03);
+  transition:box-shadow .18s,border-color .18s;
+}
+textarea{
+  resize:none;padding:18px 20px;outline:none;
+  font-family:"SF Mono",Menlo,Consolas,"Courier New",monospace;
+  font-size:13px;line-height:1.7;color:#24292f;
+  tab-size:2;
+}
+textarea:focus{
+  border-color:rgba(10,132,255,.5);
+  box-shadow:0 0 0 3.5px rgba(10,132,255,.13);
+}
+textarea::placeholder{color:#a8adb5;}
+
+.preview{
+  overflow-y:auto;overflow-x:auto;padding:26px 30px;
+  font-family:"仿宋_GB2312","仿宋","FangSong",serif;
+  font-size:16pt;line-height:28pt;color:#000;
+  text-align:justify;
+}
+.preview::-webkit-scrollbar,textarea::-webkit-scrollbar{width:10px;height:10px;}
+.preview::-webkit-scrollbar-thumb,textarea::-webkit-scrollbar-thumb{
+  background:#d5d9df;border-radius:10px;border:3px solid #fff;background-clip:padding-box;
+}
+
+/* ---------- 底部状态栏 ---------- */
+.statusbar{
+  display:flex;gap:22px;flex-wrap:wrap;align-items:center;
+  padding:9px 24px;font-size:12px;color:var(--text-2);
+  border-top:1px solid var(--border);background:rgba(255,255,255,.6);
+}
+.statusbar b{color:var(--text);font-weight:600;}
+.statusbar .spacer{margin-left:auto;}
+
+/* ==================== 预览排版（公文格式 · 与导出严格一致） ==================== */
+/* 为了兼容后处理中转为 p 标签的标题，这里把对应的样式都写在 p 上 */
+.preview p{margin:0;text-indent:32pt;line-height:28pt;}
+
+.preview strong{font-weight:bold;}
+.preview em{font-style:italic;}
+.preview del{color:#888;}
+.preview a{color:#000;text-decoration:underline;}
+
+/* 行内代码 */
+.preview code{
+  font-family:Consolas,"Courier New",monospace;
+  font-size:.85em;background:#f2f2f2;color:#000;
+  padding:0 3px;
+}
+/* 代码块 */
+.preview pre{
+  font-family:Consolas,"Courier New",monospace;
+  font-size:11pt;line-height:1.5;
+  background:#f7f7f7;border:1px solid #d0d0d0;
+  padding:6pt 8pt;margin:6pt 0;overflow-x:auto;
+  text-indent:0;white-space:pre-wrap;
+}
+.preview pre code{background:none;padding:0;font-size:inherit;}
+
+/* 引用：公文正文按普通段落处理 */
+.preview blockquote{
+  margin:0;padding:0;border-left:none;color:#000;
+  text-indent:32pt;line-height:28pt;
+}
+
+/* ==================== ★ 列表对齐核心修复 ★ ==================== */
+.preview ul,
+.preview ol{
+  margin:0;
+  padding-left:32pt;
+  list-style-position:outside;
+  line-height:28pt;
+}
+.preview ul{list-style-type:disc;}
+.preview ul ul{list-style-type:circle;}
+.preview ul ul ul{list-style-type:square;}
+.preview ol{list-style-type:decimal;}
+
+.preview li{
+  line-height:28pt;
+  margin:0;
+  text-indent:0;
+}
+.preview li::marker{font-size:1em;color:inherit;font-weight:normal;}
+.preview li > p{margin:0;text-indent:0;line-height:28pt;}
+
+/* 嵌套列表 */
+.preview li > ul,
+.preview li > ol{
+  margin:0;
+  padding-left:28pt;
+}
+
+/* 分隔线 */
+.preview hr{
+  border:none;border-top:1pt solid #000;margin:12pt 0;
+}
+
+/* 表格：公文表格用小四/五号 */
+.preview table{
+  border-collapse:collapse;width:100%;
+  margin:6pt 0;font-size:12pt;line-height:1.5;
+}
+.preview th,
+.preview td{
+  border:1pt solid #000;padding:4pt 6pt;
+  vertical-align:middle;text-align:left;
+  text-indent:0;line-height:1.5;
+}
+.preview th{
+  font-family:"黑体","SimHei",sans-serif;
+  font-weight:normal;text-align:center;background:#f2f2f2;
+}
+
+.preview img{max-width:100%;height:auto;}
+
+/* 空状态 */
+.empty-state{
+  height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;
+  color:#a4a9b3;font-size:13.5px;
+  font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.empty-state .icon{font-size:44px;opacity:.6;}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;top:26px;left:50%;transform:translate(-50%,-140%);
+  padding:11px 22px;border-radius:12px;
+  background:#1b1c1f;color:#fff;font-size:13.5px;font-weight:500;
+  box-shadow:0 12px 32px rgba(0,0,0,.22);
+  opacity:0;pointer-events:none;z-index:9999;
+  transition:transform .28s cubic-bezier(.2,.9,.35,1),opacity .28s;
+  max-width:80vw;text-align:center;
+}
+.toast.show{transform:translate(-50%,0);opacity:1;}
+.toast.error{background:#d92c20;}
+.toast.success{background:#1a8f4a;}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1024px){
+  body{padding:12px;}
+  .app{height:calc(100vh - 24px);}
+  .workspace{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
+  .pane + .pane{border-left:none;border-top:1px solid var(--border);}
+  .brand p{display:none;}
+}
+@media (max-width:640px){
+  .topbar{padding:12px 14px;}
+  .brand h1{font-size:14px;}
+  .btn{padding:7px 11px;font-size:12px;}
+  .pane-head{padding:10px 14px 8px;}
+  textarea,.preview{margin:0 14px 14px;}
+  .preview{padding:18px;font-size:14pt;line-height:1.7;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- ============ 顶栏 ============ -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">M↓</div>
+      <div>
+        <h1>Markdown 转 Word</h1>
+        <p>公文格式 · 列表对齐 · 真 DOCX 导出</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="importBtn">📂 导入文件</button>
+      <input type="file" id="fileInput" accept=".md,.markdown,.txt" hidden>
+      <button class="btn" id="sampleBtn">📄 示例</button>
+      <button class="btn primary" id="convertBtn">🔄 转换</button>
+      <button class="btn" id="copyBtn">📋 复制到 Word</button>
+      <button class="btn" id="exportBtn">📎 导出 DOCX</button>
+      <button class="btn danger" id="clearBtn">🗑️ 清空</button>
+    </div>
+  </div>
+
+  <!-- ============ 工作区 ============ -->
+  <div class="workspace">
+
+    <!-- 左：Markdown 源 -->
+    <div class="pane">
+      <div class="pane-head">
+        <h2><span class="dot"></span>Markdown 源</h2>
+        <span class="hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> 快速转换</span>
+      </div>
+      <textarea id="markdownInput" spellcheck="false" placeholder="在这里粘贴 Markdown 或普通文字内容…
+
+支持自动识别公文段落格式…"></textarea>
+    </div>
+
+    <!-- 右：Word 预览（公文格式） -->
+    <div class="pane">
+      <div class="pane-head">
+        <h2><span class="dot blue"></span>Word 预览 · 公文格式</h2>
+        <span class="hint" id="previewHint">仿宋三号 · 行距28磅</span>
+      </div>
+      <div class="preview" id="preview"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ 状态栏 ============ -->
+  <div class="statusbar">
+    <span>字符 <b id="statChars">0</b></span>
+    <span>字数 <b id="statWords">0</b></span>
+    <span>行数 <b id="statLines">0</b></span>
+    <span>表格 <b id="statTables">0</b></span>
+    <span class="spacer"></span>
+    <span id="statState">待转换</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+ *  0. 基础工具
+ * ============================================================ */
+const $ = (id) => document.getElementById(id);
+
+const els = {
+  input:      $('markdownInput'),
+  preview:    $('preview'),
+  toast:      $('toast'),
+  previewHint:$('previewHint'),
+  statChars:  $('statChars'),
+  statWords:  $('statWords'),
+  statLines:  $('statLines'),
+  statTables: $('statTables'),
+  statState:  $('statState'),
+};
+
+const state = {
+  hasContent: false,
+  tableCount: 0,
+  html: ''
+};
+
+let toastTimer = null;
+function toast(msg, type = 'default') {
+  const t = els.toast;
+  t.textContent = msg;
+  t.className = 'toast show' + (type === 'error' ? ' error' : type === 'success' ? ' success' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+const EMPTY_HTML =
+  '<div class="empty-state"><div class="icon">📄</div>' +
+  '<p>在左侧输入或粘贴 Markdown 或普通文字，结果会实时显示在这里</p></div>';
+
+/* ============================================================
+ *  1. 表格提取（带围栏代码块保护）
+ * ============================================================ */
+
+function isDelimiterRow(line) {
+  if (typeof line !== 'string' || !line.includes('-')) return false;
+  const body = line.trim().replace(/^\|/, '').replace(/\|$/, '');
+  if (!body) return false;
+  return body.split('|').every(cell => /^\s*:?-+:?\s*$/.test(cell));
+}
+
+function splitTableRow(row) {
+  let s = row.trim();
+  if (s.startsWith('|')) s = s.slice(1);
+  if (s.endsWith('|') && !s.endsWith('\\|')) s = s.slice(0, -1);
+
+  const cells = [];
+  let cur = '';
+  let inCode = false;
+
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (ch === '\\' && s[i + 1] === '|') { cur += '|'; i++; continue; }
+    if (ch === '`') { inCode = !inCode; cur += ch; continue; }
+    if (ch === '|' && !inCode) { cells.push(cur.trim()); cur = ''; continue; }
+    cur += ch;
+  }
+  cells.push(cur.trim());
+  return cells;
+}
+
+function inlineFormat(text) {
+  if (text == null || text === '') return '&nbsp;';
+  let s = String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (m, c) => {
+    codes.push(c);
+    return `\u0000CODE${codes.length - 1}\u0000`;
+  });
+
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+  s = s.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+  s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+  s = s.replace(/\u0000CODE(\d+)\u0000/g, (m, i) =>
+    `<code style="font-family:Consolas,monospace;background:#f2f2f2;padding:0 3px;">${codes[i]}</code>`);
+
+  return s;
+}
+
+function buildTableHtml(rows) {
+  if (!rows.length) return '';
+
+  const header = splitTableRow(rows[0]);
+  const hasDelimiter = rows.length > 1 && isDelimiterRow(rows[1]);
+  const aligns = hasDelimiter
+    ? splitTableRow(rows[1]).map(c => {
+        const l = c.startsWith(':'), r = c.endsWith(':');
+        return l && r ? 'center' : r ? 'right' : l ? 'left' : 'left';
+      })
+    : [];
+  const bodyRows = rows.slice(hasDelimiter ? 2 : 1);
+  const colCount = header.length;
+
+  const T  = 'border-collapse:collapse;width:100%;margin:6pt 0;font-size:12pt;line-height:1.5;mso-line-height-rule:auto;';
+  const TH = 'border:1pt solid #000000;padding:4pt 6pt;background:#f2f2f2;' +
+             'font-family:"黑体","SimHei",sans-serif;font-size:12pt;font-weight:normal;vertical-align:middle;line-height:1.5;mso-line-height-rule:auto;';
+  const TD = 'border:1pt solid #000000;padding:4pt 6pt;font-family:"仿宋_GB2312","仿宋","FangSong",serif;font-size:12pt;vertical-align:middle;line-height:1.5;mso-line-height-rule:auto;';
+
+  let html = `<table style="${T}"><thead><tr>`;
+  header.forEach((c, i) => {
+    html += `<th style="${TH}text-align:${aligns[i] === 'left' ? 'left' : 'center'};">${inlineFormat(c)}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  bodyRows.forEach(row => {
+    const cells = splitTableRow(row);
+    html += '<tr>';
+    for (let i = 0; i < colCount; i++) {
+      html += `<td style="${TD}text-align:${aligns[i] || 'left'};">${inlineFormat(cells[i] ?? '')}</td>`;
+    }
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  return html;
+}
+
+function extractTables(md) {
+  const lines = md.split(/\r?\n/);
+  const out = [];
+  const placeholders = [];
+  let tableCount = 0;
+
+  let inFence = false;
+  let fenceChar = '';
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    const fence = line.match(/^\s*(`{3,}|~{3,})/);
+    if (fence) {
+      const ch = fence[1][0];
+      if (!inFence) { inFence = true; fenceChar = ch; out.push(line); i++; continue; }
+      if (ch === fenceChar) { inFence = false; out.push(line); i++; continue; }
+    }
+
+    if (!inFence &&
+        line.includes('|') &&
+        i + 1 < lines.length &&
+        isDelimiterRow(lines[i + 1])) {
+
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|') && lines[i].trim() !== '') {
+        rows.push(lines[i]);
+        i++;
+      }
+      const tableHtml = buildTableHtml(rows);
+      const ph = `<!--MD_TABLE_${placeholders.length}-->`;
+      placeholders.push({ ph, html: tableHtml });
+      out.push('');
+      out.push(ph);
+      out.push('');
+      tableCount++;
+      continue;
+    }
+
+    out.push(line);
+    i++;
+  }
+
+  return { text: out.join('\n'), placeholders, tableCount };
+}
+
+/* ============================================================
+ *  2. 纯文本段落智能规范化
+ * ============================================================ */
+function normalizePlainText(md) {
+  const lines = md.split(/\r?\n/);
+  const out = [];
+  let inFence = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    let trimmed = line.trim();
+
+    if (trimmed.startsWith('```') || trimmed.startsWith('~~~')) {
+      inFence = !inFence;
+      out.push(line);
+      continue;
+    }
+    if (inFence) {
+      out.push(line);
+      continue;
+    }
+
+    if (trimmed === '') {
+      out.push(line);
+      continue;
+    }
+
+    if (trimmed.startsWith('<!--MD_TABLE_')) {
+      out.push(line);
+      continue;
+    }
+
+    const isHeading = /^#{1,6}\s+/.test(trimmed);
+    const isList = /^([-*+]|\d+\.)\s+/.test(trimmed);
+    const isBlockquote = /^>\s*/.test(trimmed);
+    const isIndented = /^\s+/.test(line);
+
+    if (isHeading || isList || isBlockquote || isIndented) {
+      out.push(line);
+      continue;
+    }
+
+    if (out.length > 0) {
+      const prevLine = out[out.length - 1];
+      const prevTrimmed = prevLine.trim();
+      
+      if (prevTrimmed !== '') {
+        const prevIsHeading = /^#{1,6}\s+/.test(prevTrimmed);
+        const prevIsList = /^([-*+]|\d+\.)\s+/.test(prevTrimmed);
+        const prevIsBlockquote = /^>\s*/.test(prevTrimmed);
+        const prevIsIndented = /^\s+/.test(prevLine);
+        const prevIsTable = prevTrimmed.startsWith('<!--MD_TABLE_');
+        
+        if (prevIsHeading || prevIsList || prevIsBlockquote || prevIsIndented || prevIsTable) {
+          out.push('');
+          out.push('');
+        } else {
+          out.push('');
+        }
+      }
+    }
+    
+    out.push(line);
+  }
+
+  return out.join('\n');
+}
+
+/* ============================================================
+ *  3. HTML 后处理 —— 彻底降维打击
+ * ============================================================ */
+function postProcessHtml(html) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+
+  // 1. 拍平列表内的 <p>
+  wrap.querySelectorAll('li').forEach(li => {
+    const pChildren = Array.from(li.children).filter(el => el.tagName === 'P');
+    pChildren.forEach((p, idx) => {
+      if (idx > 0) li.insertBefore(document.createElement('br'), p);
+      while (p.firstChild) li.insertBefore(p.firstChild, p);
+      p.remove();
+    });
+  });
+
+  // 2. ★ 降维打击：把 markdown 的 h1~h6 全部转为带内联样式的 p 标签
+  const hTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  hTags.forEach(tag => {
+    wrap.querySelectorAll(tag).forEach(h => {
+      const p = document.createElement('p');
+      p.innerHTML = h.innerHTML;
+      
+      if (tag === 'h1') {
+        p.style.fontFamily = '"方正小标宋简体","小标宋","宋体","SimSun",serif';
+        p.style.fontSize = '22pt';
+        p.style.fontWeight = 'normal';
+        p.style.textAlign = 'center';
+        p.style.lineHeight = '1.6';
+        p.style.msoLineHeightRule = 'auto';
+        p.style.margin = '0 0 22pt 0';
+        p.style.textIndent = '0';
+      } else if (tag === 'h2') {
+        p.style.fontFamily = '"黑体","SimHei",sans-serif';
+        p.style.fontSize = '16pt';
+        p.style.fontWeight = 'normal';
+        p.style.lineHeight = '28pt';
+        p.style.msoLineHeightRule = 'exactly';
+        p.style.margin = '0';
+        p.style.textIndent = '32pt';
+      } else if (tag === 'h3') {
+        p.style.fontFamily = '"楷体_GB2312","楷体","KaiTi",serif';
+        p.style.fontSize = '16pt';
+        p.style.fontWeight = 'normal';
+        p.style.lineHeight = '28pt';
+        p.style.msoLineHeightRule = 'exactly';
+        p.style.margin = '0';
+        p.style.textIndent = '32pt';
+      } else {
+        p.style.fontFamily = '"仿宋_GB2312","仿宋","FangSong",serif';
+        p.style.fontSize = '16pt';
+        p.style.fontWeight = 'bold';
+        p.style.lineHeight = '28pt';
+        p.style.msoLineHeightRule = 'exactly';
+        p.style.margin = '0';
+        p.style.textIndent = '32pt';
+      }
+      
+      h.replaceWith(p);
+    });
+  });
+
+  // 3. ★ 识别纯文本中的公文标题（也是 p 标签），注入内联样式
+  wrap.querySelectorAll('p').forEach(p => {
+    const text = p.textContent.trim();
+    if (!text) return;
+    if (p.querySelector('a, img, code')) return;
+    if (p.style.fontFamily) return; // 已经由 h 标签转换过，跳过
+
+    if (/^[一二三四五六七八九十]+、/.test(text)) {
+      p.style.fontFamily = '"黑体","SimHei",sans-serif';
+      p.style.fontSize = '16pt';
+      p.style.fontWeight = 'normal';
+      p.style.lineHeight = '28pt';
+      p.style.msoLineHeightRule = 'exactly';
+      p.style.margin = '0';
+      p.style.textIndent = '32pt';
+    } else if (/^[（(][一二三四五六七八九十]+[）)]/.test(text)) {
+      p.style.fontFamily = '"楷体_GB2312","楷体","KaiTi",serif';
+      p.style.fontSize = '16pt';
+      p.style.fontWeight = 'normal';
+      p.style.lineHeight = '28pt';
+      p.style.msoLineHeightRule = 'exactly';
+      p.style.margin = '0';
+      p.style.textIndent = '32pt';
+    } else if (/^\d+[\.、]\s*/.test(text) && text.length < 60 && !text.includes('。')) {
+      p.style.fontFamily = '"仿宋_GB2312","仿宋","FangSong",serif';
+      p.style.fontSize = '16pt';
+      p.style.fontWeight = 'bold';
+      p.style.lineHeight = '28pt';
+      p.style.msoLineHeightRule = 'exactly';
+      p.style.margin = '0';
+      p.style.textIndent = '32pt';
+    }
+  });
+
+  // 4. 强制给表格内部所有段落/文本注入内联行距
+  wrap.querySelectorAll('td, th').forEach(cell => {
+    const pNodes = Array.from(cell.querySelectorAll('p'));
+    
+    if (pNodes.length > 0) {
+      pNodes.forEach(p => {
+        p.style.lineHeight = '1.5';
+        p.style.msoLineHeightRule = 'auto';
+        p.style.textIndent = '0';
+        p.style.margin = '0';
+        p.style.fontSize = '12pt';
+      });
+    } else if (cell.textContent.trim() !== '') {
+      const p = document.createElement('p');
+      p.style.lineHeight = '1.5';
+      p.style.msoLineHeightRule = 'auto';
+      p.style.textIndent = '0';
+      p.style.margin = '0';
+      p.style.fontSize = '12pt';
+      while (cell.firstChild) p.appendChild(cell.firstChild);
+      cell.appendChild(p);
+    }
+  });
+
+  wrap.querySelectorAll('li').forEach(li => {
+    if (!li.textContent.trim() && !li.querySelector('ul,ol,img,input')) li.remove();
+  });
+
+  wrap.querySelectorAll('p').forEach(p => {
+    while (p.firstChild && p.firstChild.nodeName === 'BR') p.removeChild(p.firstChild);
+  });
+
+  return wrap.innerHTML;
+}
+
+/* ============================================================
+ *  4. 主转换流程
+ * ============================================================ */
+function convert(silent = false) {
+  const md = els.input.value;
+
+  if (!md.trim()) {
+    els.preview.innerHTML = EMPTY_HTML;
+    state.hasContent = false;
+    state.tableCount = 0;
+    els.previewHint.textContent = '仿宋三号 · 行距28磅';
+    els.statState.textContent = '待转换';
+    updateStats();
+    return;
+  }
+
+  try {
+    const { text, placeholders, tableCount } = extractTables(md);
+    const normalizedText = normalizePlainText(text);
+
+    marked.setOptions({ gfm: true, breaks: false, pedantic: false });
+    const parse = (typeof marked.parse === 'function') ? marked.parse : marked;
+    let html = parse(normalizedText);
+
+    placeholders.forEach(item => {
+      html = html.split(item.ph).join(item.html);
+    });
+
+    html = postProcessHtml(html);
+
+    els.preview.innerHTML = html;
+    state.hasContent = true;
+    state.html = html;
+    state.tableCount = tableCount;
+
+    els.previewHint.textContent = `公文格式 · ${tableCount} 个表格`;
+    els.statState.textContent = '✅ 已转换';
+    updateStats();
+
+    if (!silent) toast('转换完成，已套用公文格式', 'success');
+  } catch (err) {
+    console.error(err);
+    els.statState.textContent = '❌ 解析出错';
+    toast('解析出错：' + err.message, 'error');
+  }
+}
+
+/* ============================================================
+ *  5. 统计
+ * ============================================================ */
+function updateStats() {
+  const md = els.input.value;
+  const chars = md.length;
+  const lines = md ? md.split('\n').length : 0;
+  const cn = (md.match(/[\u4e00-\u9fa5]/g) || []).length;
+  const en = (md.match(/[A-Za-z0-9]+/g) || []).length;
+
+  els.statChars.textContent = chars;
+  els.statWords.textContent = cn + en;
+  els.statLines.textContent = lines;
+  els.statTables.textContent = state.tableCount;
+}
+
+/* ============================================================
+ *  6. 导出样式 —— 公文格式
+ * ============================================================ */
+const WORD_CSS = `
+  body{
+    font-family:"仿宋_GB2312","仿宋","FangSong",serif;
+    mso-hansi-font-family:"Times New Roman";
+    mso-bidi-font-family:"Times New Roman";
+    font-size:16pt;
+    line-height:1.5;
+    color:#000000;
+    text-align:justify;
+  }
+  p{ margin:0; text-indent:32pt; line-height:28pt; mso-line-height-rule:exactly; text-align:justify; }
+  strong{font-weight:bold;}
+  em{font-style:italic;}
+  del{color:#888888;}
+  a{color:#000000;text-decoration:underline;}
+
+  ul{ margin:0; padding-left:32pt; list-style-type:disc; list-style-position:outside; line-height:28pt; mso-line-height-rule:exactly; }
+  ol{ margin:0; padding-left:32pt; list-style-type:decimal; list-style-position:outside; line-height:28pt; mso-line-height-rule:exactly; }
+  li{ line-height:28pt; mso-line-height-rule:exactly; margin:0; padding:0; text-indent:0; }
+  li p{margin:0; text-indent:0; line-height:28pt; mso-line-height-rule:exactly;}
+  li ul,li ol{margin:0; padding-left:28pt;}
+
+  blockquote{ margin:0; padding:0; border-left:none; color:#000000; text-indent:32pt; line-height:28pt; mso-line-height-rule:exactly; }
+  hr{ border:none; border-top:1pt solid #000000; margin:12pt 0; }
+
+  code{ font-family:"Consolas","Courier New",monospace; font-size:11pt; background:#f2f2f2; padding:0 3px; }
+  pre{ font-family:"Consolas","Courier New",monospace; font-size:11pt; line-height:1.5; background:#f7f7f7; border:1pt solid #d0d0d0; padding:6pt 8pt; margin:6pt 0; text-indent:0; white-space:pre-wrap; }
+  pre code{ background:none; padding:0; font-size:inherit; }
+
+  table{ border-collapse:collapse; width:100%; margin:6pt 0; font-size:12pt; line-height:1.5; mso-line-height-rule:auto; }
+  th,td{ border:1pt solid #000000; padding:4pt 6pt; vertical-align:middle; text-indent:0; line-height:1.5; mso-line-height-rule:auto; font-size:12pt; }
+  th{ font-family:"黑体","SimHei",sans-serif; font-weight:normal; text-align:center; background:#f2f2f2; }
+  th p, td p { margin:0 !important; padding:0 !important; text-indent:0 !important; line-height:1.5 !important; mso-line-height-rule:auto !important; font-size:12pt !important; }
+
+  img{max-width:100%;}
+`;
+
+function buildExportHtml() {
+  return `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Document</title>
+<!--[if gte mso 9]><xml><w:WordDocument>
+<w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/>
+</w:WordDocument></xml><![endif]-->
+<style>${WORD_CSS}</style>
+</head>
+<body>${els.preview.innerHTML}</body>
+</html>`;
+}
+
+/* ============================================================
+ *  7. 复制到 Word
+ * ============================================================ */
+async function copyToWord() {
+  if (!state.hasContent) { toast('请先转换内容', 'error'); return; }
+
+  const html = buildExportHtml();
+  const plain = els.preview.innerText;
+
+  if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/html':  new Blob([html],  { type: 'text/html' }),
+          'text/plain': new Blob([plain], { type: 'text/plain' })
+        })
+      ]);
+      toast('已复制！在 Word 中按 Ctrl+V 粘贴', 'success');
+      return;
+    } catch (e) {
+      console.warn('Clipboard API 失败，降级到 execCommand', e);
+    }
+  }
+
+  try {
+    const range = document.createRange();
+    range.selectNodeContents(els.preview);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    const ok = document.execCommand('copy');
+    sel.removeAllRanges();
+    toast(ok ? '已复制！在 Word 中按 Ctrl+V 粘贴' : '复制失败，请手动选中复制',
+          ok ? 'success' : 'error');
+  } catch (e) {
+    toast('复制失败，请手动选中预览内容后按 Ctrl+C', 'error');
+  }
+}
+
+/* ============================================================
+ *  8. 导出 DOCX
+ * ============================================================ */
+function safeFileName() {
+  const firstP = els.preview.querySelector('p');
+  const raw = firstP ? firstP.textContent.trim() : 'document';
+  const name = raw.replace(/[\\/:*?"<>|\r\n]/g, '').trim().slice(0, 40);
+  return name || 'document';
+}
+
+function exportDocx() {
+  if (!state.hasContent) { toast('请先转换内容', 'error'); return; }
+
+  if (typeof htmlDocx === 'undefined' || typeof htmlDocx.asBlob !== 'function') {
+    toast('DOCX 组件未加载，请检查网络后刷新页面', 'error');
+    return;
+  }
+  if (typeof saveAs === 'undefined') {
+    toast('文件保存组件未加载，请检查网络后刷新页面', 'error');
+    return;
+  }
+
+  const btn = $('exportBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 生成中…';
+
+  setTimeout(() => {
+    try {
+      const html = buildExportHtml();
+      const blob = htmlDocx.asBlob(html, {
+        orientation: 'portrait',
+        margins: {
+          top: 1440, right: 1800, bottom: 1440, left: 1800,
+          header: 720, footer: 720, gutter: 0
+        }
+      });
+      saveAs(blob, safeFileName() + '.docx');
+      toast('DOCX 导出成功（公文格式）', 'success');
+    } catch (e) {
+      console.error(e);
+      toast('导出失败：' + e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '📎 导出 DOCX';
+    }
+  }, 40);
+}
+
+/* ============================================================
+ *  9. 导入 / 清空
+ * ============================================================ */
+async function importFile(file) {
+  if (!file) return;
+  try {
+    const text = await file.text();
+    els.input.value = text;
+    isSample = false;
+    convert(true);
+    toast(`已导入 ${file.name}`, 'success');
+  } catch (e) {
+    toast('读取文件失败', 'error');
+  }
+}
+
+function clearAll() {
+  if (!els.input.value && !state.hasContent) return;
+  if (!confirm('确定清空所有内容？')) return;
+  els.input.value = '';
+  isSample = false;
+  convert(true);
+  toast('已清空');
+}
+
+/* ============================================================
+ *  10. 示例内容 & 自动清空
+ * ============================================================ */
+const SAMPLE = `关于×××项目进度情况的报告
+
+一、项目概述
+本项目旨在开发一个智能数据分析平台，用于处理大规模数据集并提供可视化分析，全面提升数据治理与辅助决策能力。
+
+二、团队分工
+- 张三：项目经理（进度100%，已完成）
+- 李四：前端工程师（进度85%，进行中）
+- 王五：后端工程师（进度90%，进行中）
+
+（一）前端技术栈
+1. 框架：Vue 3 + TypeScript
+2. 组件库：Element Plus
+
+（二）后端技术栈
+1. 框架：Python + FastAPI
+2. 数据库：PostgreSQL
+
+三、风险与挑战
+数据安全方面，需要强化加密机制；性能优化方面，需解决大数据量下的响应速度问题；用户体验方面，需提升界面的易用性和美观度。
+
+---
+生成时间：2024年1月17日`;
+
+let isSample = true;
+
+/* ============================================================
+ *  11. 事件绑定
+ * ============================================================ */
+
+let autoTimer = null;
+els.input.addEventListener('input', () => {
+  isSample = false;
+  updateStats();
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(() => convert(true), 320);
+});
+
+els.input.addEventListener('focus', () => {
+  if (isSample) {
+    els.input.value = '';
+    isSample = false;
+    updateStats();
+    convert(true);
+    toast('示例已清空，点击「示例」按钮可重新载入');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    convert();
+  }
+});
+
+$('convertBtn').addEventListener('click', () => convert());
+$('copyBtn').addEventListener('click', copyToWord);
+$('exportBtn').addEventListener('click', exportDocx);
+$('clearBtn').addEventListener('click', clearAll);
+
+$('sampleBtn').addEventListener('click', () => {
+  els.input.value = SAMPLE;
+  isSample = true;
+  updateStats();
+  convert(true);
+  toast('已载入公文示例', 'success');
+});
+
+$('importBtn').addEventListener('click', () => $('fileInput').click());
+$('fileInput').addEventListener('change', (e) => {
+  importFile(e.target.files[0]);
+  e.target.value = '';
+});
+
+els.input.addEventListener('dragover', (e) => { e.preventDefault(); });
+els.input.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (f) importFile(f);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  els.input.value = SAMPLE;
+  isSample = true;
+  updateStats();
+  convert(true);
+});
+</script>
+</body>
+</html>
