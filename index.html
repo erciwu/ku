@@ -28,6 +28,9 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .quick-links.drop-target{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
 .quick-item{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;position:relative;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);line-height:1}
 .quick-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.3);box-shadow:0 4px 10px rgba(0,0,0,.18)}
+/* 重点快捷入口：红橙渐变（静态，无动画） */
+.quick-item.hot{background:linear-gradient(145deg,#FF8A4D,#E2392B);border-color:rgba(255,255,255,.55);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.28),0 4px 12px rgba(226,58,46,.42),inset 0 1px 0 rgba(255,255,255,.45)}
+.quick-item.hot:hover{background:linear-gradient(145deg,#FF9A5F,#EF4636);transform:translateY(-2px) scale(1.06);box-shadow:0 0 0 3px rgba(255,255,255,.35),0 4px 16px rgba(226,58,46,.6),inset 0 1px 0 rgba(255,255,255,.45)}
 .quick-item .quick-del{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#e05252;color:#fff;border:none;font-size:11px;line-height:1;font-weight:700;display:grid;place-items:center;cursor:pointer;font-family:inherit;box-shadow:0 2px 4px rgba(0,0,0,.2);z-index:2}
 .quick-add-hint{font-size:11px;color:rgba(255,255,255,.6);white-space:nowrap;padding-left:4px;border-left:1px dashed rgba(255,255,255,.35);margin-left:4px;line-height:1.3;max-width:100px}
 
@@ -405,6 +408,10 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 /* ==================== 常量与数据 ==================== */
 const THEMES = {cloud:{name:'云雾灰',swatch:'linear-gradient(145deg,#f0f4f8,#d9e2ec)'},white:{name:'珍珠白',swatch:'linear-gradient(145deg,#ffffff,#eef0f4)'},blue:{name:'浅海蓝',swatch:'linear-gradient(145deg,#eaf1fa,#d4e4f7)'}};
 
+const ZHAOBIAO_URL = 'https://erciwu.github.io/ku/zhaobiao.html';
+const ZHAOBIAO_NAME = '大连市招采平台导航';
+const GOV_DROP_URLS = ['https://gjzwfw.www.gov.cn/'];
+
 const DEFAULT_FOLDERS = [
   { key:'tech', name:'AI 与科技', icon:'fas fa-microchip', sites:[
     {n:'DeepSeek', u:'https://chat.deepseek.com'},
@@ -473,7 +480,6 @@ const DEFAULT_FOLDERS = [
   { key:'gov', name:'政务采购', icon:'fas fa-landmark', sites:[
     {n:'中国政府网', u:'https://www.gov.cn'},
     {n:'大连市人民政府', u:'https://www.dl.gov.cn'},
-    {n:'国家政务服务平台', u:'https://gjzwfw.www.gov.cn/'},
     {n:'辽宁省政务服务网', u:'https://www.lnzwfw.gov.cn'},
     {n:'大连政务服务网', u:'https://zwfw.dl.gov.cn/'},
     {n:'中国政府采购网', u:'http://www.ccgp.gov.cn'},
@@ -488,7 +494,8 @@ const DEFAULT_FOLDERS = [
     {n:'执行信息公开', u:'https://zxgk.court.gov.cn/'},
     {n:'违法失信查询', u:'https://www.ccgp.gov.cn/search/cr/'},
     {n:'国家企业信用公示', u:'https://www.gsxt.gov.cn/index.html'},
-    {n:'爱企查', u:'https://aiqicha.baidu.com'}
+    {n:'爱企查', u:'https://aiqicha.baidu.com'},
+    {n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL}
   ]},
   { key:'study', name:'读书学习', icon:'fas fa-book', sites:[
     {n:'古文岛', u:'https://www.guwendao.net/default_1.aspx'},
@@ -530,15 +537,18 @@ const DEFAULT_QUICK = [
   { n:'腾讯新闻', u:'https://news.qq.com' },
   { n:'知乎', u:'https://www.zhihu.com/' },
   { n:'B站', u:'https://www.bilibili.com/' },
-  { n:'Md2word', u:'https://erciwu.github.io/ku/md2word.html' }
+  { n:'Md2word', u:'https://erciwu.github.io/ku/md2word.html' },
+  { n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL, hot:true, short:'招' }
 ];
 
 /* ==================== 存储键 ==================== */
-const KEY = 'juzi-nav-v34';
+const KEY = 'juzi-nav-v36';
+const OLD_KEY = 'juzi-nav-v35';
 const MODE_KEY = 'juzi-mode';
 const RECENT_KEY = 'juzi-recent';
 const OFFWORK_KEY = 'juzi-offwork';
-const QUICK_KEY = 'juzi-quick';
+const QUICK_KEY = 'juzi-quick-v3';
+const OLD_QUICK_KEY = 'juzi-quick-v2';
 const DENSITY_KEY = 'juzi-density';
 const MAX_RECENT = 20, DOCK_SHOW = 12;
 const WORK_START_H = 8, WORK_START_M = 30;
@@ -563,9 +573,22 @@ function iconHTML(s){
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
 }
+/* 迁移旧数据：删除“国家政务服务平台”，补充招采导航 */
+function migrateState(d){
+  if(!d || !Array.isArray(d.folders)) return d;
+  const gov = d.folders.find(f => f.key === 'gov' || f.name === '政务采购');
+  if(gov && Array.isArray(gov.sites)){
+    gov.sites = gov.sites.filter(s => GOV_DROP_URLS.indexOf(s.u) === -1);
+    if(!gov.sites.some(s => s.u === ZHAOBIAO_URL)){
+      gov.sites.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL });
+    }
+  }
+  return d;
+}
 function load(){
   try{
-    const raw = localStorage.getItem(KEY);
+    let raw = localStorage.getItem(KEY), fromOld = false;
+    if(!raw){ raw = localStorage.getItem(OLD_KEY); fromOld = !!raw; }
     if(raw){
       const d = JSON.parse(raw);
       if(d && Array.isArray(d.folders) && d.folders.length){
@@ -576,6 +599,8 @@ function load(){
           if(!Array.isArray(f.sites)) f.sites = [];
         });
         if(!d.theme || !THEMES[d.theme]) d.theme = 'cloud';
+        migrateState(d);
+        if(fromOld){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
         return d;
       }
     }
@@ -617,13 +642,31 @@ function applyDensity(d){
 function initDensity(){ let d = 'comfortable'; try{ d = localStorage.getItem(DENSITY_KEY) || 'comfortable'; }catch(e){} if(d !== 'compact') d = 'comfortable'; applyDensity(d); }
 
 /* ==================== 快捷访问 ==================== */
-function loadQuick(){ try{ const raw = localStorage.getItem(QUICK_KEY); if(raw){ const arr = JSON.parse(raw); if(Array.isArray(arr) && arr.length) return arr; } }catch(e){} return DEFAULT_QUICK.slice(); }
+function loadQuick(){
+  let arr = null;
+  try{
+    const raw = localStorage.getItem(QUICK_KEY);
+    if(raw){ const o = JSON.parse(raw); if(Array.isArray(o)) arr = o; }
+  }catch(e){}
+  if(!arr){
+    let old = null;
+    try{
+      const rawOld = localStorage.getItem(OLD_QUICK_KEY);
+      if(rawOld){ const o = JSON.parse(rawOld); if(Array.isArray(o) && o.length) old = o; }
+    }catch(e){}
+    arr = old || DEFAULT_QUICK.map(q => ({ ...q }));
+    if(!arr.some(q => q.u === ZHAOBIAO_URL)) arr.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL, hot:true, short:'招' });
+    arr = arr.map(q => q.u === ZHAOBIAO_URL ? Object.assign({}, q, { n:ZHAOBIAO_NAME, hot:true, short:'招' }) : q);
+    try{ localStorage.setItem(QUICK_KEY, JSON.stringify(arr)); }catch(e){}
+  }
+  return arr;
+}
 function saveQuick(){ try{ localStorage.setItem(QUICK_KEY, JSON.stringify(quickLinks)); }catch(e){} }
 function renderQuickLinks(){
   const el = document.getElementById('quickLinks');
   if(!el) return;
   el.innerHTML = quickLinks.map((q,i) =>
-    `<a class="quick-item" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`
+    `<a class="quick-item${q.hot ? ' hot' : ''}" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(q.short || first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`
   ).join('') + (editMode ? `<span class="quick-add-hint">拖网站到这里</span>` : '');
 }
 
