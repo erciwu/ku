@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>橘子导航</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -135,6 +135,13 @@ body[data-mode="dark"] .visit-count.has-visit{background:rgba(46,158,100,.16);co
 .e-del{width:26px;height:26px;flex:0 0 26px;border-radius:7px;display:grid;place-items:center;cursor:pointer;background:rgba(190,110,110,.1);border:1px solid rgba(190,110,110,.2);color:#c07a7a;font-family:inherit;font-size:14px;transition:.14s}
 .e-del:hover{background:#c96b6b;color:#fff;border-color:#c96b6b}
 
+/* 移动排序按钮（默认隐藏，手机端显示） */
+.card-move-btns{display:none;flex-direction:column;gap:2px;flex:0 0 auto}
+.card-move-btn{width:22px;height:18px;border-radius:4px;display:grid;place-items:center;background:var(--surface-3);border:1px solid var(--line);color:var(--txt-3);cursor:pointer;font-family:inherit;font-size:9px;line-height:1;padding:0;transition:.14s}
+.card-move-btn:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+.card-move-btn:disabled{opacity:.25;cursor:not-allowed}
+.card-move-btn:disabled:hover{background:var(--surface-3);border-color:var(--line);color:var(--txt-3)}
+
 .add-card{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 14px;border-radius:15px;border:1.5px dashed var(--line-2);background:transparent;color:var(--txt-3);font-family:inherit;font-size:12.5px;font-weight:520;cursor:pointer;transition:.15s;min-height:72px}
 .add-card:hover{border-color:var(--brand);color:var(--brand);background:var(--surface)}
 
@@ -230,6 +237,14 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
 
+/* ===== 移动端基础隐藏元素 ===== */
+.mobile-menu-btn{display:none;width:34px;height:34px;border-radius:9px;place-items:center;cursor:pointer;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:15px;font-family:inherit;flex:0 0 auto;transition:background .15s ease,border-color .15s ease}
+.mobile-menu-btn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.36)}
+.sidebar-close-btn{display:none;position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);color:var(--txt-2);cursor:pointer;font-family:inherit;font-size:14px;place-items:center;z-index:2}
+.sidebar-close-btn:hover{background:var(--line-2);color:var(--txt)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.sidebar-overlay.show{display:block;opacity:1;pointer-events:auto}
+
 @media (max-width:1480px){
   .stats-inline{font-size:11.5px}
   .stats-inline b{font-size:12px}
@@ -301,8 +316,79 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
   .theme-pop{right:14px;top:60px}
   .back-top{bottom:70px;right:14px;width:36px;height:36px}
 }
+
+/* ===== 手机端专用：<=768px ===== */
+@media (max-width:768px){
+  .mobile-menu-btn{display:grid}
+  .sidebar-close-btn{display:grid}
+  .top-divider{display:none}
+  .brand{gap:8px}
+  .brand .logo{width:32px;height:32px;font-size:17px}
+  .brand h1{font-size:15px}
+
+  .main-content{flex-direction:row}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;max-height:none;border-right:1px solid var(--line);border-bottom:none;padding:14px 13px;transform:translateX(-100%);transition:transform .25s ease;z-index:200;box-shadow:6px 0 24px rgba(0,0,0,.18);overflow-y:auto}
+  .sidebar.mobile-open{transform:none}
+  .category-list{display:block;flex-wrap:nowrap;gap:0}
+  .category-item{margin-bottom:4px}
+  .category-link{padding:10px 13px;border-radius:22px;font-size:12.5px}
+  .category-link i{width:16px;flex:0 0 16px;font-size:13px}
+  .category-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .category-count{display:inline-block;margin-left:auto;background:var(--surface-3);padding:1px 7px;border-radius:20px;font-size:10.5px;color:var(--txt-2);border:1px solid var(--line-2);flex:0 0 auto}
+  .nav-movers{display:flex !important}
+  .date-display{margin-bottom:12px;margin-top:34px}
+
+  .topbar{height:auto;flex-wrap:wrap;padding:10px 14px;row-gap:8px;gap:10px}
+  .brand{order:1}
+  .header-tools{order:2;margin-left:auto;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:calc(100vw - 160px);padding-bottom:2px}
+  .header-tools::-webkit-scrollbar{display:none}
+  .htool{width:32px;height:32px;font-size:13px;flex:0 0 auto}
+  .quick-links{order:3;flex:1 1 100%;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;padding:3px 0;gap:7px}
+  .quick-links::-webkit-scrollbar{display:none}
+  .quick-item{flex:0 0 auto;width:34px;height:34px;font-size:12.5px}
+  .quick-add-hint{display:none}
+  .baidu-search{order:4;flex:1 1 100%;max-width:none;margin:0}
+  .baidu-search input{height:36px;font-size:13px;padding-right:78px}
+  .baidu-search button{height:28px;padding:0 13px;font-size:12px}
+  .clock-inline{order:5;margin-left:auto;font-size:11.5px}
+
+  .websites-container{padding:12px 14px 70px}
+  .category-section{margin-bottom:20px}
+  .category-header{font-size:15px;margin-bottom:8px}
+  .category-header i{width:30px;height:30px;flex:0 0 30px;font-size:15px}
+  .websites-grid{grid-template-columns:1fr;gap:9px}
+  body[data-density="compact"] .websites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .website-card{min-height:68px;padding:10px 12px}
+  .website-icon{width:42px;height:42px;flex:0 0 42px;font-size:16px}
+  .website-name{font-size:13.5px}
+  .website-url{font-size:10.5px}
+  .visit-btn{padding:5px 11px;font-size:11px}
+  .visit-count{font-size:10px;padding:2px 7px;min-width:56px}
+  .website-card.editing{padding:8px 10px;gap:8px;min-height:64px}
+  .website-card.editing .website-icon{width:32px;height:32px;flex:0 0 32px;font-size:13px}
+  .card-move-btns{display:flex}
+  .e-del{width:26px;height:26px;flex:0 0 26px}
+
+  .add-card{min-height:64px}
+
+  .dock{padding:0 12px;height:56px;gap:8px}
+  .dock-label{font-size:11px;padding-right:10px}
+  .dock-item{width:34px;height:34px;font-size:13px}
+  .dock-extra{display:none}
+
+  .health-panel{width:100vw;height:100vh;max-height:100vh;top:0;left:0;border-radius:0;transform:none}
+  .health-panel.open{transform:none}
+  .health-head{padding:14px 16px}
+  .health-body{padding:12px 16px 16px}
+  .health-tip{padding:10px 16px 14px}
+
+  .dropdown{position:fixed;top:64px;right:14px;left:auto;min-width:180px}
+  .theme-pop{right:14px;top:60px;width:170px}
+
+  .back-top{right:14px;bottom:70px;width:38px;height:38px}
+}
+
 @media (max-width:560px){
-  .quick-links{order:5;flex:1 1 100%;justify-content:center;flex-wrap:wrap}
   .clock-inline{order:6;flex:1 1 100%;justify-content:center}
   .website-card{flex-wrap:wrap}
   .website-actions{margin-left:54px;width:100%;margin-top:4px;justify-content:flex-start}
@@ -315,7 +401,11 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 
 <div class="container">
   <div class="topbar">
-    <div class="brand"><div class="logo">🍊</div><h1>橘子导航</h1></div>
+    <div class="brand">
+      <button class="mobile-menu-btn" id="btnMobileMenu" title="菜单"><i class="fas fa-bars"></i></button>
+      <div class="logo">🍊</div>
+      <h1>橘子导航</h1>
+    </div>
     <div class="top-divider"></div>
     <div class="quick-links" id="quickLinks"></div>
     <form class="baidu-search" action="https://www.baidu.com/s" method="get" target="_blank">
@@ -348,12 +438,14 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
   </div>
 
   <div class="main-content">
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+      <button class="sidebar-close-btn" id="btnSidebarClose" title="关闭"><i class="fas fa-times"></i></button>
       <div class="date-display"><i class="fas fa-calendar-alt"></i><span id="current-date">—</span></div>
       <ul class="category-list" id="category-list">
         <li class="category-item"><a class="category-link active" data-category="all"><i class="fas fa-globe"></i><span class="category-name">全部网站</span><span class="category-count" id="count-all">0</span></a></li>
       </ul>
     </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="websites-container" id="websites-container"><div id="sections"></div></div>
   </div>
 
@@ -573,7 +665,6 @@ function iconHTML(s){
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
 }
-/* 迁移旧数据：删除“国家政务服务平台”，补充招采导航 */
 function migrateState(d){
   if(!d || !Array.isArray(d.folders)) return d;
   const gov = d.folders.find(f => f.key === 'gov' || f.name === '政务采购');
@@ -781,6 +872,30 @@ function bindWorkClick(){
 }
 
 /* ==================== 侧边栏 ==================== */
+const sidebarEl = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const mobileMenuBtn = document.getElementById('btnMobileMenu');
+const sidebarCloseBtn = document.getElementById('btnSidebarClose');
+
+function openMobileSidebar(){
+  if(!sidebarEl) return;
+  sidebarEl.classList.add('mobile-open');
+  if(sidebarOverlay) sidebarOverlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileSidebar(){
+  if(!sidebarEl) return;
+  sidebarEl.classList.remove('mobile-open');
+  if(sidebarOverlay) sidebarOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+if(mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => {
+  if(sidebarEl && sidebarEl.classList.contains('mobile-open')) closeMobileSidebar();
+  else openMobileSidebar();
+});
+if(sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileSidebar);
+if(sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeMobileSidebar);
+
 function setActiveNav(id){
   if(!id) return;
   currentFilter = id;
@@ -856,6 +971,7 @@ function renderSidebar(){
           setActiveNav(cat);
         }
       }
+      closeMobileSidebar();
     });
   });
 
@@ -889,7 +1005,7 @@ function cardHTML(s){
   return `<div class="website-card" data-url="${esc(s.u)}">${iconHTML(s)}<div class="website-info"><div class="website-name" title="${esc(s.n)}">${esc(s.n)}</div><div class="website-url">${esc(domain(s.u))}</div></div><div class="website-actions"><button class="visit-btn" data-url="${esc(s.u)}"><i class="fas fa-external-link-alt"></i> 访问</button><span class="visit-count${hasVisit ? ' has-visit' : ''}">今日 ${count} 次</span></div></div>`;
 }
 function editCardHTML(f, s, idx){
-  return `<div class="website-card editing" draggable="true" data-fid="${f.id}" data-i="${idx}" data-url="${esc(s.u)}">${iconHTML(s)}<div class="edit-fields"><input class="e-n" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.n)}" placeholder="网站名称" spellcheck="false"><input class="e-u" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.u)}" placeholder="https://…" spellcheck="false"></div><button class="e-del" data-fid="${f.id}" data-i="${idx}" title="删除">×</button></div>`;
+  return `<div class="website-card editing" draggable="true" data-fid="${f.id}" data-i="${idx}" data-url="${esc(s.u)}">${iconHTML(s)}<div class="edit-fields"><input class="e-n" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.n)}" placeholder="网站名称" spellcheck="false"><input class="e-u" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.u)}" placeholder="https://…" spellcheck="false"></div><div class="card-move-btns"><button class="card-move-btn" data-move="up" data-fid="${f.id}" data-i="${idx}" ${idx === 0 ? 'disabled' : ''} title="上移">▲</button><button class="card-move-btn" data-move="down" data-fid="${f.id}" data-i="${idx}" ${idx === f.sites.length - 1 ? 'disabled' : ''} title="下移">▼</button></div><button class="e-del" data-fid="${f.id}" data-i="${idx}" title="删除">×</button></div>`;
 }
 
 /* ==================== 打开网站 ==================== */
@@ -904,6 +1020,24 @@ function openSite(url, cardEl){
 
 /* ==================== 内容区事件 ==================== */
 document.getElementById('sections').addEventListener('click', e => {
+  const moveBtn = e.target.closest('.card-move-btn');
+  if(moveBtn && editMode){
+    e.preventDefault(); e.stopPropagation();
+    const fid = moveBtn.dataset.fid;
+    const idx = +moveBtn.dataset.i;
+    const dir = moveBtn.dataset.move === 'up' ? -1 : 1;
+    const f = state.folders.find(x => x.id === fid);
+    if(!f) return;
+    const to = idx + dir;
+    if(to < 0 || to >= f.sites.length) return;
+    [f.sites[idx], f.sites[to]] = [f.sites[to], f.sites[idx]];
+    save();
+    renderSidebar();
+    renderSections();
+    renderDock();
+    return;
+  }
+
   const btn = e.target.closest('.visit-btn');
   if(btn && !editMode){ e.preventDefault(); e.stopPropagation(); openSite(btn.dataset.url, btn.closest('.website-card')); return; }
   if(editMode){
@@ -941,6 +1075,7 @@ const sectionsEl = document.getElementById('sections');
 const quickLinksEl = document.getElementById('quickLinks');
 sectionsEl.addEventListener('dragstart', e => {
   if(!editMode) return;
+  if(window.matchMedia('(max-width: 768px)').matches) return;
   const card = e.target.closest('.website-card.editing'); if(!card) return;
   dragSrc = { fid:card.dataset.fid, idx:+card.dataset.i };
   card.classList.add('dragging');
@@ -1068,18 +1203,16 @@ btnHealth.addEventListener('click', async () => {
     while(i < sites.length){
       const s = sites[i++];
       try{
-        // no-cors 模式下，跨域请求只会返回 opaque 响应，但如果是 DNS 失败或连接拒绝，会抛出错误
         await fetch(s.u, { mode:'no-cors', method:'HEAD', signal: AbortSignal.timeout(6000) });
         results[s.u] = 'ok';
       }catch(err){
-        if(err.name === 'TimeoutError' || err.name === 'AbortError') results[s.u] = 'unknown'; // 超时算未知
-        else results[s.u] = 'fail'; // 其他错误（如网络不通）算疑似失效
+        if(err.name === 'TimeoutError' || err.name === 'AbortError') results[s.u] = 'unknown';
+        else results[s.u] = 'fail';
       }
     }
   }
   await Promise.all(Array(CONCURRENCY).fill(0).map(worker));
 
-  // 标记卡片状态
   document.querySelectorAll('.website-card.editing').forEach(card => {
     const r = results[card.dataset.url];
     card.classList.remove('health-ok','health-fail','health-unknown');
@@ -1088,12 +1221,10 @@ btnHealth.addEventListener('click', async () => {
     else if(r === 'unknown') card.classList.add('health-unknown');
   });
 
-  // 整理数据
   const fails = sites.filter(s => results[s.u] === 'fail');
   const unknowns = sites.filter(s => results[s.u] === 'unknown');
   const oks = sites.filter(s => results[s.u] === 'ok');
 
-  // 渲染面板头部汇总
   healthSummary.innerHTML = `
     共检测 <b>${sites.length}</b> 个网站：
     <span style="color:#2e9e64"><b>${oks.length}</b> 个可达</span>，
@@ -1101,7 +1232,6 @@ btnHealth.addEventListener('click', async () => {
     <span class="unknown-count"><b>${unknowns.length}</b> 个超时/未知</span>
   `;
 
-  // 渲染列表
   let bodyHtml = '';
 
   if(fails.length){
@@ -1145,14 +1275,12 @@ btnHealth.addEventListener('click', async () => {
 
   healthBody.innerHTML = bodyHtml;
 
-  // 绑定列表里的删除按钮
   healthBody.querySelectorAll('.h-del').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const url = btn.dataset.url;
       if(!confirm('确定要从导航中彻底删除这个网站吗？')) return;
 
-      // 从 state 中删除
       let found = false;
       for(const f of state.folders){
         const idx = f.sites.findIndex(s => s.u === url);
@@ -1167,13 +1295,10 @@ btnHealth.addEventListener('click', async () => {
         renderSidebar();
         renderSections();
         renderDock();
-        // 从面板中移除该项
         const item = btn.closest('.health-item');
         if(item) item.remove();
-        // 检查分组是否为空
         const group = btn.closest('.health-group');
         if(group && group.querySelectorAll('.health-item').length === 0) group.remove();
-        // 如果全空了，显示成功状态
         if(healthBody.querySelectorAll('.health-item').length === 0){
           healthBody.innerHTML = `<div class="health-empty">
             <i class="fas fa-check-circle" style="font-size:32px;color:#2e9e64;margin-bottom:10px;display:block"></i>
@@ -1184,7 +1309,6 @@ btnHealth.addEventListener('click', async () => {
     });
   });
 
-  // 显示面板
   healthPanel.classList.add('open');
 
   btnHealth.disabled = false;
@@ -1304,6 +1428,7 @@ document.addEventListener('keydown', e => {
     if(document.activeElement === document.getElementById('baiduInput')) document.getElementById('baiduInput').blur();
     themePop.classList.remove('open'); exportDrop.classList.remove('open');
     healthPanel.classList.remove('open');
+    closeMobileSidebar();
   }
 });
 
