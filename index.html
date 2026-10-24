@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Microsoft YaHei','PingFang SC',system-ui,sans-serif}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{background:var(--page-bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;color:var(--txt);transition:background .3s ease,color .3s ease}
+body{background:var(--page-bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;color:var(--txt);transition:background .3s ease,color .3s ease;overflow-x:hidden}
 :root{--brand:#0A57C7;--brand-dark:#0846A8;--page-bg:#f0f4f8;--surface:#fff;--surface-2:#f8faff;--surface-3:#f0f4fa;--line:#e2e8f0;--line-2:#d0dcec;--txt:#1e2f40;--txt-2:#5f6f82;--txt-3:#a0b0c0;--shadow:0 8px 20px rgba(0,0,0,.05);--shadow-h:0 4px 14px rgba(0,0,0,.07);--ico-bg:#E8F1FF;--ico-color:#0A57C7;--ico-border:#d3e4fb;--dock-sh:0 -4px 20px rgba(0,0,0,.04)}
 body[data-theme="cloud"]{--page-bg:#f0f4f8;--surface:#fff;--surface-2:#f8faff;--surface-3:#f0f4fa}
 body[data-theme="white"]{--page-bg:#f7f8fa;--surface:#fff;--surface-2:#fbfcfe;--surface-3:#f2f4f8}
@@ -18,17 +18,16 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 
 .container{max-width:1800px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:95vh;background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
 
-.topbar{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:0 24px;height:64px;background:var(--brand);border-bottom:1px solid rgba(255,255,255,.12)}
-.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
-.logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:linear-gradient(145deg,#FFB84D,#FF8A3D);box-shadow:0 4px 10px rgba(255,140,60,.24),inset 0 1px 0 rgba(255,255,255,.55)}
-.brand h1{font-size:16.5px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap}
+.topbar{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:0 24px;height:64px;background:var(--brand);border-bottom:1px solid rgba(255,255,255,.12);overflow-x:hidden}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;min-width:0}
+.logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:linear-gradient(145deg,#FFB84D,#FF8A3D);box-shadow:0 4px 10px rgba(255,140,60,.24),inset 0 1px 0 rgba(255,255,255,.55);flex:0 0 auto}
+.brand h1{font-size:16.5px;font-weight:700;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top-divider{width:1px;height:26px;background:rgba(255,255,255,.25);flex:0 0 auto}
 
 .quick-links{display:flex;align-items:center;gap:6px;flex:0 0 auto;position:relative;padding:3px;border-radius:10px;transition:background .15s ease,box-shadow .15s ease}
 .quick-links.drop-target{background:rgba(255,255,255,.14);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
 .quick-item{width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);color:#fff;font-size:12.5px;font-weight:700;text-decoration:none;position:relative;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);line-height:1}
 .quick-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.3);box-shadow:0 4px 10px rgba(0,0,0,.18)}
-/* 重点快捷入口：红橙渐变（静态，无动画） */
 .quick-item.hot{background:linear-gradient(145deg,#FF8A4D,#E2392B);border-color:rgba(255,255,255,.55);color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.28),0 4px 12px rgba(226,58,46,.42),inset 0 1px 0 rgba(255,255,255,.45)}
 .quick-item.hot:hover{background:linear-gradient(145deg,#FF9A5F,#EF4636);transform:translateY(-2px) scale(1.06);box-shadow:0 0 0 3px rgba(255,255,255,.35),0 4px 16px rgba(226,58,46,.6),inset 0 1px 0 rgba(255,255,255,.45)}
 .quick-item .quick-del{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#e05252;color:#fff;border:none;font-size:11px;line-height:1;font-weight:700;display:grid;place-items:center;cursor:pointer;font-family:inherit;box-shadow:0 2px 4px rgba(0,0,0,.2);z-index:2}
@@ -38,7 +37,6 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .baidu-search .search-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8a9bb0;font-size:13px;pointer-events:none}
 .baidu-search input{width:100%;height:37px;border-radius:19px;border:1px solid transparent;background:rgba(255,255,255,.94);color:#1e2f40;font-size:13.5px;padding:0 80px 0 39px;outline:none;font-family:inherit;transition:background .16s ease,box-shadow .16s ease}
 .baidu-search input:focus{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.28)}
-/* 立体感搜索按钮 */
 .baidu-search button{position:absolute;right:3px;top:50%;transform:translateY(-50%);height:29px;padding:0 15px;border-radius:15px;border:none;background:linear-gradient(180deg,#2b7ae8 0%,#0a57c7 55%,#0846a8 100%);color:#fff;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;letter-spacing:.3px;box-shadow:0 2px 0 #063a8a,0 4px 8px rgba(10,87,199,.35),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 4px rgba(0,0,0,.18);transition:transform .08s ease,box-shadow .08s ease,background .15s ease}
 .baidu-search button:hover{background:linear-gradient(180deg,#3a86ee 0%,#0f5fd6 55%,#0a4fb8 100%);box-shadow:0 2px 0 #063a8a,0 5px 12px rgba(10,87,199,.42),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 4px rgba(0,0,0,.18)}
 .baidu-search button:active{transform:translateY(calc(-50% + 2px));box-shadow:0 1px 0 #063a8a,0 2px 4px rgba(10,87,199,.3),inset 0 2px 4px rgba(0,0,0,.25)}
@@ -100,7 +98,6 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .websites-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:40px}
 .websites-grid.drop-end{outline:2px dashed var(--brand);outline-offset:4px;border-radius:10px}
 
-/* 卡片：健康状态标记 */
 .website-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:11px 14px;display:flex;align-items:center;gap:12px;min-height:72px;transition:box-shadow .18s ease,border-color .18s ease,opacity .18s ease,min-height .2s ease,padding .2s ease;cursor:default;position:relative;min-width:0}
 .website-card:hover{border-color:var(--line-2);box-shadow:var(--shadow-h)}
 .website-card.health-ok{border-color:#2e9e64 !important;border-width:2px}
@@ -135,7 +132,6 @@ body[data-mode="dark"] .visit-count.has-visit{background:rgba(46,158,100,.16);co
 .e-del{width:26px;height:26px;flex:0 0 26px;border-radius:7px;display:grid;place-items:center;cursor:pointer;background:rgba(190,110,110,.1);border:1px solid rgba(190,110,110,.2);color:#c07a7a;font-family:inherit;font-size:14px;transition:.14s}
 .e-del:hover{background:#c96b6b;color:#fff;border-color:#c96b6b}
 
-/* 移动排序按钮（默认隐藏，手机端显示） */
 .card-move-btns{display:none;flex-direction:column;gap:2px;flex:0 0 auto}
 .card-move-btn{width:22px;height:18px;border-radius:4px;display:grid;place-items:center;background:var(--surface-3);border:1px solid var(--line);color:var(--txt-3);cursor:pointer;font-family:inherit;font-size:9px;line-height:1;padding:0;transition:.14s}
 .card-move-btn:hover{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -157,7 +153,6 @@ body[data-density="compact"] .websites-grid{grid-template-columns:repeat(4,minma
 body[data-density="compact"] .category-section{margin-bottom:18px}
 body[data-density="compact"] .add-card{min-height:56px;padding:8px 12px;border-radius:12px}
 
-/* Dock */
 .dock{flex:0 0 auto;height:64px;display:flex;align-items:center;gap:14px;padding:0 24px;background:var(--surface);border-top:1px solid var(--line);box-shadow:var(--dock-sh);position:relative;z-index:10}
 .dock-label{flex:0 0 auto;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--txt-2);white-space:nowrap;padding-right:14px;border-right:1px solid var(--line)}
 .dock-label i{font-size:11px;opacity:.7}
@@ -197,7 +192,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 .back-top.show{opacity:1;pointer-events:auto;transform:none}
 .back-top:hover{background:var(--brand-dark)}
 
-/* 健康检查结果面板 */
 .health-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-46%);z-index:100;width:min(560px,90vw);max-height:80vh;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line-2);border-radius:20px;box-shadow:0 24px 60px -16px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s cubic-bezier(.22,1,.36,1);overflow:hidden}
 .health-panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 .health-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
@@ -237,7 +231,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:8px}
 
-/* ===== 移动端基础隐藏元素 ===== */
 .mobile-menu-btn{display:none;width:34px;height:34px;border-radius:9px;place-items:center;cursor:pointer;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:15px;font-family:inherit;flex:0 0 auto;transition:background .15s ease,border-color .15s ease}
 .mobile-menu-btn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.36)}
 .sidebar-close-btn{display:none;position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);color:var(--txt-2);cursor:pointer;font-family:inherit;font-size:14px;place-items:center;z-index:2}
@@ -322,12 +315,81 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
   .mobile-menu-btn{display:grid}
   .sidebar-close-btn{display:grid}
   .top-divider{display:none}
-  .brand{gap:8px}
-  .brand .logo{width:32px;height:32px;font-size:17px}
-  .brand h1{font-size:15px}
+
+  /* 手机端隐藏快捷方式、卡片密度、导出、导入 */
+  .quick-links{display:none!important}
+  #btnDensity,#btnExport,#btnImport{display:none!important}
+
+  .topbar{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    padding:8px 12px;
+    gap:6px;
+    row-gap:6px;
+    height:auto;
+    overflow-x:hidden;
+    background:var(--brand);
+  }
+  .brand{
+    order:1;
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .brand .logo{width:30px;height:30px;font-size:16px;flex:0 0 auto}
+  .brand h1{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:0 1 auto}
+  .mobile-menu-btn{width:30px;height:30px;font-size:14px;flex:0 0 auto}
+
+  .header-tools{
+    order:2;
+    flex:0 0 auto;
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:nowrap;
+    overflow:visible;
+    padding:0;
+    max-width:none;
+  }
+  .htool{width:30px;height:30px;font-size:13px;flex:0 0 auto;border-radius:8px}
+  .htool.on{background:#fff;color:var(--brand)}
+
+  .baidu-search{
+    order:3;
+    flex:1 1 100%;
+    max-width:none;
+    margin:0;
+    display:flex;
+    align-items:center;
+  }
+  .baidu-search input{height:36px;font-size:13px;padding-right:78px;border-radius:18px}
+  .baidu-search button{height:28px;padding:0 13px;font-size:12px;border-radius:14px}
+
+  .clock-inline{display:none}
+  .stats-inline{display:none}
 
   .main-content{flex-direction:row}
-  .sidebar{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;max-height:none;border-right:1px solid var(--line);border-bottom:none;padding:14px 13px;transform:translateX(-100%);transition:transform .25s ease;z-index:200;box-shadow:6px 0 24px rgba(0,0,0,.18);overflow-y:auto}
+  .sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    width:78%;
+    max-width:300px;
+    max-height:none;
+    border-right:1px solid var(--line);
+    border-bottom:none;
+    padding:14px 13px;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+    z-index:200;
+    box-shadow:6px 0 24px rgba(0,0,0,.18);
+    overflow-y:auto;
+  }
   .sidebar.mobile-open{transform:none}
   .category-list{display:block;flex-wrap:nowrap;gap:0}
   .category-item{margin-bottom:4px}
@@ -337,20 +399,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
   .category-count{display:inline-block;margin-left:auto;background:var(--surface-3);padding:1px 7px;border-radius:20px;font-size:10.5px;color:var(--txt-2);border:1px solid var(--line-2);flex:0 0 auto}
   .nav-movers{display:flex !important}
   .date-display{margin-bottom:12px;margin-top:34px}
-
-  .topbar{height:auto;flex-wrap:wrap;padding:10px 14px;row-gap:8px;gap:10px}
-  .brand{order:1}
-  .header-tools{order:2;margin-left:auto;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:calc(100vw - 160px);padding-bottom:2px}
-  .header-tools::-webkit-scrollbar{display:none}
-  .htool{width:32px;height:32px;font-size:13px;flex:0 0 auto}
-  .quick-links{order:3;flex:1 1 100%;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;padding:3px 0;gap:7px}
-  .quick-links::-webkit-scrollbar{display:none}
-  .quick-item{flex:0 0 auto;width:34px;height:34px;font-size:12.5px}
-  .quick-add-hint{display:none}
-  .baidu-search{order:4;flex:1 1 100%;max-width:none;margin:0}
-  .baidu-search input{height:36px;font-size:13px;padding-right:78px}
-  .baidu-search button{height:28px;padding:0 13px;font-size:12px}
-  .clock-inline{order:5;margin-left:auto;font-size:11.5px}
 
   .websites-container{padding:12px 14px 70px}
   .category-section{margin-bottom:20px}
@@ -383,13 +431,12 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
   .health-tip{padding:10px 16px 14px}
 
   .dropdown{position:fixed;top:64px;right:14px;left:auto;min-width:180px}
-  .theme-pop{right:14px;top:60px;width:170px}
+  .theme-pop{right:14px;top:58px;width:170px}
 
   .back-top{right:14px;bottom:70px;width:38px;height:38px}
 }
 
 @media (max-width:560px){
-  .clock-inline{order:6;flex:1 1 100%;justify-content:center}
   .website-card{flex-wrap:wrap}
   .website-actions{margin-left:54px;width:100%;margin-top:4px;justify-content:flex-start}
   .dock-item{width:32px;height:32px;font-size:12px}
@@ -476,7 +523,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 
 <button class="back-top" id="backTop" title="回到顶部"><i class="fas fa-arrow-up"></i></button>
 
-<!-- 健康检查结果面板 -->
 <div class="health-panel" id="healthPanel">
   <div class="health-head">
     <div class="health-title">链接健康检查结果</div>
@@ -497,7 +543,6 @@ body[data-mode="dark"] .work-block.before i,body[data-mode="dark"] .work-block.b
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 
 <script>
-/* ==================== 常量与数据 ==================== */
 const THEMES = {cloud:{name:'云雾灰',swatch:'linear-gradient(145deg,#f0f4f8,#d9e2ec)'},white:{name:'珍珠白',swatch:'linear-gradient(145deg,#ffffff,#eef0f4)'},blue:{name:'浅海蓝',swatch:'linear-gradient(145deg,#eaf1fa,#d4e4f7)'}};
 
 const ZHAOBIAO_URL = 'https://erciwu.github.io/ku/zhaobiao.html';
@@ -633,7 +678,6 @@ const DEFAULT_QUICK = [
   { n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL, hot:true, short:'招' }
 ];
 
-/* ==================== 存储键 ==================== */
 const KEY = 'juzi-nav-v36';
 const OLD_KEY = 'juzi-nav-v35';
 const MODE_KEY = 'juzi-mode';
@@ -649,7 +693,6 @@ let offWorkHour = 17, offWorkMin = 30;
 
 let state = null, quickLinks = [], editMode = false, currentFilter = 'all', dragSrc = null, navLockUntil = 0;
 
-/* ==================== 工具函数 ==================== */
 function uid(){ return 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function first(str){ const c = (str || '?').trim()[0] || '?'; return /[a-zA-Z]/.test(c) ? c.toUpperCase() : c; }
@@ -661,7 +704,6 @@ function iconHTML(s){
   return `<div class="website-icon">${esc(first(s.n))}</div>`;
 }
 
-/* ==================== 数据加载 ==================== */
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
 }
@@ -700,7 +742,6 @@ function load(){
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 
-/* ==================== 深色/浅色 ==================== */
 const MODE_ORDER = ['auto','light','dark'];
 const MODE_ICONS = { auto:'fas fa-circle-half-stroke', light:'fas fa-sun', dark:'fas fa-moon' };
 const MODE_LABELS = { auto:'主题：跟随系统', light:'主题：浅色', dark:'主题：深色' };
@@ -723,7 +764,6 @@ function initMode(){
   else if(mq.addListener) mq.addListener(h);
 }
 
-/* ==================== 密度 ==================== */
 function applyDensity(d){
   document.body.dataset.density = d;
   const icon = document.querySelector('#btnDensity i');
@@ -732,7 +772,6 @@ function applyDensity(d){
 }
 function initDensity(){ let d = 'comfortable'; try{ d = localStorage.getItem(DENSITY_KEY) || 'comfortable'; }catch(e){} if(d !== 'compact') d = 'comfortable'; applyDensity(d); }
 
-/* ==================== 快捷访问 ==================== */
 function loadQuick(){
   let arr = null;
   try{
@@ -761,7 +800,6 @@ function renderQuickLinks(){
   ).join('') + (editMode ? `<span class="quick-add-hint">拖网站到这里</span>` : '');
 }
 
-/* ==================== 最近访问 ==================== */
 function getRecent(){ try{ const raw = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); return Array.isArray(raw) ? raw : []; }catch(e){ return []; } }
 function setRecent(arr){ try{ localStorage.setItem(RECENT_KEY, JSON.stringify(arr.slice(0,MAX_RECENT))); }catch(e){} }
 function pushRecent(url){
@@ -786,7 +824,6 @@ function renderDock(){
   }).join('');
 }
 
-/* ==================== 今日访问 ==================== */
 function getToday(){ return new Date().toDateString(); }
 function getVisitedMap(){
   try{
@@ -811,11 +848,9 @@ function getTotalTodayCount(){
 }
 function updateVisitedStat(){ document.getElementById('stat-visited').textContent = getTotalTodayCount(); }
 
-/* ==================== 日期 / 时钟 ==================== */
 function updateDate(){ document.getElementById('current-date').textContent = new Date().toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }); }
 function updateClock(){ const n = new Date(); document.getElementById('clock').textContent = `${pad2(n.getHours())}:${pad2(n.getMinutes())}`; }
 
-/* ==================== 年度进度 ==================== */
 function updateYearProgress(){
   const now = new Date(), y = now.getFullYear();
   const start = new Date(y,0,1).getTime(), end = new Date(y+1,0,1).getTime();
@@ -826,7 +861,6 @@ function updateYearProgress(){
   document.getElementById('yearBlock').title = `${y} 年已过 ${passed} 天，还剩 ${total - passed} 天`;
 }
 
-/* ==================== 工作时间 ==================== */
 function loadOffWork(){
   try{ const raw = localStorage.getItem(OFFWORK_KEY); if(raw){ const [h,m] = raw.split(':').map(Number); if(!isNaN(h) && !isNaN(m)){ offWorkHour = h; offWorkMin = m; } } }catch(e){}
   updateWorkTitle();
@@ -871,7 +905,6 @@ function bindWorkClick(){
   });
 }
 
-/* ==================== 侧边栏 ==================== */
 const sidebarEl = document.getElementById('sidebar');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 const mobileMenuBtn = document.getElementById('btnMobileMenu');
@@ -987,7 +1020,6 @@ function renderSidebar(){
   document.getElementById('stat-total').textContent = total;
 }
 
-/* ==================== 内容区 ==================== */
 function renderSections(){
   const container = document.getElementById('sections');
   if(!state.folders.length){ container.innerHTML = '<div class="no-results"><i class="fas fa-folder-open"></i><div>暂无分类</div></div>'; return; }
@@ -1008,7 +1040,6 @@ function editCardHTML(f, s, idx){
   return `<div class="website-card editing" draggable="true" data-fid="${f.id}" data-i="${idx}" data-url="${esc(s.u)}">${iconHTML(s)}<div class="edit-fields"><input class="e-n" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.n)}" placeholder="网站名称" spellcheck="false"><input class="e-u" draggable="false" data-fid="${f.id}" data-i="${idx}" value="${esc(s.u)}" placeholder="https://…" spellcheck="false"></div><div class="card-move-btns"><button class="card-move-btn" data-move="up" data-fid="${f.id}" data-i="${idx}" ${idx === 0 ? 'disabled' : ''} title="上移">▲</button><button class="card-move-btn" data-move="down" data-fid="${f.id}" data-i="${idx}" ${idx === f.sites.length - 1 ? 'disabled' : ''} title="下移">▼</button></div><button class="e-del" data-fid="${f.id}" data-i="${idx}" title="删除">×</button></div>`;
 }
 
-/* ==================== 打开网站 ==================== */
 function openSite(url, cardEl){
   markVisited(url); pushRecent(url);
   window.open(url, '_blank', 'noopener,noreferrer');
@@ -1018,7 +1049,6 @@ function openSite(url, cardEl){
   }
 }
 
-/* ==================== 内容区事件 ==================== */
 document.getElementById('sections').addEventListener('click', e => {
   const moveBtn = e.target.closest('.card-move-btn');
   if(moveBtn && editMode){
@@ -1070,7 +1100,6 @@ document.getElementById('sections').addEventListener('click', e => {
   }
 });
 
-/* ==================== 拖拽排序 ==================== */
 const sectionsEl = document.getElementById('sections');
 const quickLinksEl = document.getElementById('quickLinks');
 sectionsEl.addEventListener('dragstart', e => {
@@ -1139,7 +1168,6 @@ quickLinksEl.addEventListener('click', e => {
   if(editMode){ const item = e.target.closest('.quick-item'); if(item) e.preventDefault(); }
 });
 
-/* ==================== 编辑态输入 ==================== */
 sectionsEl.addEventListener('input', e => {
   if(!editMode) return;
   const t = e.target;
@@ -1160,7 +1188,6 @@ sectionsEl.addEventListener('input', e => {
   }
 });
 
-/* ==================== 工具栏按钮 ==================== */
 const btnEdit = document.getElementById('btnEdit');
 btnEdit.addEventListener('click', () => {
   editMode = !editMode;
@@ -1179,7 +1206,6 @@ document.getElementById('btnMode').addEventListener('click', () => {
   applyMode(MODE_ORDER[(idx + 1) % MODE_ORDER.length]);
 });
 
-/* ==================== 链接健康检查（带详细面板） ==================== */
 const btnHealth = document.getElementById('btnHealth');
 const healthPanel = document.getElementById('healthPanel');
 const healthClose = document.getElementById('healthClose');
@@ -1315,7 +1341,6 @@ btnHealth.addEventListener('click', async () => {
   btnHealth.innerHTML = '<i class="fas fa-heart-pulse"></i>';
 });
 
-/* ==================== 导出 / 导入 ==================== */
 const exportDrop = document.getElementById('exportDrop');
 document.getElementById('btnExport').addEventListener('click', e => { e.stopPropagation(); exportDrop.classList.toggle('open'); });
 exportDrop.addEventListener('click', e => e.stopPropagation());
@@ -1372,7 +1397,6 @@ fileInput.addEventListener('change', e => {
   reader.readAsText(file); e.target.value = '';
 });
 
-/* ==================== 背景主题 ==================== */
 const themePop = document.getElementById('themePop');
 const themeList = document.getElementById('themeList');
 themeList.innerHTML = Object.entries(THEMES).map(([id,t]) => `<button class="theme-item" data-id="${id}"><span class="theme-swatch" style="background:${t.swatch}"></span><span>${t.name}</span><span class="theme-check">✓</span></button>`).join('');
@@ -1389,7 +1413,6 @@ document.getElementById('btnTheme').addEventListener('click', e => { e.stopPropa
 themePop.addEventListener('click', e => e.stopPropagation());
 document.addEventListener('click', () => themePop.classList.remove('open'));
 
-/* ==================== 滚动高亮 ==================== */
 const websitesContainer = document.getElementById('websites-container');
 function updateNavByScroll(){
   if(Date.now() < navLockUntil) return;
@@ -1410,7 +1433,6 @@ websitesContainer.addEventListener('scroll', () => {
 }, { passive:true });
 backTop.addEventListener('click', () => { navLockUntil = Date.now() + 700; websitesContainer.scrollTo({ top:0, behavior:'smooth' }); setActiveNav('all'); });
 
-/* ==================== Dock ==================== */
 document.getElementById('dockItems').addEventListener('click', e => {
   const item = e.target.closest('.dock-item'); if(!item) return;
   e.preventDefault();
@@ -1421,7 +1443,6 @@ document.getElementById('dockItems').addEventListener('click', e => {
 });
 document.getElementById('btnClearRecent').addEventListener('click', clearRecent);
 
-/* ==================== 键盘 ==================== */
 document.addEventListener('keydown', e => {
   if(e.key === '/' && document.activeElement !== document.getElementById('baiduInput')){ e.preventDefault(); document.getElementById('baiduInput').focus(); }
   if(e.key === 'Escape'){
@@ -1432,7 +1453,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ==================== 启动 ==================== */
 (function init(){
   state = load(); quickLinks = loadQuick();
   applyTheme(state.theme); initMode(); initDensity();
