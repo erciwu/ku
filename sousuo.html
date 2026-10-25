@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>橘子搜索</title>
+<style>
+/* ========== 设计变量 ========== */
+:root{
+  --brand:#FF6A00;
+  --brand-hover:#E85F00;
+  --brand-soft:#FFF4EC;
+  --brand-ring:rgba(255,106,0,.14);
+  --bg:#FFFFFF;
+  --bg-rgb:255,255,255;
+  --bg-subtle:#F7F8F9;
+  --text:#17181A;
+  --text-2:#5F6368;
+  --text-3:#8B9097;
+  --border:#E9EAEC;
+  --green:#15803D; --green-bg:#F0FDF4;
+  --amber:#B45309; --amber-bg:#FFFBEB;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.05);
+  --shadow-md:0 6px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 24px 64px rgba(0,0,0,.16);
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --brand:#FF8A33;
+  --brand-hover:#FFA45C;
+  --brand-soft:#2B1D11;
+  --brand-ring:rgba(255,138,51,.18);
+  --bg:#0F1012;
+  --bg-rgb:15,16,18;
+  --bg-subtle:#17181B;
+  --text:#ECEDEE;
+  --text-2:#A3A7AE;
+  --text-3:#71767D;
+  --border:#26282D;
+  --green:#4ADE80; --green-bg:#0F2A1A;
+  --amber:#FBBF24; --amber-bg:#2A2110;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.35);
+  --shadow-md:0 6px 24px rgba(0,0,0,.5);
+  --shadow-lg:0 24px 64px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+/* ========== 基础 ========== */
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  transition:background .25s ease,color .25s ease;
+}
+button,input{font-family:inherit}
+a{color:inherit}
+
+/* ========== 顶栏 ========== */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:rgba(var(--bg-rgb),.86);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);
+  backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:1320px;margin:0 auto;padding:10px 20px;
+  display:flex;align-items:center;gap:16px;
+}
+.topbar-left{display:flex;align-items:center;gap:14px;flex-shrink:0;min-width:0}
+.topbar-right{display:flex;align-items:center;gap:2px;flex-shrink:0;margin-left:auto}
+.topbar .searchbar{flex:1;max-width:560px;margin:0 auto}
+
+/* 品牌 */
+.brand-mini{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+  font-size:16px;font-weight:700;letter-spacing:-.01em;
+  cursor:pointer;user-select:none;
+}
+.brand-mini .mark{width:26px;height:26px;display:block}
+.app[data-view="results"] .brand-mini .txt{display:none}
+
+/* 导航链接 */
+.nav-links{display:flex;align-items:center;gap:2px;min-width:0}
+.nav-links a{
+  font-size:13px;color:var(--text-2);text-decoration:none;
+  padding:6px 11px;border-radius:8px;white-space:nowrap;
+  transition:color .15s,background .15s;font-weight:500;
+}
+.nav-links a:hover{color:var(--brand);background:var(--brand-soft)}
+
+/* 图标按钮 */
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;border:0;background:transparent;
+  color:var(--text-2);cursor:pointer;display:grid;place-items:center;
+  transition:background .15s,color .15s;flex-shrink:0;
+}
+.icon-btn:hover{background:var(--bg-subtle);color:var(--text)}
+.icon-btn svg{width:19px;height:19px}
+[data-theme="light"] .icon-moon{display:none}
+[data-theme="dark"] .icon-sun{display:none}
+
+/* ========== 搜索框 ========== */
+.searchbar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:28px;padding:0 8px 0 18px;
+  box-shadow:var(--shadow-sm);
+  transition:border-color .2s,box-shadow .2s;
+}
+.searchbar:focus-within{
+  border-color:rgba(255,106,0,.5);
+  box-shadow:0 0 0 4px var(--brand-ring),var(--shadow-md);
+}
+.searchbar .sicon{width:18px;height:18px;color:var(--text-3);flex-shrink:0}
+.searchbar input{
+  flex:1;min-width:0;border:0;outline:0;background:transparent;
+  color:var(--text);font-size:16px;height:54px;
+}
+.searchbar input::placeholder{color:var(--text-3)}
+.searchbar.compact{padding:0 6px 0 14px;border-radius:21px}
+.searchbar.compact input{height:40px;font-size:14.5px}
+.searchbar.compact .sicon{width:17px;height:17px}
+
+.btn-primary{
+  height:40px;padding:0 20px;border:0;border-radius:22px;
+  background:var(--brand);color:#fff;font-size:14px;font-weight:600;
+  cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;
+}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-primary:active{transform:scale(.975)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.searchbar.compact .btn-primary{height:32px;padding:0 16px;font-size:13px;border-radius:16px}
+
+/* ========== 首页 ========== */
+.hero{
+  min-height:calc(100dvh - 61px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 20px 8vh;text-align:center;
+}
+.hero-brand{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.hero-brand .mark{width:60px;height:60px}
+.hero-brand h1{
+  font-size:42px;font-weight:800;letter-spacing:-.03em;
+  background:linear-gradient(135deg,var(--brand) 0%,#FF9A3D 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-tagline{
+  font-size:14.5px;color:var(--text-2);margin-bottom:34px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;
+}
+.dot{width:3px;height:3px;border-radius:50%;background:var(--text-3)}
+.hero .searchbar{width:100%;max-width:620px}
+
+.history{margin-top:26px;max-width:620px;width:100%}
+.history-label{font-size:12.5px;color:var(--text-3);margin-bottom:10px}
+.history-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{
+  border:1px solid var(--border);background:transparent;color:var(--text-2);
+  font-size:13px;padding:6px 14px;border-radius:16px;cursor:pointer;
+  transition:all .15s;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.chip:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+
+/* ========== 结果区 ========== */
+.result-area{max-width:720px;margin:0 auto;padding:18px 20px 100px}
+.result-meta-bar{font-size:12.5px;color:var(--text-3);padding:4px 0 14px;min-height:20px}
+.result{
+  padding:18px 0;border-bottom:1px solid var(--border);
+  animation:rise .38s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.result-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.result-site{font-size:12.5px;color:var(--text-2);font-weight:500}
+.badge{
+  display:inline-flex;align-items:center;height:19px;padding:0 7px;
+  border-radius:9px;font-size:11px;font-weight:600;letter-spacing:.01em;
+}
+.b-high{background:var(--green-bg);color:var(--green)}
+.b-mid{background:var(--amber-bg);color:var(--amber)}
+.b-low{background:var(--bg-subtle);color:var(--text-3)}
+.b-auth{background:var(--brand-soft);color:var(--brand)}
+.result h3{font-size:18.5px;font-weight:600;line-height:1.45;letter-spacing:-.01em}
+.result h3 a{text-decoration:none;color:var(--text);transition:color .15s}
+.result h3 a:hover{color:var(--brand)}
+.result-url{font-size:12.5px;color:var(--text-3);margin-top:3px;word-break:break-all}
+.result-snippet{font-size:14.5px;color:var(--text-2);line-height:1.72;margin-top:8px}
+.result-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-ghost{
+  border:1px solid var(--border);background:transparent;color:var(--text-2);
+  font-size:12.5px;padding:5px 13px;border-radius:9px;cursor:pointer;
+  transition:all .15s;display:inline-flex;align-items:center;gap:5px;
+  text-decoration:none;
+}
+.btn-ghost:hover{background:var(--bg-subtle);color:var(--text);border-color:var(--text-3)}
+.btn-ghost:disabled{opacity:.5;cursor:wait}
+.btn-ghost svg{width:13px;height:13px}
+
+.fetch-panel{
+  margin-top:12px;background:var(--bg-subtle);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;animation:rise .3s ease both;
+}
+.fetch-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.fetch-head strong{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fetch-body{
+  font-size:13.5px;line-height:1.78;color:var(--text-2);
+  white-space:pre-wrap;word-break:break-word;max-height:420px;overflow-y:auto;
+}
+.fetch-body::-webkit-scrollbar{width:6px}
+.fetch-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ========== 状态 ========== */
+.skel{padding:20px 0;border-bottom:1px solid var(--border)}
+.skel-line{
+  height:12px;border-radius:6px;margin-bottom:11px;
+  background:linear-gradient(90deg,var(--bg-subtle) 25%,var(--border) 37%,var(--bg-subtle) 63%);
+  background-size:400% 100%;animation:shimmer 1.4s ease infinite;
+}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.w40{width:40%}.w55{width:55%}.w70{width:70%}.w85{width:85%}.w95{width:95%}.sm{height:10px}
+
+.state{text-align:center;padding:72px 24px;color:var(--text-2)}
+.state-icon{
+  width:56px;height:56px;border-radius:50%;background:var(--bg-subtle);
+  display:grid;place-items:center;margin:0 auto 18px;color:var(--text-3);
+}
+.state-icon svg{width:26px;height:26px}
+.state h4{font-size:16px;color:var(--text);font-weight:600;margin-bottom:6px}
+.state p{font-size:13.5px;line-height:1.7;max-width:380px;margin:0 auto}
+.state code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+  background:var(--bg-subtle);padding:2px 6px;border-radius:5px;border:1px solid var(--border);
+}
+
+/* ========== 弹窗 ========== */
+.mask{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.4);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  animation:fade .18s ease both;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--bg);border-radius:18px;width:100%;max-width:440px;
+  padding:26px;box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  animation:pop .22s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.modal h2{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.modal-sub{font-size:13px;color:var(--text-2);line-height:1.65;margin-top:6px}
+.field{display:block;margin-top:18px}
+.field span{display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:7px}
+.field em{font-style:normal;font-weight:400;color:var(--text-3)}
+.field input{
+  width:100%;height:42px;padding:0 13px;font-size:14px;
+  background:var(--bg-subtle);border:1px solid var(--border);border-radius:10px;
+  outline:0;color:var(--text);transition:border-color .15s,box-shadow .15s;
+}
+.field input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-ring);background:var(--bg)}
+.modal-hint{font-size:12.5px;color:var(--text-3);line-height:1.6;margin-top:12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
+.btn-text{
+  height:40px;padding:0 18px;border:0;border-radius:10px;background:transparent;
+  color:var(--text-2);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;
+}
+.btn-text:hover{background:var(--bg-subtle)}
+
+/* ========== 视图切换 ========== */
+.app[data-view="home"] .topbar .searchbar{display:none}
+.app[data-view="home"] .result-area{display:none}
+.app[data-view="results"] .hero{display:none}
+
+/* ========== 响应式 ========== */
+@media (max-width:820px){
+  .brand-mini .txt{display:none}
+  .nav-links a{font-size:12.5px;padding:5px 8px}
+  .topbar-inner{gap:8px;padding:8px 14px}
+  .topbar-left{gap:8px;flex:1;min-width:0}
+  .nav-links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .topbar .searchbar{max-width:320px}
+}
+@media (max-width:640px){
+  .topbar .searchbar .btn-primary{display:none}
+  .topbar .searchbar{max-width:none}
+  .hero-brand .mark{width:48px;height:48px}
+  .hero-brand h1{font-size:34px}
+  .hero{padding-bottom:12vh}
+  .result-area{padding:12px 16px 80px}
+  .result h3{font-size:17px}
+  .field input{font-size:16px}
+}
+@media (max-width:480px){
+  .nav-links a{font-size:12px;padding:4px 7px}
+  .topbar .searchbar{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app" data-view="home">
+
+  <!-- ========== 顶栏 ========== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <div class="topbar-left">
+        <div class="brand-mini" id="brandHome" title="返回首页">
+          <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFA24D"/><stop offset="100%" stop-color="#FF6A00"/>
+            </linearGradient></defs>
+            <circle cx="32" cy="37" r="22" fill="url(#g1)"/>
+            <ellipse cx="23" cy="28" rx="7.5" ry="4.6" fill="#fff" opacity=".38" transform="rotate(-28 23 28)"/>
+            <path d="M32 15c.6-5 3.6-8 8.6-9-.8 5.2-3.8 8.3-8.6 9z" fill="#3FA34D"/>
+            <path d="M31.6 15.6c-2-1.6-4-2.2-6-1.8 1.6 2 3.6 3 6 1.8z" fill="#3FA34D" opacity=".75"/>
+          </svg>
+          <span class="txt">橘子搜索</span>
+        </div>
+
+        <nav class="nav-links" aria-label="站点导航">
+          <a href="https://erciwu.github.io/ku/" target="_blank" rel="noopener noreferrer">橘子导航</a>
+          <a href="https://erciwu.github.io/ku/zhaobiao.html" target="_blank" rel="noopener noreferrer">大连招采</a>
+          <a href="https://erciwu.github.io/ku/md2word.html" target="_blank" rel="noopener noreferrer">Markdown2Word</a>
+        </nav>
+      </div>
+
+      <form class="searchbar compact" id="formTop" role="search">
+        <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+        </svg>
+        <input id="qTop" type="text" placeholder="搜索你想知道的…" autocomplete="off" aria-label="搜索" />
+        <button class="btn-primary" type="submit">搜索</button>
+      </form>
+
+      <div class="topbar-right">
+        <button class="icon-btn" id="themeBtn" title="切换主题" aria-label="切换主题">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="settingsBtn" title="设置" aria-label="设置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== 首页 ========== -->
+    <section class="hero">
+      <div class="hero-brand">
+        <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+          <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFA24D"/><stop offset="100%" stop-color="#FF6A00"/>
+          </linearGradient></defs>
+          <circle cx="32" cy="37" r="22" fill="url(#g2)"/>
+          <ellipse cx="23" cy="28" rx="7.5" ry="4.6" fill="#fff" opacity=".38" transform="rotate(-28 23 28)"/>
+          <path d="M32 15c.6-5 3.6-8 8.6-9-.8 5.2-3.8 8.3-8.6 9z" fill="#3FA34D"/>
+          <path d="M31.6 15.6c-2-1.6-4-2.2-6-1.8 1.6 2 3.6 3 6 1.8z" fill="#3FA34D" opacity=".75"/>
+        </svg>
+        <h1>橘子搜索</h1>
+      </div>
+
+      <p class="hero-tagline">
+        <span>无广告</span><i class="dot"></i>
+        <span>无竞价排名</span><i class="dot"></i>
+        <span>由 DeepSeek 驱动</span>
+      </p>
+
+      <form class="searchbar" id="formHero" role="search">
+        <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+        </svg>
+        <input id="qHero" type="text" placeholder="搜索你想知道的…" autocomplete="off" aria-label="搜索" />
+        <button class="btn-primary" type="submit">搜索</button>
+      </form>
+
+      <div class="history" id="history" hidden>
+        <div class="history-label">最近搜索</div>
+        <div class="history-chips" id="historyChips"></div>
+      </div>
+    </section>
+
+    <!-- ========== 结果区 ========== -->
+    <section class="result-area" aria-live="polite">
+      <div class="result-meta-bar" id="metaBar"></div>
+      <div id="resultList"></div>
+    </section>
+  </main>
+</div>
+
+<!-- ========== 设置弹窗 ========== -->
+<div class="mask" id="settingsMask" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <h2 id="settingsTitle">设置</h2>
+    <p class="modal-sub">API Key 只保存在你本机的浏览器存储里，不会上传到任何第三方服务器。</p>
+
+    <label class="field">
+      <span>DeepSeek API Key</span>
+      <input id="inputKey" type="password" placeholder="sk-…" autocomplete="off" spellcheck="false" />
+    </label>
+
+    <label class="field">
+      <span>API 地址 <em>（可选）</em></span>
+      <input id="inputBase" type="text" placeholder="https://api.deepseek.com" autocomplete="off" spellcheck="false" />
+    </label>
+
+    <p class="modal-hint">若搜索时报网络错误，通常是浏览器的跨域限制。可填入你自己的转发地址（例如 Cloudflare Worker）。</p>
+
+    <div class="modal-actions">
+      <button class="btn-text" id="btnCancel">取消</button>
+      <button class="btn-primary" id="btnSave">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- 常量 ---------- */
+  var K_CONFIG  = 'orange.config';
+  var K_HISTORY = 'orange.history';
+  var K_THEME   = 'orange.theme';
+  var DEFAULT_BASE = 'https://api.deepseek.com';
+  var MAX_HISTORY  = 8;
+
+  /* ---------- 状态 ---------- */
+  var config = { apiKey: '', apiBase: DEFAULT_BASE };
+  var currentQuery = '';
+  var pendingQuery = null;
+  var controller = null;
+
+  /* ---------- DOM ---------- */
+  var $ = function (s) { return document.querySelector(s); };
+  var app          = $('#app');
+  var formHero     = $('#formHero');
+  var formTop      = $('#formTop');
+  var qHero        = $('#qHero');
+  var qTop         = $('#qTop');
+  var resultList   = $('#resultList');
+  var metaBar      = $('#metaBar');
+  var historyEl    = $('#history');
+  var historyChips = $('#historyChips');
+  var settingsMask = $('#settingsMask');
+  var inputKey     = $('#inputKey');
+  var inputBase    = $('#inputBase');
+
+  /* ---------- 工具 ---------- */
+  function esc(s) {
+    if (s === null || s === undefined) return '';
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function endpoint(path) {
+    var base = (config.apiBase || DEFAULT_BASE).trim().replace(/\/+$/, '');
+    return base + path;
+  }
+
+  function prettyUrl(u) {
+    try {
+      var url = new URL(u);
+      var p = url.pathname === '/' ? '' : url.pathname;
+      if (p.length > 72) p = p.slice(0, 72) + '…';
+      return url.hostname.replace(/^www\./, '') + p;
+    } catch (e) { return String(u || ''); }
+  }
+
+  function hostOf(u) {
+    try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; }
+  }
+
+  function fmtDate(d) {
+    if (!d) return '';
+    var t = new Date(d);
+    if (isNaN(t.getTime())) return '';
+    return t.getFullYear() + '/' + (t.getMonth() + 1) + '/' + t.getDate();
+  }
+
+  /* ---------- 存储 ---------- */
+  function loadConfig() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(K_CONFIG) || '{}');
+      if (raw && typeof raw === 'object') {
+        config.apiKey  = typeof raw.apiKey  === 'string' ? raw.apiKey  : '';
+        config.apiBase = typeof raw.apiBase === 'string' && raw.apiBase ? raw.apiBase : DEFAULT_BASE;
+      }
+    } catch (e) {}
+  }
+
+  function saveConfig() {
+    try { localStorage.setItem(K_CONFIG, JSON.stringify(config)); } catch (e) {}
+  }
+
+  function loadHistory() {
+    try {
+      var arr = JSON.parse(localStorage.getItem(K_HISTORY) || '[]');
+      return Array.isArray(arr) ? arr.filter(function (x) { return typeof x === 'string'; }) : [];
+    } catch (e) { return []; }
+  }
+
+  function pushHistory(q) {
+    var arr = loadHistory().filter(function (x) { return x !== q; });
+    arr.unshift(q);
+    arr = arr.slice(0, MAX_HISTORY);
+    try { localStorage.setItem(K_HISTORY, JSON.stringify(arr)); } catch (e) {}
+    renderHistory();
+  }
+
+  /* ---------- 主题 ---------- */
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem(K_THEME, theme); } catch (e) {}
+  }
+
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(K_THEME); } catch (e) {}
+    if (saved === 'light' || saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    }
+  }
+
+  /* ---------- 视图 ---------- */
+  function showHome() {
+    app.setAttribute('data-view', 'home');
+    qHero.value = currentQuery;
+    qTop.value  = currentQuery;
+    window.scrollTo(0, 0);
+    setTimeout(function () { qHero.focus(); }, 50);
+  }
+
+  function showResultsView() {
+    app.setAttribute('data-view', 'results');
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- 历史 ---------- */
+  function renderHistory() {
+    var list = loadHistory();
+    if (!list.length) { historyEl.hidden = true; return; }
+    historyEl.hidden = false;
+    historyChips.innerHTML = '';
+    list.forEach(function (q) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = q;
+      b.title = q;
+      b.addEventListener('click', function () { doSearch(q); });
+      historyChips.appendChild(b);
+    });
+  }
+
+  /* ---------- 状态渲染 ---------- */
+  function renderSkeleton() {
+    var block =
+      '<div class="skel">' +
+        '<div class="skel-line w55"></div>' +
+        '<div class="skel-line sm w40"></div>' +
+        '<div class="skel-line w95"></div>' +
+        '<div class="skel-line w70"></div>' +
+      '</div>';
+    resultList.innerHTML = block + block + block;
+  }
+
+  function iconSvg(name) {
+    if (name === 'empty') {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/><path d="M8 11h6"/></svg>';
+    }
+    if (name === 'error') {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>';
+    }
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>';
+  }
+
+  function renderEmpty(q) {
+    resultList.innerHTML =
+      '<div class="state">' +
+        '<div class="state-icon">' + iconSvg('empty') + '</div>' +
+        '<h4>没有找到相关结果</h4>' +
+        '<p>换个更具体或更简短的词试试，比如把「' + esc(q) + '」拆成几个关键词。</p>' +
+      '</div>';
+  }
+
+  function renderError(msg, isCors) {
+    var tip = isCors
+      ? '<p>看起来是浏览器的<b>跨域限制（CORS）</b>拦截了请求。请在设置里把 <code>API 地址</code> 换成你自己的转发地址，例如一个 Cloudflare Worker。</p>'
+      : '<p>请检查 API Key 是否正确、账户额度是否充足，或稍后重试。</p>';
+    resultList.innerHTML =
+      '<div class="state">' +
+        '<div class="state-icon">' + iconSvg('error') + '</div>' +
+        '<h4>搜索出错了</h4>' +
+        '<p style="margin-bottom:10px">' + esc(msg) + '</p>' +
+        tip +
+        '<div style="margin-top:20px"><button class="btn-ghost" id="btnRetry">重新搜索</button></div>' +
+      '</div>';
+    var retry = $('#btnRetry');
+    if (retry) retry.addEventListener('click', function () { doSearch(currentQuery); });
+  }
+
+  function renderTimeout() {
+    resultList.innerHTML =
+      '<div class="state">' +
+        '<div class="state-icon">' + iconSvg('error') + '</div>' +
+        '<h4>请求超时</h4>' +
+        '<p>网络好像有点慢，稍后再试一次。</p>' +
+      '</div>';
+  }
+
+  /* ---------- 结果渲染 ---------- */
+  function renderResults(list) {
+    if (!list.length) { renderEmpty(currentQuery); return; }
+
+    var html = list.map(function (r, i) {
+      var url     = String(r.url || '');
+      var title   = String(r.title || url || '未命名结果');
+      var snippet = String(r.snippet || r.summary || '');
+      var site    = r.site_name ? String(r.site_name) : hostOf(url);
+      var date    = fmtDate(r.date);
+
+      var score = Number(r.rerank_score);
+      if (!isFinite(score)) score = 0;
+      var sCls = score >= 2 ? 'b-high' : (score >= 1 ? 'b-mid' : 'b-low');
+
+      var auth = Number(r.authority);
+      var authHtml = '';
+      if (isFinite(auth) && auth >= 0 && auth <= 4) {
+        authHtml = '<span class="badge b-auth">权威度 ' + auth + '/4</span>';
+      }
+
+      var meta = [];
+      if (site) meta.push('<span class="result-site">' + esc(site) + '</span>');
+      if (date) meta.push('<span class="result-site" style="color:var(--text-3)">' + esc(date) + '</span>');
+      meta.push('<span class="badge ' + sCls + '">相关度 ' + score.toFixed(1) + '/3</span>');
+      if (authHtml) meta.push(authHtml);
+
+      return '' +
+        '<article class="result" style="animation-delay:' + Math.min(i, 8) * 28 + 'ms">' +
+          '<div class="result-top">' + meta.join('') + '</div>' +
+          '<h3><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(title) + '</a></h3>' +
+          '<div class="result-url">' + esc(prettyUrl(url)) + '</div>' +
+          (snippet ? '<p class="result-snippet">' + esc(snippet) + '</p>' : '') +
+          '<div class="result-actions">' +
+            '<button class="btn-ghost" data-action="fetch" data-url="' + esc(url) + '" data-idx="' + i + '">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>' +
+              '<span class="btn-label">抓取全文</span>' +
+            '</button>' +
+            '<a class="btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-8 8M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></svg>' +
+              '打开原文' +
+            '</a>' +
+          '</div>' +
+          '<div class="fetch-panel" id="fp-' + i + '" hidden></div>' +
+        '</article>';
+    }).join('');
+
+    resultList.innerHTML = html;
+  }
+
+  /* ---------- API ---------- */
+  function apiSearch(query, signal) {
+    return fetch(endpoint('/v1/tools/search'), {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + config.apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: query, count: 10, need_content: false }),
+      signal: signal
+    }).then(function (res) {
+      if (res.ok) return res.json();
+      return res.text().then(function (t) {
+        var msg = 'HTTP ' + res.status;
+        try {
+          var j = JSON.parse(t);
+          msg = (j.error && j.error.message) || j.message || msg;
+        } catch (e) { if (t) msg += ' · ' + t.slice(0, 160); }
+        throw new Error(msg);
+      });
+    });
+  }
+
+  function apiFetch(url) {
+    return fetch(endpoint('/v1/tools/fetch'), {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + config.apiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: url })
+    }).then(function (res) {
+      if (res.ok) return res.json();
+      return res.text().then(function (t) {
+        var msg = 'HTTP ' + res.status;
+        try {
+          var j = JSON.parse(t);
+          msg = (j.error && j.error.message) || j.message || msg;
+        } catch (e) { if (t) msg += ' · ' + t.slice(0, 160); }
+        throw new Error(msg);
+      });
+    });
+  }
+
+  /* ---------- 搜索主流程 ---------- */
+  function doSearch(raw) {
+    var query = String(raw || '').trim();
+    if (!query) return;
+
+    if (!config.apiKey) {
+      pendingQuery = query;
+      openSettings();
+      return;
+    }
+
+    if (controller) { try { controller.abort(); } catch (e) {} }
+    controller = new AbortController();
+    var signal = controller.signal;
+
+    currentQuery = query;
+    pushHistory(query);
+    showResultsView();
+    qTop.value  = query;
+    qHero.value = query;
+    metaBar.textContent = '正在搜索…';
+    renderSkeleton();
+
+    var t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    var timedOut = false;
+    var timer = setTimeout(function () {
+      timedOut = true;
+      try { controller.abort(); } catch (e) {}
+    }, 25000);
+
+    apiSearch(query, signal).then(function (data) {
+      clearTimeout(timer);
+      var list = Array.isArray(data && data.results) ? data.results : [];
+      var t1 = (window.performance && performance.now) ? performance.now() : Date.now();
+      renderResults(list);
+      if (list.length) {
+        metaBar.textContent = '找到 ' + list.length + ' 条结果 · 耗时 ' + Math.round(t1 - t0) + ' 毫秒';
+      } else {
+        metaBar.textContent = '共 0 条结果';
+      }
+    }).catch(function (err) {
+      clearTimeout(timer);
+      if (err && err.name === 'AbortError') {
+        if (timedOut) { metaBar.textContent = ''; renderTimeout(); }
+        return;
+      }
+      metaBar.textContent = '';
+      var isCors = (err instanceof TypeError) ||
+                   /failed to fetch|networkerror|load failed/i.test(String(err && err.message || ''));
+      renderError(err && err.message ? err.message : '未知错误', isCors);
+    });
+  }
+
+  /* ---------- 抓取全文 ---------- */
+  function handleFetch(btn) {
+    if (!config.apiKey) { openSettings(); return; }
+
+    var url   = btn.getAttribute('data-url');
+    var idx   = btn.getAttribute('data-idx');
+    var panel = document.getElementById('fp-' + idx);
+    if (!panel) return;
+
+    var label = btn.querySelector('.btn-label');
+
+    if (panel.getAttribute('data-loaded') === '1') {
+      var willOpen = panel.hidden;
+      panel.hidden = !willOpen;
+      if (label) label.textContent = willOpen ? '收起全文' : '抓取全文';
+      return;
+    }
+
+    btn.disabled = true;
+    if (label) label.textContent = '抓取中…';
+    panel.hidden = false;
+    panel.innerHTML = '<div class="fetch-body" style="color:var(--text-3)">正在把页面转成 Markdown…</div>';
+
+    apiFetch(url).then(function (data) {
+      var title   = (data && data.title)   || '网页正文';
+      var content = (data && data.content) || '';
+      panel.setAttribute('data-loaded', '1');
+      panel.innerHTML =
+        '<div class="fetch-head">' +
+          '<strong>' + esc(title) + '</strong>' +
+          '<a class="btn-ghost" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer" style="flex-shrink:0">原文</a>' +
+        '</div>' +
+        '<div class="fetch-body">' + esc(content || '（该页面没有可提取的正文）') + '</div>';
+      btn.disabled = false;
+      if (label) label.textContent = '收起全文';
+    }).catch(function (err) {
+      panel.innerHTML =
+        '<div class="fetch-body" style="color:#DC2626">抓取失败：' +
+        esc(err && err.message ? err.message : '未知错误') + '</div>';
+      btn.disabled = false;
+      if (label) label.textContent = '抓取全文';
+    });
+  }
+
+  /* ---------- 设置弹窗 ---------- */
+  function openSettings() {
+    inputKey.value  = config.apiKey;
+    inputBase.value = config.apiBase === DEFAULT_BASE ? '' : config.apiBase;
+    inputBase.placeholder = DEFAULT_BASE;
+    settingsMask.hidden = false;
+    setTimeout(function () { inputKey.focus(); }, 60);
+  }
+
+  function closeSettings() {
+    settingsMask.hidden = true;
+    pendingQuery = null;
+  }
+
+  function commitSettings() {
+    config.apiKey  = inputKey.value.trim();
+    var base = inputBase.value.trim();
+    config.apiBase = base || DEFAULT_BASE;
+    saveConfig();
+    settingsMask.hidden = true;
+
+    var q = pendingQuery;
+    pendingQuery = null;
+    if (q && config.apiKey) doSearch(q);
+  }
+
+  /* ---------- 事件绑定 ---------- */
+  function bind() {
+    formHero.addEventListener('submit', function (e) {
+      e.preventDefault();
+      doSearch(qHero.value);
+    });
+    formTop.addEventListener('submit', function (e) {
+      e.preventDefault();
+      doSearch(qTop.value);
+    });
+
+    $('#brandHome').addEventListener('click', function () { showHome(); });
+
+    $('#themeBtn').addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
+    $('#settingsBtn').addEventListener('click', openSettings);
+    $('#btnCancel').addEventListener('click', closeSettings);
+    $('#btnSave').addEventListener('click', commitSettings);
+
+    settingsMask.addEventListener('click', function (e) {
+      if (e.target === settingsMask) closeSettings();
+    });
+    inputKey.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); commitSettings(); }
+    });
+
+    resultList.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action="fetch"]');
+      if (btn) handleFetch(btn);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !settingsMask.hidden) { closeSettings(); return; }
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        var tag = (e.target && e.target.tagName) || '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+        e.preventDefault();
+        var box = app.getAttribute('data-view') === 'results' ? qTop : qHero;
+        if (box && box.offsetParent !== null) { box.focus(); box.select(); }
+      }
+    });
+
+    window.addEventListener('popstate', function () {
+      if (app.getAttribute('data-view') === 'results') showHome();
+    });
+  }
+
+  /* ---------- 启动 ---------- */
+  function init() {
+    initTheme();
+    loadConfig();
+    renderHistory();
+    bind();
+    qHero.focus();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
