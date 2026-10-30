@@ -18,7 +18,6 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 
 .container{max-width:1800px;width:100%;margin:0 auto;display:flex;flex-direction:column;height:calc(100vh - 32px);background:var(--surface);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
 
-/* 顶栏：加细微垂直渐变，增加层次感 */
 .topbar{flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:0 24px;height:64px;background:linear-gradient(180deg,#0d61dc 0%,#0A57C7 100%);border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:20}
 .brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;min-width:0}
 .logo{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:linear-gradient(145deg,#FFB84D,#FF8A3D);box-shadow:0 4px 10px rgba(255,140,60,.24),inset 0 1px 0 rgba(255,255,255,.55);flex:0 0 auto}
@@ -99,7 +98,6 @@ body[data-mode="dark"]{--page-bg:#0f1117;--surface:#1a1d24;--surface-2:#14171d;-
 .websites-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:40px}
 .websites-grid.drop-end{outline:2px dashed var(--brand);outline-offset:4px;border-radius:10px}
 
-/* 卡片：圆角微收，hover 微上浮 + 柔和阴影 */
 .website-card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px 14px;display:flex;align-items:center;gap:12px;min-height:72px;transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease,opacity .18s ease,min-height .2s ease,padding .2s ease;cursor:default;position:relative;min-width:0}
 .website-card:hover{border-color:var(--line-2);box-shadow:0 6px 18px rgba(0,0,0,.07);transform:translateY(-1px)}
 .website-card.health-ok{border-color:#2e9e64 !important;border-width:2px}
@@ -555,6 +553,27 @@ const ZHAOBIAO_NAME = '大连市招采平台导航';
 const SOUSUO_URL = 'https://erciwu.github.io/ku/sousuo.html';
 const SOUSUO_NAME = '橘子搜索';
 
+/* 需要从政务采购里清除的地方站点 */
+const LOCAL_GOV_URLS = [
+  'https://www.dl.gov.cn',
+  'https://www.lnzwfw.gov.cn',
+  'https://zwfw.dl.gov.cn/',
+  'http://www.ccgp-liaoning.gov.cn/portalindex',
+  'http://www.lnggzy.gov.cn',
+  'https://ccgp-dalian.gov.cn/site/home',
+  'https://ggzyjy.dl.gov.cn/',
+  'https://www.dlygcg.com/',
+  'https://dljd.lecaiyun.com/',
+  'https://ibuy.ccb.com/cms/index.html#/bbc/index'
+];
+
+/* 全国招标采购新增站点 */
+const NATIONAL_GOV_SITES = [
+  { n:'中国招标投标公共服务平台', u:'https://bulletin.cebpubservice.com' },
+  { n:'全国公共资源交易平台', u:'https://www.ggzy.gov.cn' },
+  { n:'全国投资项目在线审批监管平台', u:'https://new.tzxm.gov.cn' }
+];
+
 const DEFAULT_FOLDERS = [
   { key:'ai', name:'AI 搜索', icon:'fas fa-search', sites:[
     {n:'DeepSeek', u:'https://chat.deepseek.com'},
@@ -609,22 +628,14 @@ const DEFAULT_FOLDERS = [
     {n:'中国裁判文书网', u:'https://wenshu.court.gov.cn'},
     {n:'法信', u:'https://www.faxin.cn'},
     {n:'全国12315平台', u:'https://www.12315.cn'},
-    {n:'法天使合同库', u:'https://www.fatianshi.cn'},
-    {n:'大连律师协会', u:'https://www.dllawyers.org/home-page.html'}
+    {n:'法天使合同库', u:'https://www.fatianshi.cn'}
   ]},
   { key:'gov', name:'政务采购', icon:'fas fa-landmark', sites:[
     {n:'中国政府网', u:'https://www.gov.cn'},
-    {n:'大连市人民政府', u:'https://www.dl.gov.cn'},
-    {n:'辽宁省政务服务网', u:'https://www.lnzwfw.gov.cn'},
-    {n:'大连政务服务网', u:'https://zwfw.dl.gov.cn/'},
     {n:'中国政府采购网', u:'http://www.ccgp.gov.cn'},
-    {n:'辽宁政府采购网', u:'http://www.ccgp-liaoning.gov.cn/portalindex'},
-    {n:'辽宁公共资源交易', u:'http://www.lnggzy.gov.cn'},
-    {n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home'},
-    {n:'大连公共资源交易', u:'https://ggzyjy.dl.gov.cn/'},
-    {n:'大连国企阳光采购', u:'https://www.dlygcg.com/'},
-    {n:'大连机电采购', u:'https://dljd.lecaiyun.com/'},
-    {n:'建行龙集采', u:'https://ibuy.ccb.com/cms/index.html#/bbc/index'},
+    {n:'中国招标投标公共服务平台', u:'https://bulletin.cebpubservice.com'},
+    {n:'全国公共资源交易平台', u:'https://www.ggzy.gov.cn'},
+    {n:'全国投资项目在线审批监管平台', u:'https://new.tzxm.gov.cn'},
     {n:'信用中国', u:'https://www.creditchina.gov.cn/'},
     {n:'执行信息公开', u:'https://zxgk.court.gov.cn/'},
     {n:'违法失信查询', u:'https://www.ccgp.gov.cn/search/cr/'},
@@ -682,7 +693,6 @@ const DEFAULT_QUICK = [
   { n:'百度', u:'https://www.baidu.com' },
   { n:'DeepSeek', u:'https://chat.deepseek.com' },
   { n:'快科技', u:'https://www.mydrivers.com/' },
-  { n:'大连政府采购网', u:'https://ccgp-dalian.gov.cn/site/home' },
   { n:'腾讯新闻', u:'https://news.qq.com' },
   { n:'知乎', u:'https://www.zhihu.com/' },
   { n:SOUSUO_NAME, u:SOUSUO_URL },
@@ -690,12 +700,13 @@ const DEFAULT_QUICK = [
   { n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL }
 ];
 
-const KEY = 'juzi-nav-v37';
+const KEY = 'juzi-nav-v38';
+const OLD_KEYS = ['juzi-nav-v37','juzi-nav-v36','juzi-nav-v35'];
 const MODE_KEY = 'juzi-mode';
 const RECENT_KEY = 'juzi-recent';
 const OFFWORK_KEY = 'juzi-offwork';
-const QUICK_KEY = 'juzi-quick-v4';
-const OLD_QUICK_KEY = 'juzi-quick-v3';
+const QUICK_KEY = 'juzi-quick-v5';
+const OLD_QUICK_KEYS = ['juzi-quick-v4','juzi-quick-v3','juzi-quick-v2'];
 const DENSITY_KEY = 'juzi-density';
 const MAX_RECENT = 20, DOCK_SHOW = 12;
 const WORK_START_H = 8, WORK_START_M = 30;
@@ -715,13 +726,45 @@ function iconHTML(s){
   return `<div class="website-icon">${esc(first(s.n))}</div>`;
 }
 
+/* ===== 全国化迁移 ===== */
+function migrateNational(d){
+  if(!d || !Array.isArray(d.folders)) return d;
+  const gov = d.folders.find(f => f.key === 'gov' || f.name === '政务采购');
+  if(gov && Array.isArray(gov.sites)){
+    // 移除地方站点
+    gov.sites = gov.sites.filter(s => LOCAL_GOV_URLS.indexOf(s.u) === -1);
+    // 补充全国站点
+    NATIONAL_GOV_SITES.forEach(ns => {
+      if(!gov.sites.some(s => s.u === ns.u)) gov.sites.push({ n:ns.n, u:ns.u });
+    });
+    // 确保招采平台在最后
+    const hasZb = gov.sites.some(s => s.u === ZHAOBIAO_URL);
+    if(!hasZb) gov.sites.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL });
+    else {
+      const z = gov.sites.find(s => s.u === ZHAOBIAO_URL);
+      gov.sites = gov.sites.filter(s => s.u !== ZHAOBIAO_URL);
+      gov.sites.push(z);
+    }
+  }
+  return d;
+}
+
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
 }
 function load(){
+  let raw = null, fromOld = false;
   try{
-    const raw = localStorage.getItem(KEY);
-    if(raw){
+    raw = localStorage.getItem(KEY);
+    if(!raw){
+      for(const k of OLD_KEYS){
+        const v = localStorage.getItem(k);
+        if(v){ raw = v; fromOld = true; break; }
+      }
+    }
+  }catch(e){}
+  if(raw){
+    try{
       const d = JSON.parse(raw);
       if(d && Array.isArray(d.folders) && d.folders.length){
         d.folders.forEach(f => {
@@ -731,10 +774,12 @@ function load(){
           if(!Array.isArray(f.sites)) f.sites = [];
         });
         if(!d.theme || !THEMES[d.theme]) d.theme = 'cloud';
+        migrateNational(d);
+        try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
         return d;
       }
-    }
-  }catch(e){}
+    }catch(e){}
+  }
   return buildDefault();
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
@@ -769,6 +814,7 @@ function applyDensity(d){
 }
 function initDensity(){ let d = 'comfortable'; try{ d = localStorage.getItem(DENSITY_KEY) || 'comfortable'; }catch(e){} if(d !== 'compact') d = 'comfortable'; applyDensity(d); }
 
+/* ===== 快捷区加载与迁移 ===== */
 function loadQuick(){
   let arr = null;
   try{
@@ -776,29 +822,35 @@ function loadQuick(){
     if(raw){ const o = JSON.parse(raw); if(Array.isArray(o)) arr = o; }
   }catch(e){}
   if(!arr){
-    let old = null;
-    try{
-      const rawOld = localStorage.getItem(OLD_QUICK_KEY);
-      if(rawOld){ const o = JSON.parse(rawOld); if(Array.isArray(o) && o.length) old = o; }
-    }catch(e){}
-    arr = old || DEFAULT_QUICK.map(q => ({ ...q }));
-    arr = arr.map(q => {
-      if(q.u && /bilibili\.com/.test(q.u)) return { n:SOUSUO_NAME, u:SOUSUO_URL };
-      if(q.u === ZHAOBIAO_URL) return { n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL };
-      return q;
-    });
-    if(!arr.some(q => q.u === SOUSUO_URL)) arr.push({ n:SOUSUO_NAME, u:SOUSUO_URL });
-    if(!arr.some(q => q.u === ZHAOBIAO_URL)) arr.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL });
-    try{ localStorage.setItem(QUICK_KEY, JSON.stringify(arr)); }catch(e){}
+    for(const k of OLD_QUICK_KEYS){
+      try{
+        const rawOld = localStorage.getItem(k);
+        if(rawOld){ const o = JSON.parse(rawOld); if(Array.isArray(o) && o.length){ arr = o; break; } }
+      }catch(e){}
+    }
   }
-  return arr;
+  if(!arr) arr = DEFAULT_QUICK.map(q => ({ ...q }));
+
+  // 迁移：去掉地方站点快捷项，替换 B站，确保橘子搜索和招采存在
+  const filtered = [];
+  arr.forEach(q => {
+    if(!q || !q.u) return;
+    if(LOCAL_GOV_URLS.indexOf(q.u) !== -1) return;
+    if(/bilibili\.com/.test(q.u)){ filtered.push({ n:SOUSUO_NAME, u:SOUSUO_URL }); return; }
+    filtered.push({ n:q.n, u:q.u });
+  });
+  if(!filtered.some(q => q.u === SOUSUO_URL)) filtered.push({ n:SOUSUO_NAME, u:SOUSUO_URL });
+  if(!filtered.some(q => q.u === ZHAOBIAO_URL)) filtered.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL });
+
+  try{ localStorage.setItem(QUICK_KEY, JSON.stringify(filtered)); }catch(e){}
+  return filtered;
 }
 function saveQuick(){ try{ localStorage.setItem(QUICK_KEY, JSON.stringify(quickLinks)); }catch(e){} }
 function renderQuickLinks(){
   const el = document.getElementById('quickLinks');
   if(!el) return;
   el.innerHTML = quickLinks.map((q,i) =>
-    `<a class="quick-item" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`
+    `<a class="quick-item${q.hot ? ' hot' : ''}" href="${esc(q.u)}" target="_blank" rel="noopener noreferrer" title="${esc(q.n)}">${esc(first(q.n))}${editMode ? `<button class="quick-del" data-qi="${i}" title="从快捷区移除">×</button>` : ''}</a>`
   ).join('') + (editMode ? `<span class="quick-add-hint">拖网站到这里</span>` : '');
 }
 
@@ -1387,6 +1439,7 @@ fileInput.addEventListener('change', e => {
       if(!d || !Array.isArray(d.folders) || !d.folders.length) throw new Error('文件格式不正确');
       d.folders.forEach(f => { if(!f.id) f.id = uid(); if(!f.key) f.key = f.id; if(!f.icon) f.icon = 'fas fa-folder'; if(!Array.isArray(f.sites)) f.sites = []; f.sites.forEach(s => { if(typeof s.n !== 'string') s.n = '未命名'; if(typeof s.u !== 'string') s.u = ''; }); if(typeof f.name !== 'string' || !f.name) f.name = '未命名'; });
       state = { theme:(d.theme && THEMES[d.theme]) ? d.theme : 'cloud', folders:d.folders };
+      migrateNational(state);
       applyTheme(state.theme); save(); currentFilter = 'all';
       renderSidebar(); renderSections(); renderDock();
       alert('导入成功！');
