@@ -1,0 +1,2562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>茶小楼 · 职场新人的每一杯茶 | 口味测试 · 按预算选 · 办公室泡法</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F3EE;
+    --surface: #FFFFFF;
+    --ink: #171717;
+    --ink-2: #4B4B4B;
+    --ink-3: #8C8C8C;
+    --brand: #24473A;
+    --brand-2: #3A6B57;
+    --brand-soft: #E8EFEA;
+    --accent: #D9774A;
+    --accent-soft: #FCEBE3;
+    --line: #E7E2D9;
+    --line-2: #F0ECE4;
+    --radius: 24px;
+    --radius-sm: 14px;
+    --shadow-sm: 0 2px 10px rgba(23,23,23,.04);
+    --shadow: 0 16px 44px rgba(23,23,23,.08);
+    --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-display: "Playfair Display", "Noto Serif SC", Georgia, serif;
+  }
+
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--bg);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{ width: min(1200px, calc(100% - 48px)); margin: 0 auto; }
+
+  section[id]{ scroll-margin-top: 92px; }
+
+  /* ============ 顶部导航 ============ */
+  .site-header{
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(245,243,238,.82);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border-bottom: 1px solid var(--line-2);
+    transition: box-shadow .3s ease;
+  }
+  .site-header.scrolled{ box-shadow: 0 8px 30px rgba(23,23,23,.06); }
+
+  .nav-inner{
+    display: flex; align-items: center; justify-content: space-between;
+    height: 76px; gap: 20px;
+  }
+
+  .logo{ display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); flex: 0 0 auto; }
+
+  .logo-mark{
+    width: 44px; height: 44px; border-radius: 14px;
+    background: var(--brand);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 20px; font-weight: 900;
+    letter-spacing: 0;
+    box-shadow: 0 6px 16px rgba(36,71,58,.28);
+    transition: transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .logo:hover .logo-mark{ transform: rotate(-6deg) scale(1.05); }
+
+  .logo-text b{ display: block; font-size: 20px; font-weight: 900; letter-spacing: .5px; line-height: 1.2; }
+  .logo-text small{ display: block; font-size: 11px; color: var(--ink-3); letter-spacing: 2.5px; text-transform: uppercase; }
+
+  .nav-links{ display: flex; align-items: center; gap: 26px; }
+  .nav-links a{
+    text-decoration: none; color: var(--ink-2);
+    font-size: 14.5px; font-weight: 500;
+    position: relative; padding: 4px 0;
+    white-space: nowrap;
+    transition: color .25s;
+  }
+  .nav-links a::after{
+    content:""; position: absolute; left: 0; bottom: -2px;
+    width: 100%; height: 2px; border-radius: 2px;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-links a:hover{ color: var(--ink); }
+  .nav-links a:hover::after{ transform: scaleX(1); }
+
+  .nav-cta{
+    flex: 0 0 auto;
+    padding: 11px 22px; border-radius: 999px;
+    background: var(--brand); color: #fff;
+    font-size: 14.5px; font-weight: 700; text-decoration: none;
+    transition: transform .25s, box-shadow .25s, background .25s;
+    box-shadow: 0 6px 16px rgba(36,71,58,.22);
+  }
+  .nav-cta:hover{ background: var(--brand-2); transform: translateY(-1px); box-shadow: 0 10px 22px rgba(36,71,58,.28); }
+
+  /* ============ Hero ============ */
+  .hero{
+    padding: 76px 0 56px;
+    display: grid;
+    grid-template-columns: 1.02fr .98fr;
+    gap: 56px;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero-glow{
+    position: absolute; z-index: -1;
+    width: 620px; height: 620px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,107,87,.16), transparent 68%);
+    top: -180px; right: -140px;
+    filter: blur(20px);
+    animation: floatGlow 14s ease-in-out infinite alternate;
+  }
+  .hero-glow.g2{
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, rgba(217,119,74,.13), transparent 68%);
+    top: 260px; left: -180px; right: auto;
+    animation-delay: -6s;
+  }
+  @keyframes floatGlow{
+    from{ transform: translate(0,0) scale(1); }
+    to{ transform: translate(-30px, 30px) scale(1.08); }
+  }
+
+  .eyebrow{
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; letter-spacing: 3px;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .eyebrow::before{
+    content:""; width: 28px; height: 2px; border-radius: 2px; background: var(--accent);
+  }
+
+  .hero h1{
+    font-size: clamp(40px, 5.2vw, 68px);
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+    margin-bottom: 22px;
+  }
+  .hero h1 .en{
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: .56em;
+    letter-spacing: 0;
+    color: var(--brand-2);
+    margin-top: 8px;
+  }
+  .hero h1 mark{
+    background: linear-gradient(180deg, transparent 62%, rgba(217,119,74,.28) 62%);
+    color: inherit; padding: 0 2px;
+  }
+
+  .hero-lead{
+    font-size: 17.5px; line-height: 1.8;
+    color: var(--ink-2); max-width: 540px;
+    margin-bottom: 28px;
+  }
+
+  .hero-actions{ display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .btn{
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 30px; border-radius: 999px;
+    font-size: 16px; font-weight: 700;
+    text-decoration: none; cursor: pointer; border: 0;
+    font-family: inherit;
+    transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s, background .28s, color .28s;
+  }
+  .btn-sm{ padding: 11px 22px; font-size: 14.5px; }
+  .btn-primary{
+    background: var(--brand); color: #fff;
+    box-shadow: 0 10px 26px rgba(36,71,58,.24);
+  }
+  .btn-primary:hover{ background: var(--brand-2); transform: translateY(-2px); box-shadow: 0 16px 34px rgba(36,71,58,.3); }
+
+  .btn-ghost{
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+  .btn-ghost:hover{ border-color: var(--brand); color: var(--brand); transform: translateY(-2px); }
+
+  .hero-facts{
+    display: flex; flex-wrap: wrap; gap: 8px 20px;
+    margin-top: 26px; font-size: 14px; color: var(--ink-3);
+  }
+  .hero-facts span{ display: inline-flex; align-items: center; gap: 7px; }
+  .hero-facts span::before{
+    content:""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--brand-2); flex: 0 0 auto;
+  }
+
+  /* 首屏选茶器 */
+  .picker-card{
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 30px 30px 26px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .picker-card::before{
+    content:"";
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent));
+  }
+  .picker-head{
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; margin-bottom: 18px;
+  }
+  .picker-head h3{ font-size: 20px; font-weight: 900; letter-spacing: -.4px; }
+  .picker-head span{ font-size: 11.5px; color: var(--ink-3); letter-spacing: .5px; white-space: nowrap; }
+
+  .pick-group{ margin-bottom: 14px; }
+  .pick-group small{
+    display: block; font-size: 11.5px; font-weight: 800;
+    letter-spacing: 1.5px; color: var(--ink-3); margin-bottom: 7px;
+  }
+  .pick-chips{ display: flex; flex-wrap: wrap; gap: 7px; }
+  .pick-chip{
+    font-family: inherit; font-size: 13.5px; font-weight: 700;
+    color: var(--ink-2); padding: 6px 14px; border-radius: 999px;
+    border: 1.5px solid var(--line); background: #fff; cursor: pointer;
+    transition: all .22s;
+  }
+  .pick-chip:hover{ border-color: var(--brand-2); color: var(--brand); }
+  .pick-chip.on{
+    background: var(--brand); border-color: var(--brand); color: #fff;
+    box-shadow: 0 6px 14px rgba(36,71,58,.22);
+  }
+
+  .pick-result{ margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--line); }
+  .pr-label{ font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 7px; }
+  .pr-main{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .pr-main b{ font-size: 22px; font-weight: 900; letter-spacing: -.5px; }
+  .pr-price{ font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+  .pr-meta{ font-size: 13px; color: var(--ink-2); margin-top: 3px; line-height: 1.6; }
+  .pr-note{ font-size: 12.5px; color: var(--ink-3); margin-top: 3px; line-height: 1.55; }
+  .pr-btn{
+    margin-top: 13px; width: 100%; padding: 12px; border-radius: 13px; border: 0;
+    background: var(--brand); color: #fff; font-family: inherit;
+    font-size: 14.5px; font-weight: 800; cursor: pointer;
+    transition: background .25s, transform .25s;
+  }
+  .pr-btn:hover{ background: var(--brand-2); transform: translateY(-1px); }
+
+  /* 三个决策入口 */
+  .deciders{
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; padding: 6px 0 4px;
+  }
+  .decider{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); padding: 24px 24px 22px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 9px;
+    position: relative; overflow: hidden;
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, border-color .35s;
+  }
+  .decider::after{
+    content:""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--brand), var(--accent));
+    transform: scaleY(0); transform-origin: top;
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .decider:hover{ transform: translateY(-4px); box-shadow: var(--shadow); border-color: transparent; }
+  .decider:hover::after{ transform: scaleY(1); }
+  .d-icon{
+    width: 42px; height: 42px; border-radius: 13px;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center;
+    font-size: 18px; font-weight: 900;
+  }
+  .decider h3{ font-size: 19px; font-weight: 900; letter-spacing: -.3px; }
+  .decider p{ font-size: 14px; line-height: 1.7; color: var(--ink-2); }
+  .d-tags{ display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 6px; }
+  .d-tags span{
+    font-size: 11px; font-weight: 700; color: var(--brand);
+    background: var(--brand-soft); padding: 2px 9px; border-radius: 999px;
+  }
+  .d-go{ font-size: 12.5px; font-weight: 800; color: var(--accent); }
+
+  /* 数据条 */
+  .stats{
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 36px 0 18px;
+    border-top: 1px solid var(--line-2);
+  }
+  .stat{ text-align: left; }
+  .stat b{
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(32px, 3.8vw, 46px);
+    font-weight: 700; color: var(--brand);
+    line-height: 1.1; letter-spacing: -1px;
+  }
+  .stat span{ font-size: 13.5px; color: var(--ink-3); letter-spacing: .5px; }
+
+  /* ============ 区块通用 ============ */
+  section.block{ padding: 68px 0; }
+
+  .section-head{
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 30px; margin-bottom: 34px; flex-wrap: wrap;
+  }
+  .section-head .sh-left{ max-width: 660px; }
+  .section-kicker{
+    font-family: var(--font-display); font-style: italic;
+    font-size: 17px; color: var(--accent); margin-bottom: 6px;
+  }
+  .section-head h2{
+    font-size: clamp(29px, 3.6vw, 42px);
+    font-weight: 900; letter-spacing: -1px; line-height: 1.22;
+  }
+  .section-head p{ font-size: 15.5px; color: var(--ink-3); margin-top: 8px; line-height: 1.7; }
+
+  /* ============ 搜索与筛选 ============ */
+  .toolbar{
+    display: flex; flex-direction: column; gap: 18px;
+    margin-bottom: 30px;
+  }
+  .toolbar-top{
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+  }
+  .search-box{ position: relative; max-width: 520px; width: 100%; }
+  .search-box input{
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+    border-radius: 16px;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    font-family: inherit; font-size: 16px; color: var(--ink);
+    outline: none;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .search-box input::placeholder{ color: var(--ink-3); }
+  .search-box input:focus{
+    border-color: var(--brand-2);
+    box-shadow: 0 0 0 5px rgba(58,107,87,.10);
+  }
+  .search-box svg{
+    position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+    width: 20px; height: 20px; stroke: var(--ink-3); fill: none; stroke-width: 2;
+  }
+  .result-count{ font-size: 13px; color: var(--ink-3); }
+  .result-count b{ color: var(--brand); font-weight: 800; }
+
+  .filters{ display: flex; flex-direction: column; gap: 10px; }
+  .filter-row{ display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+  .filter-label{
+    font-size: 11.5px; font-weight: 800; letter-spacing: 1.5px;
+    color: var(--ink-3); min-width: 32px;
+  }
+  .chip{
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    font-family: inherit; font-size: 13.5px; font-weight: 600;
+    color: var(--ink-2); cursor: pointer;
+    transition: all .25s cubic-bezier(.22,1,.36,1);
+  }
+  .chip:hover{ border-color: var(--brand-2); color: var(--brand); transform: translateY(-1px); }
+  .chip.active{
+    background: var(--brand); border-color: var(--brand);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(36,71,58,.22);
+  }
+
+  /* ============ 茶叶网格 ============ */
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .tea-card{
+    background: var(--surface);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    padding: 28px 26px 24px;
+    display: flex; flex-direction: column;
+    transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s, border-color .4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .tea-card:hover{
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+    border-color: transparent;
+  }
+  .tea-card::after{
+    content:"";
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .tea-card:hover::after{ transform: scaleX(1); }
+
+  .tea-card.flash{ animation: cardFlash 1.3s ease 2; }
+  @keyframes cardFlash{
+    0%,100%{ box-shadow: var(--shadow-sm); }
+    50%{ box-shadow: 0 0 0 5px rgba(217,119,74,.26), var(--shadow); }
+  }
+
+  .tea-top{
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; margin-bottom: 18px;
+  }
+  .tea-glyph{
+    width: 52px; height: 52px; border-radius: 16px;
+    display: grid; place-items: center;
+    font-size: 21px; font-weight: 900;
+    color: var(--brand);
+    background: linear-gradient(145deg, var(--brand-soft), #F6FAF7);
+    border: 1px solid #E0EAE3;
+    transition: transform .4s cubic-bezier(.22,1,.36,1);
+    flex: 0 0 auto;
+  }
+  .tea-card:hover .tea-glyph{ transform: rotate(-5deg) scale(1.06); }
+
+  .tea-badges{ display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+
+  .tea-cat{
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 12px; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tea-new{
+    font-size: 10.5px; font-weight: 800; letter-spacing: .5px;
+    color: var(--brand); background: var(--brand-soft);
+    border: 1px solid #DCE8E0;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+
+  .tea-card h3{
+    font-size: 24px; font-weight: 900; letter-spacing: -.5px;
+    line-height: 1.3; margin-bottom: 5px;
+  }
+  .tea-reps{
+    font-size: 13px; color: var(--ink-3);
+    line-height: 1.6; margin-bottom: 12px;
+    min-height: 21px;
+  }
+  .tea-desc{
+    font-size: 15px; line-height: 1.75; color: var(--ink-2);
+    flex: 1; margin-bottom: 14px;
+  }
+
+  .tea-scenes{
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 5px; margin-bottom: 14px;
+  }
+  .scene-label{
+    font-size: 10.5px; font-weight: 800; letter-spacing: 1px;
+    color: var(--ink-3); margin-right: 1px;
+  }
+  .scene-tag{
+    font-family: inherit; font-size: 11.5px; font-weight: 700;
+    color: var(--brand); background: var(--brand-soft);
+    border: 1px solid #DCE8E0; border-radius: 999px;
+    padding: 2px 9px; cursor: pointer; transition: all .2s;
+  }
+  .scene-tag:hover{ background: var(--brand); color: #fff; border-color: var(--brand); }
+
+  .tea-meta{
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px;
+    margin-bottom: 16px;
+  }
+  .tea-meta div{
+    background: #FAF8F4;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-sm);
+    padding: 9px 11px;
+    min-width: 0;
+  }
+  .tea-meta small{
+    display: block; font-size: 10px; letter-spacing: .8px;
+    color: var(--ink-3); margin-bottom: 2px; white-space: nowrap;
+  }
+  .tea-meta strong{
+    font-size: 13px; font-weight: 800; color: var(--brand);
+    display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .tea-toggle{
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 14px;
+    border: 1.5px solid var(--brand);
+    background: transparent; color: var(--brand);
+    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all .28s cubic-bezier(.22,1,.36,1);
+  }
+  .tea-toggle:hover{ background: var(--brand); color: #fff; }
+  .tea-toggle svg{ width: 16px; height: 16px; transition: transform .3s; }
+  .tea-card.open .tea-toggle svg{ transform: rotate(180deg); }
+
+  .tea-detail{
+    display: none;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-2);
+    font-size: 14.5px; line-height: 1.8; color: var(--ink-2);
+    animation: detailIn .4s cubic-bezier(.22,1,.36,1);
+  }
+  .tea-card.open .tea-detail{ display: block; }
+  @keyframes detailIn{
+    from{ opacity: 0; transform: translateY(-8px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+
+  .tea-detail h4{
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand); font-weight: 900;
+    margin: 18px 0 9px;
+  }
+  .tea-detail h4:first-child{ margin-top: 0; }
+  .tea-detail ul{ list-style: none; }
+  .tea-detail li{
+    position: relative; padding: 4px 0 4px 19px;
+  }
+  .tea-detail li::before{
+    content:""; position: absolute; left: 2px; top: 14px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .tea-tip{
+    margin-top: 14px;
+    padding: 13px 16px;
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    font-size: 14px; line-height: 1.75;
+    color: #8A4A2C;
+  }
+
+  .empty{
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 24px;
+    background: var(--surface);
+    border: 1.5px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--ink-3); font-size: 16px;
+  }
+  .empty button{
+    margin-top: 14px; display: inline-block;
+    padding: 10px 22px; border-radius: 999px;
+    border: 1.5px solid var(--brand); background: transparent; color: var(--brand);
+    font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .empty button:hover{ background: var(--brand); color: #fff; }
+
+  /* ============ 办公室泡法 ============ */
+  .mode-tabs{ display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 18px; }
+  .mode-tab{
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    color: var(--ink-2); background: var(--surface);
+    border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 10px 19px; cursor: pointer; transition: all .25s;
+  }
+  .mode-tab:hover{ border-color: var(--brand-2); color: var(--brand); }
+  .mode-tab.active{
+    background: var(--brand); border-color: var(--brand); color: #fff;
+    box-shadow: 0 8px 18px rgba(36,71,58,.2);
+  }
+
+  .mode-panel{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm);
+    animation: detailIn .4s cubic-bezier(.22,1,.36,1);
+  }
+  .mode-head{
+    display: flex; gap: 16px; align-items: flex-start;
+    padding-bottom: 20px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .mode-badge{
+    flex: 0 0 auto; width: 44px; height: 44px; border-radius: 14px;
+    background: var(--brand); color: #fff;
+    display: grid; place-items: center;
+    font-size: 15px; font-weight: 900;
+  }
+  .mode-head h3{ font-size: 22px; font-weight: 900; letter-spacing: -.4px; margin-bottom: 3px; }
+  .mode-head p{ font-size: 14.5px; color: var(--ink-2); line-height: 1.7; }
+
+  .mode-body{ display: grid; grid-template-columns: 1.12fr .88fr; gap: 32px; }
+  .mode-body h4{
+    font-size: 11.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand); font-weight: 900; margin-bottom: 11px;
+  }
+  .mode-body h4:not(:first-child){ margin-top: 22px; }
+
+  .mode-steps{ list-style: none; counter-reset: ms; }
+  .mode-steps li{
+    counter-increment: ms; position: relative;
+    padding-left: 33px; margin-bottom: 9px;
+    font-size: 14.5px; line-height: 1.72; color: var(--ink-2);
+  }
+  .mode-steps li::before{
+    content: counter(ms); position: absolute; left: 0; top: 2px;
+    width: 21px; height: 21px; border-radius: 7px;
+    background: var(--brand-soft); color: var(--brand);
+    font-size: 11.5px; font-weight: 900;
+    display: grid; place-items: center;
+  }
+  .mode-warn{
+    margin-top: 14px; padding: 13px 15px;
+    background: var(--accent-soft); border-radius: var(--radius-sm);
+    font-size: 13.5px; line-height: 1.7; color: #8A4A2C;
+  }
+  .mode-warn b{ display: block; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 3px; }
+  .mode-memo{
+    margin-top: 14px; font-size: 12.5px; color: var(--ink-3);
+    line-height: 1.6; padding-left: 12px; position: relative;
+  }
+  .mode-memo::before{
+    content:""; position: absolute; left: 0; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  }
+
+  .mode-params{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mode-params div{
+    background: #FAF8F4; border: 1px solid var(--line-2);
+    border-radius: var(--radius-sm); padding: 9px 12px;
+  }
+  .mode-params small{
+    display: block; font-size: 10.5px; letter-spacing: .8px;
+    color: var(--ink-3); margin-bottom: 1px;
+  }
+  .mode-params strong{ font-size: 13.5px; font-weight: 800; color: var(--brand); }
+
+  .mini-list{ display: grid; gap: 7px; }
+  .mini-tea{
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; width: 100%; padding: 10px 13px;
+    border-radius: 12px; border: 1px solid var(--line);
+    background: #fff; font-family: inherit; cursor: pointer;
+    transition: all .22s; text-align: left;
+  }
+  .mini-tea:hover{ border-color: var(--brand-2); background: #FBFCFA; transform: translateX(2px); }
+  .mini-tea b{ font-size: 14px; font-weight: 800; color: var(--ink); }
+  .mini-tea span{ font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+
+  .office-extra{
+    display: grid; grid-template-columns: 1.15fr .85fr;
+    gap: 22px; margin-top: 22px;
+  }
+  .flow-card, .temp-box{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); padding: 26px 26px 22px;
+  }
+  .card-h{ font-size: 17px; font-weight: 900; letter-spacing: -.3px; }
+  .card-sub{ font-size: 12.5px; color: var(--ink-3); margin-top: 2px; margin-bottom: 16px; }
+
+  .flow{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; }
+  .flow div{ position: relative; padding-top: 25px; }
+  .flow div::before{
+    content: attr(data-n); position: absolute; top: 0; left: 0;
+    width: 19px; height: 19px; border-radius: 6px;
+    background: var(--brand-soft); color: var(--brand);
+    font-size: 10.5px; font-weight: 900;
+    display: grid; place-items: center;
+  }
+  .flow b{ display: block; font-size: 13px; font-weight: 900; margin-bottom: 2px; }
+  .flow span{ font-size: 11.5px; color: var(--ink-3); line-height: 1.55; display: block; }
+  .flow-note{
+    margin-top: 16px; padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 12.5px; color: var(--ink-3); line-height: 1.6;
+  }
+
+  .temp-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .temp-grid div{
+    background: #FAF8F4; border: 1px solid var(--line-2);
+    border-radius: 12px; padding: 9px 11px;
+  }
+  .temp-grid strong{
+    display: block; font-family: var(--font-display);
+    font-size: 18px; font-weight: 700; color: var(--brand); line-height: 1.2;
+  }
+  .temp-grid small{
+    font-size: 11px; color: var(--ink-3);
+    display: block; margin-top: 2px; line-height: 1.5;
+  }
+  .temp-note{ margin-top: 11px; font-size: 12.5px; color: var(--ink-2); line-height: 1.65; }
+
+  .warn-strip{
+    margin-top: 22px;
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm); padding: 20px 24px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+  .warn-strip b{
+    display: block; font-size: 12.5px; letter-spacing: 1px;
+    color: var(--accent); font-weight: 900; margin-bottom: 3px;
+  }
+  .warn-strip p{ font-size: 13.5px; color: var(--ink-2); line-height: 1.7; }
+
+  /* ============ 按预算选茶 ============ */
+  .budget-tabs{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-bottom: 18px; }
+  .budget-tab{
+    text-align: left; font-family: inherit; padding: 15px 17px;
+    border-radius: 16px; border: 1.5px solid var(--line);
+    background: var(--surface); cursor: pointer; transition: all .25s;
+  }
+  .budget-tab:hover{ border-color: var(--brand-2); transform: translateY(-2px); }
+  .budget-tab .bt-range{
+    display: block; font-family: var(--font-display);
+    font-size: 16px; font-weight: 700; color: var(--brand);
+  }
+  .budget-tab .bt-name{
+    display: block; font-size: 12px; color: var(--ink-3); margin-top: 1px;
+  }
+  .budget-tab.active{ border-color: var(--brand); background: var(--brand); }
+  .budget-tab.active .bt-range{ color: #fff; }
+  .budget-tab.active .bt-name{ color: rgba(255,255,255,.72); }
+
+  .budget-panel{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm);
+    animation: detailIn .4s cubic-bezier(.22,1,.36,1);
+  }
+  .bp-head{
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 18px; flex-wrap: wrap;
+    padding-bottom: 18px; margin-bottom: 20px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .bp-head h3{ font-size: 23px; font-weight: 900; letter-spacing: -.5px; }
+  .bp-range{
+    font-family: var(--font-display); font-size: 19px;
+    color: var(--accent); font-weight: 700;
+  }
+  .bp-grid{ display: grid; grid-template-columns: 1.02fr .98fr; gap: 30px; }
+  .bp-text p{ font-size: 14.5px; line-height: 1.8; color: var(--ink-2); margin-bottom: 11px; }
+  .bp-text p b{ color: var(--ink); font-weight: 800; }
+  .bp-note{
+    padding: 12px 15px; background: var(--brand-soft);
+    border-radius: var(--radius-sm); font-size: 13.5px;
+    line-height: 1.7; color: var(--brand); margin-bottom: 9px;
+  }
+  .bp-note b{ display: block; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 2px; }
+  .bp-note.avoid{ background: var(--accent-soft); color: #8A4A2C; }
+  .bp-h4{
+    font-size: 11.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand); font-weight: 900; margin-bottom: 10px;
+  }
+  .bp-teas{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bp-tea{
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 10px 12px;
+    cursor: pointer; font-family: inherit; transition: all .22s;
+  }
+  .bp-tea:hover{ border-color: var(--brand-2); background: #FBFCFA; transform: translateY(-1px); }
+  .bpt-top{ display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .bpt-top b{ font-size: 13.5px; font-weight: 800; color: var(--ink); }
+  .bpt-top em{ font-style: normal; font-size: 11.5px; font-weight: 800; color: var(--accent); }
+  .bpt-taste{
+    display: block; font-size: 11px; color: var(--ink-3);
+    margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .budget-rules{
+    display: grid; grid-template-columns: .92fr 1.08fr;
+    gap: 22px; margin-top: 22px;
+  }
+  .alloc-card, .laws-card{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: var(--radius); padding: 26px 26px 22px;
+  }
+  .alloc-bar{
+    display: flex; height: 50px; border-radius: 12px;
+    overflow: hidden; margin: 14px 0 13px;
+  }
+  .alloc-bar div{
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 900; color: #fff;
+  }
+  .alloc-legend{ display: grid; gap: 6px; font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+  .alloc-legend b{ color: var(--brand); }
+
+  .laws-card ol{ list-style: none; counter-reset: law; display: grid; gap: 11px; }
+  .laws-card li{
+    counter-increment: law; position: relative;
+    padding-left: 36px; font-size: 14px; line-height: 1.7; color: var(--ink-2);
+  }
+  .laws-card li::before{
+    content: "0" counter(law); position: absolute; left: 0; top: 1px;
+    font-family: var(--font-display); font-size: 14px;
+    font-weight: 700; color: var(--accent);
+  }
+  .laws-card li b{ color: var(--ink); }
+
+  /* ============ 口味测试 ============ */
+  .quiz{
+    max-width: 880px; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: 28px; box-shadow: var(--shadow);
+    padding: 38px 40px 34px;
+  }
+  .quiz-progress{ display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+  .quiz-step{
+    font-size: 11.5px; font-weight: 800; letter-spacing: 1.5px;
+    color: var(--ink-3); white-space: nowrap; margin-right: 4px;
+  }
+  .qp{ flex: 1; height: 4px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
+  .qp i{ display: block; height: 100%; background: var(--brand); border-radius: 2px; transition: width .4s; }
+  .quiz-q{
+    font-size: clamp(20px, 2.4vw, 25px); font-weight: 900;
+    letter-spacing: -.4px; line-height: 1.45; margin-bottom: 18px;
+  }
+  .quiz-opts{ display: grid; gap: 9px; }
+  .quiz-opt{
+    display: flex; align-items: center; gap: 13px;
+    width: 100%; text-align: left; padding: 15px 18px;
+    border-radius: 16px; border: 1.5px solid var(--line);
+    background: #fff; font-family: inherit; font-size: 15.5px;
+    color: var(--ink); cursor: pointer; transition: all .25s;
+  }
+  .quiz-opt .k{
+    flex: 0 0 auto; width: 25px; height: 25px; border-radius: 8px;
+    background: var(--brand-soft); color: var(--brand);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 900;
+  }
+  .quiz-opt:hover{ border-color: var(--brand-2); background: #FBFCFA; transform: translateX(3px); }
+  .quiz-foot{ margin-top: 14px; font-size: 12.5px; color: var(--ink-3); }
+
+  .qr-head{ display: flex; align-items: center; gap: 15px; margin-bottom: 6px; }
+  .qr-badge{
+    width: 56px; height: 56px; border-radius: 18px;
+    background: var(--brand); color: #fff;
+    display: grid; place-items: center;
+    font-size: 22px; font-weight: 900; flex: 0 0 auto;
+  }
+  .qr-title{ font-size: 26px; font-weight: 900; letter-spacing: -.6px; line-height: 1.25; }
+  .qr-sub{ font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+  .qr-desc{ font-size: 15px; line-height: 1.85; color: var(--ink-2); margin: 12px 0 20px; }
+
+  .bars{ display: grid; gap: 8px; margin-bottom: 20px; }
+  .bar{
+    display: grid; grid-template-columns: 32px 1fr 38px;
+    align-items: center; gap: 11px; font-size: 12.5px;
+  }
+  .bar em{ font-style: normal; font-weight: 900; color: var(--ink-2); }
+  .bar .track{ display: block; height: 9px; border-radius: 999px; background: var(--line-2); overflow: hidden; }
+  .bar .fill{
+    display: block;
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2));
+    transition: width .9s cubic-bezier(.22,1,.36,1);
+  }
+  .bar.top em{ color: var(--accent); }
+  .bar.top .fill{ background: linear-gradient(90deg, var(--accent), #E89A70); }
+  .bar i{ font-style: normal; font-size: 11.5px; color: var(--ink-3); text-align: right; }
+
+  .qr-block{ margin-top: 16px; }
+  .qr-block h4{
+    font-size: 11.5px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand); font-weight: 900; margin-bottom: 9px;
+  }
+  .qr-teas{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .qr-tip{
+    padding: 13px 16px; background: var(--brand-soft);
+    border-radius: var(--radius-sm); font-size: 13.5px;
+    line-height: 1.7; color: var(--brand);
+  }
+  .qr-tip.avoid{ background: var(--accent-soft); color: #8A4A2C; }
+  .qr-tip b{ display: block; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 2px; }
+  .qr-actions{
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-top: 22px; padding-top: 20px;
+    border-top: 1px solid var(--line-2);
+  }
+
+  /* ============ 冲泡速查表 ============ */
+  .table-card{
+    background: var(--surface);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .table-scroll{ overflow-x: auto; }
+  table{
+    width: 100%; border-collapse: collapse; min-width: 860px;
+    font-size: 15px;
+  }
+  thead th{
+    text-align: left;
+    padding: 18px 22px;
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 900;
+    background: #FAF8F4;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td{
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  tbody tr:last-child td{ border-bottom: 0; }
+  tbody tr{ transition: background .25s; }
+  tbody tr:hover{ background: #FBF9F5; }
+  tbody td:first-child{
+    font-weight: 900; color: var(--ink); font-size: 15.5px;
+    white-space: nowrap;
+  }
+
+  /* ============ 三步法 ============ */
+  .steps{
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .step{
+    background: var(--surface);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    padding: 34px 28px;
+    position: relative;
+    transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s;
+  }
+  .step:hover{ transform: translateY(-5px); box-shadow: var(--shadow); }
+  .step-num{
+    font-family: var(--font-display);
+    font-size: 56px; font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--brand-2);
+    margin-bottom: 16px;
+  }
+  .step h3{ font-size: 20px; font-weight: 900; margin-bottom: 10px; letter-spacing: -.3px; }
+  .step p{ font-size: 15px; line-height: 1.82; color: var(--ink-2); }
+
+  .rules{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+  .rules-head{
+    grid-column: 1 / -1; display: flex; align-items: baseline;
+    gap: 12px; flex-wrap: wrap;
+  }
+  .rules-head h3{ font-size: 20px; font-weight: 900; letter-spacing: -.3px; }
+  .rules-head span{ font-size: 13px; color: var(--ink-3); }
+  .rule{
+    background: var(--surface); border: 1px solid var(--line-2);
+    border-radius: 18px; padding: 20px 20px 18px;
+  }
+  .rule span{
+    display: inline-grid; place-items: center;
+    width: 27px; height: 27px; border-radius: 9px;
+    background: var(--brand-soft); color: var(--brand);
+    font-size: 11.5px; font-weight: 900; margin-bottom: 9px;
+  }
+  .rule p{ font-size: 14px; line-height: 1.72; color: var(--ink-2); }
+  .rule p b{ color: var(--ink); }
+
+  /* ============ 误区 ============ */
+  .myths{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .myth{
+    background: var(--surface);
+    border: 1px solid var(--line-2);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 22px 26px;
+    font-size: 15.5px; line-height: 1.8; color: var(--ink-2);
+    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s;
+  }
+  .myth:hover{ transform: translateX(5px); box-shadow: var(--shadow-sm); }
+  .myth strong{
+    display: block;
+    font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--accent); font-weight: 900;
+    margin-bottom: 6px;
+  }
+
+  /* ============ CTA ============ */
+  .cta{
+    margin: 40px 0 20px;
+    background: var(--brand);
+    border-radius: 32px;
+    padding: 60px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+    position: relative; overflow: hidden;
+  }
+  .cta::before{
+    content:"";
+    position: absolute; right: -80px; top: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.12), transparent 68%);
+  }
+  .cta h2{
+    font-size: clamp(27px, 3.6vw, 40px);
+    font-weight: 900; color: #fff; letter-spacing: -.8px; line-height: 1.25;
+    position: relative;
+  }
+  .cta p{ font-size: 15.5px; color: rgba(255,255,255,.72); margin-top: 10px; position: relative; }
+  .cta .btn{
+    background: #fff; color: var(--brand);
+    position: relative;
+  }
+  .cta .btn:hover{ background: var(--accent); color: #fff; }
+
+  /* ============ 页脚 ============ */
+  .site-footer{
+    padding: 52px 0 44px;
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+  }
+  .footer-inner{
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .footer-brand{ display: flex; align-items: center; gap: 12px; }
+  .footer-brand .logo-mark{ width: 38px; height: 38px; font-size: 17px; border-radius: 12px; }
+  .footer-brand b{ font-size: 17px; font-weight: 900; }
+  .footer-note{ font-size: 13.5px; color: var(--ink-3); }
+
+  /* ============ 动画 ============ */
+  .reveal{
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 1080px){
+    .nav-links{ gap: 18px; }
+    .nav-links a{ font-size: 13.5px; }
+  }
+
+  @media (max-width: 1024px){
+    .hero{ grid-template-columns: 1fr; gap: 36px; padding: 56px 0 44px; }
+    .picker-card{ max-width: 560px; }
+    .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .steps{ grid-template-columns: 1fr; }
+    .myths{ grid-template-columns: 1fr; }
+    .mode-body, .bp-grid, .office-extra, .budget-rules{ grid-template-columns: 1fr; }
+    .warn-strip{ grid-template-columns: 1fr; }
+    .rules{ grid-template-columns: repeat(2, 1fr); }
+    .flow{ grid-template-columns: repeat(5, 1fr); }
+  }
+
+  @media (max-width: 900px){
+    .nav-links{ display: none; }
+  }
+
+  @media (max-width: 820px){
+    .deciders{ grid-template-columns: 1fr; }
+    .stats{ grid-template-columns: 1fr 1fr; gap: 16px; }
+    .budget-tabs{ grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px){
+    body{ font-size: 16px; }
+    .wrap{ width: calc(100% - 32px); }
+    .nav-inner{ height: 68px; }
+    .nav-cta{ display: none; }
+    .hero{ padding: 40px 0 36px; }
+    .hero-lead{ font-size: 16px; }
+    .hero-actions{ gap: 10px; }
+    .hero-actions .btn{ flex: 1; justify-content: center; padding: 13px 18px; font-size: 15px; }
+    .picker-card{ padding: 24px 22px 22px; }
+    .grid{ grid-template-columns: 1fr; }
+    .stat:last-child{ grid-column: auto; }
+    section.block{ padding: 48px 0; }
+    .cta{ padding: 40px 26px; border-radius: 24px; }
+    .tea-card{ padding: 24px 20px; }
+    .tea-card h3{ font-size: 22px; }
+    .mode-panel, .budget-panel{ padding: 24px 20px; }
+    .mode-head{ gap: 12px; }
+    .mode-head h3{ font-size: 19px; }
+    .mode-params{ grid-template-columns: 1fr 1fr; }
+    .flow{ grid-template-columns: 1fr 1fr; gap: 12px; }
+    .warn-strip{ padding: 18px 18px; }
+    .quiz{ padding: 26px 20px 24px; border-radius: 22px; }
+    .bp-teas, .qr-teas{ grid-template-columns: 1fr; }
+    .rules{ grid-template-columns: 1fr; }
+    .budget-rules{ gap: 16px; }
+    .office-extra{ gap: 16px; }
+    .quiz-opt{ font-size: 14.5px; padding: 13px 15px; }
+    .alloc-bar{ height: 42px; }
+    .alloc-bar div{ font-size: 10.5px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: .001ms !important;
+      transition-duration: .001ms !important;
+    }
+    .reveal{ opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top">
+      <span class="logo-mark">茶</span>
+      <span class="logo-text">
+        <b>茶小楼</b>
+        <small>Tea for Beginners</small>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="#teas">识茶</a>
+      <a href="#office">办公室</a>
+      <a href="#budget">预算</a>
+      <a href="#taste">口味测试</a>
+      <a href="#brew">速查</a>
+      <a href="#myths">避坑</a>
+    </nav>
+    <a class="nav-cta" href="#taste">30 秒测口味</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero wrap">
+    <div class="hero-glow"></div>
+    <div class="hero-glow g2"></div>
+
+    <div class="hero-left">
+      <div class="eyebrow reveal">Beginner Friendly · 0 基础也能喝</div>
+      <h1 class="reveal">
+        你的每一杯茶，<br>
+        不该<mark>踩坑</mark>。
+        <span class="en">A guide that makes decisions.</span>
+      </h1>
+      <p class="hero-lead reveal">
+        给职场新人的茶决策指南。不用背茶艺、不用买一桌器具——
+        先测口味，再按预算挑，最后照办公室泡法做。每款茶都标了参考价、适合场景和冲泡参数。
+      </p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-primary" href="#taste">30 秒测口味</a>
+        <a class="btn btn-ghost" href="#budget">按预算选茶</a>
+      </div>
+      <div class="hero-facts reveal">
+        <span>34 款茶 · 参考价透明</span>
+        <span>8 种场景标签</span>
+        <span>0 器具也能泡</span>
+      </div>
+    </div>
+
+    <aside class="picker-card reveal">
+      <div class="picker-head">
+        <h3>30 秒选一杯</h3>
+        <span>不注册 · 不推品牌</span>
+      </div>
+      <div class="pick-group">
+        <small>① 在哪喝</small>
+        <div class="pick-chips" id="pickScene"></div>
+      </div>
+      <div class="pick-group">
+        <small>② 预算（每 50g）</small>
+        <div class="pick-chips" id="pickBudget"></div>
+      </div>
+      <div class="pick-group">
+        <small>③ 口味</small>
+        <div class="pick-chips" id="pickFlavor"></div>
+      </div>
+      <div class="pick-result" id="pickResult"></div>
+    </aside>
+  </section>
+
+  <!-- ===== 三个决策入口 ===== -->
+  <div class="wrap">
+    <div class="deciders">
+      <a class="decider reveal" href="#office">
+        <span class="d-icon">泡</span>
+        <h3>办公室泡法</h3>
+        <p>只有马克杯和饮水机，也能泡出不苦的茶。4 种器具，各有参数。</p>
+        <div class="d-tags"><span>马克杯</span><span>保温杯</span><span>无温度计</span></div>
+        <span class="d-go">看看怎么泡 →</span>
+      </a>
+      <a class="decider reveal" href="#budget">
+        <span class="d-icon">价</span>
+        <h3>按预算选茶</h3>
+        <p>¥30 和 ¥200 的差距到底在哪？4 档预算，说清每一档能买到什么。</p>
+        <div class="d-tags"><span>口粮区</span><span>风味区</span><span>别交智商税</span></div>
+        <span class="d-go">看看买哪档 →</span>
+      </a>
+      <a class="decider reveal" href="#taste">
+        <span class="d-icon">味</span>
+        <h3>口味测试</h3>
+        <p>你喜欢苦、甜、香还是醇？4 道题，告诉你从哪几款开始。</p>
+        <div class="d-tags"><span>苦</span><span>甜</span><span>香</span><span>醇</span></div>
+        <span class="d-go">开始测试 →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== 数据条 ===== -->
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><b>34</b><span>款茶 · 都标了参考价</span></div>
+      <div class="stat"><b>8</b><span>种场景标签</span></div>
+      <div class="stat"><b>4</b><span>档预算区间</span></div>
+      <div class="stat"><b>4</b><span>道题测出口味</span></div>
+    </div>
+  </div>
+
+  <!-- ===== 茶叶 ===== -->
+  <section id="teas" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">The Collection</div>
+        <h2>先认识这些茶</h2>
+        <p>按类别、场景、预算、口味四层筛选；点场景标签可直接过滤，点「如何冲泡」展开参数</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-top">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+          <input id="searchInput" type="search" placeholder="搜索：普洱、龙井、办公室、甜……" aria-label="搜索茶叶" />
+        </div>
+        <div class="result-count" id="resultCount"></div>
+      </div>
+      <div class="filters" id="filters">
+        <div class="filter-row">
+          <span class="filter-label">类别</span>
+          <button class="chip active" data-type="category" data-value="全部">全部</button>
+          <button class="chip" data-type="category" data-value="绿茶">绿茶</button>
+          <button class="chip" data-type="category" data-value="白茶">白茶</button>
+          <button class="chip" data-type="category" data-value="黄茶">黄茶</button>
+          <button class="chip" data-type="category" data-value="乌龙茶">乌龙茶</button>
+          <button class="chip" data-type="category" data-value="红茶">红茶</button>
+          <button class="chip" data-type="category" data-value="黑茶">黑茶</button>
+          <button class="chip" data-type="category" data-value="普洱茶">普洱茶</button>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">场景</span>
+          <button class="chip active" data-type="scene" data-value="全部">全部</button>
+          <button class="chip" data-type="scene" data-value="办公室">办公室</button>
+          <button class="chip" data-type="scene" data-value="独饮">独饮</button>
+          <button class="chip" data-type="scene" data-value="待客">待客</button>
+          <button class="chip" data-type="scene" data-value="送礼">送礼</button>
+          <button class="chip" data-type="scene" data-value="饭后">饭后</button>
+          <button class="chip" data-type="scene" data-value="煮饮">煮饮</button>
+          <button class="chip" data-type="scene" data-value="下午茶">下午茶</button>
+          <button class="chip" data-type="scene" data-value="调饮">调饮</button>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">预算</span>
+          <button class="chip active" data-type="budget" data-value="全部">全部</button>
+          <button class="chip" data-type="budget" data-value="1">≤¥30</button>
+          <button class="chip" data-type="budget" data-value="2">¥30–80</button>
+          <button class="chip" data-type="budget" data-value="3">¥80–200</button>
+          <button class="chip" data-type="budget" data-value="4">¥200+</button>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">口味</span>
+          <button class="chip active" data-type="flavor" data-value="全部">全部</button>
+          <button class="chip" data-type="flavor" data-value="苦">苦</button>
+          <button class="chip" data-type="flavor" data-value="甜">甜</button>
+          <button class="chip" data-type="flavor" data-value="香">香</button>
+          <button class="chip" data-type="flavor" data-value="醇">醇</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" id="teaGrid"></div>
+  </section>
+
+  <!-- ===== 办公室泡法 ===== -->
+  <section id="office" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">Office Brewing</div>
+        <h2>办公室泡法</h2>
+        <p>先选你的条件，再照着做——不用买新器具，也不用温度计</p>
+      </div>
+    </div>
+
+    <div class="mode-tabs" id="modeTabs"></div>
+    <div id="modePanel"></div>
+
+    <div class="office-extra">
+      <div class="flow-card reveal">
+        <h3 class="card-h">办公室 5 分钟流程</h3>
+        <p class="card-sub">从起身到第一口，不超过一次会议间隙</p>
+        <div class="flow">
+          <div data-n="1"><b>洗杯</b><span>热水涮一遍，去掉冷杯和洗洁精味</span></div>
+          <div data-n="2"><b>投茶</b><span>马克杯 2–3g，约一个瓶盖平铺</span></div>
+          <div data-n="3"><b>注水</b><span>沿壁倒，别对着茶叶冲</span></div>
+          <div data-n="4"><b>等 2–3 分钟</b><span>先去回消息，别搅、别盖盖</span></div>
+          <div data-n="5"><b>留根续水</b><span>剩 1/3 再加水，能续 2–3 次</span></div>
+        </div>
+        <p class="flow-note">只有 3 分钟？投茶 2g → 注满热水 → 等 2 分钟直接喝，别盖盖。洗杯和留根下次再讲究。</p>
+      </div>
+      <div class="temp-box reveal">
+        <h3 class="card-h">没有温度计？用时间换算</h3>
+        <p class="card-sub">沸水倒进敞口玻璃杯，静置后的大致温度</p>
+        <div class="temp-grid">
+          <div><strong>2 分钟</strong><small>≈ 95°C · 乌龙、生普</small></div>
+          <div><strong>4 分钟</strong><small>≈ 90°C · 红茶</small></div>
+          <div><strong>6 分钟</strong><small>≈ 85°C · 绿茶、新白茶</small></div>
+          <div><strong>8 分钟</strong><small>≈ 80°C · 嫩芽绿茶</small></div>
+        </div>
+        <p class="temp-note">室温 20°C 左右、不盖盖。冬天凉得更快，别死记时间——<b>手摸杯壁：烫手约 95°C 以上，热但不烫约 85–90°C，温的就是 80°C 以下。</b></p>
+      </div>
+    </div>
+
+    <div class="warn-strip reveal">
+      <div><b>翻车 01</b><p>保温杯焖绿茶。持续高温会把嫩芽焖黄，苦味和闷味一起出来。</p></div>
+      <div><b>翻车 02</b><p>一杯茶泡一整天。茶汤一直泡着，后面全是苦涩，续水也没用。</p></div>
+      <div><b>翻车 03</b><p>用饮水机的「温水档」。温度不够，香气出不来，只剩水味。</p></div>
+    </div>
+  </section>
+
+  <!-- ===== 按预算选茶 ===== -->
+  <section id="budget" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">By Budget</div>
+        <h2>按预算选茶</h2>
+        <p>价格为参考区间、不是报价，仅用于分档；同款茶因产地、等级、年份差异很大</p>
+      </div>
+    </div>
+
+    <div class="budget-tabs" id="budgetTabs"></div>
+    <div id="budgetPanel"></div>
+
+    <div class="budget-rules">
+      <div class="alloc-card reveal">
+        <h3 class="card-h">预算怎么分配</h3>
+        <p class="card-sub">以每月 200 元茶预算为例</p>
+        <div class="alloc-bar">
+          <div style="width:60%;background:var(--brand)">60% 口粮</div>
+          <div style="width:30%;background:var(--brand-2)">30% 尝鲜</div>
+          <div style="width:10%;background:var(--accent)">10%</div>
+        </div>
+        <div class="alloc-legend">
+          <span><b>120 元 · 口粮</b>（≤¥30 档）：熟普、黑茶、寿眉，天天喝不心疼</span>
+          <span><b>60 元 · 尝鲜</b>（¥80–200 档）：买 50g 小样，一次试两个香型</span>
+          <span><b>20 元 · 备用</b>：朋友来、送同事时，临时买一小罐体面的</span>
+        </div>
+      </div>
+      <div class="laws-card reveal">
+        <h3 class="card-h">买茶三条铁律</h3>
+        <p class="card-sub">比「买什么」更重要的是「怎么买」</p>
+        <ol>
+          <li><b>先买 50g 小样。</b>同一款茶，50g 和 250g 的单价差很多，但口味合不合只有喝了才知道。宁可单价贵一点，先试。</li>
+          <li><b>同一款买两家对比。</b>差价 30% 以内选稳定、标注清楚（产地 / 等级 / 采摘年份）的那家；差一倍以上的，多半有一方在讲故事。</li>
+          <li><b>绿茶当年喝完，别囤。</b>绿茶要冷藏、怕潮怕串味；黑茶、普洱可以放，但也别一次囤超过半年的量。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 口味测试 ===== -->
+  <section id="taste" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">Taste Test</div>
+        <h2>口味测试：<br>你喜欢苦、甜、香还是醇？</h2>
+        <p>4 道题、30 秒。测完告诉你适合从哪几款开始，冲泡参数该往哪个方向调</p>
+      </div>
+    </div>
+
+    <div class="quiz reveal" id="quiz"></div>
+  </section>
+
+  <!-- ===== 冲泡速查 ===== -->
+  <section id="brew" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">Brew Guide</div>
+        <h2>冲泡参数速查</h2>
+        <p>以 110–150ml 盖碗 / 玻璃杯为参考，口味淡就减茶量或缩短时间</p>
+      </div>
+    </div>
+    <div class="table-card reveal">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>茶类</th>
+              <th>建议水温</th>
+              <th>投茶量参考</th>
+              <th>第一泡时间</th>
+              <th>器具建议</th>
+              <th>新手提醒</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>绿茶</td><td>80–85°C</td><td>3g / 150ml</td><td>30–45 秒</td><td>玻璃杯、盖碗</td><td>别沸水猛冲，别盖盖闷</td></tr>
+            <tr><td>白茶（新）</td><td>90–95°C</td><td>3–5g / 110ml</td><td>5–8 秒快出</td><td>盖碗</td><td>新茶别久闷；老白茶可用 100°C</td></tr>
+            <tr><td>黄茶</td><td>85–90°C</td><td>3g / 150ml</td><td>40 秒左右</td><td>玻璃杯、盖碗</td><td>清淡细嫩，切忌久闷</td></tr>
+            <tr><td>乌龙茶</td><td>95–100°C</td><td>5–7g / 110ml</td><td>3–12 秒快出</td><td>盖碗、小壶</td><td>要快出汤，别长时间闷泡</td></tr>
+            <tr><td>红茶</td><td>90–95°C</td><td>3–4g / 150ml</td><td>5–10 秒</td><td>盖碗、瓷壶</td><td>久泡容易酸涩，先短后长</td></tr>
+            <tr><td>黑茶</td><td>100°C</td><td>6–8g / 110ml</td><td>10–15 秒</td><td>盖碗、紫砂壶</td><td>先快速润茶一次，别久泡</td></tr>
+            <tr><td>普洱生茶</td><td>95–100°C</td><td>6–7g / 110ml</td><td>8–12 秒</td><td>盖碗</td><td>新生茶苦涩明显，快出汤</td></tr>
+            <tr><td>普洱熟茶</td><td>100°C</td><td>6–8g / 110ml</td><td>8–12 秒</td><td>盖碗、紫砂壶</td><td>润茶一次去堆味，快出汤</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 三步法 ===== -->
+  <section id="steps" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">Three Steps</div>
+        <h2>三步就能喝上</h2>
+        <p>先不追求茶艺，按这个顺序来就不会错</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3>温杯 · 投茶</h3>
+        <p>热水烫一下杯子或盖碗，倒掉。投茶别贪多：小杯 3g 左右，盖碗 5–7g。没有秤，就薄薄铺一层底，淡了下一泡再加。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <h3>注水 · 等一会儿</h3>
+        <p>嫩茶用 80–90°C，乌龙、黑茶、熟普用接近沸水。第一泡时间照卡片来：绿茶半分钟到一分钟，乌龙和黑茶几秒到十几秒就出汤。</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <h3>留根 · 续水</h3>
+        <p>喝到剩三分之一就续水，别等喝干。每泡稍微延长一点时间。觉得苦，下次就少放茶、降水温，或者更快出汤。</p>
+      </div>
+    </div>
+
+    <div class="rules">
+      <div class="rules-head">
+        <h3>四条底层规则</h3>
+        <span>记住这四条，比背 34 款茶都有用</span>
+      </div>
+      <div class="rule reveal"><span>01</span><p><b>绿茶、黄茶别用沸水。</b>80–90°C 就够，刚烧开的水会烫出苦味。</p></div>
+      <div class="rule reveal"><span>02</span><p><b>乌龙茶要快出汤。</b>几秒到十几秒，闷久了必苦。</p></div>
+      <div class="rule reveal"><span>03</span><p><b>熟普、黑茶可以用 100°C。</b>沸水才泡得开。</p></div>
+      <div class="rule reveal"><span>04</span><p><b>不确定就少放茶。</b>淡了可以加，苦了只能倒。</p></div>
+    </div>
+  </section>
+
+  <!-- ===== 误区 ===== -->
+  <section id="myths" class="block wrap">
+    <div class="section-head reveal">
+      <div class="sh-left">
+        <div class="section-kicker">Common Mistakes</div>
+        <h2>新手避坑</h2>
+        <p>避开这几条，味道会好一大截</p>
+      </div>
+    </div>
+    <div class="myths">
+      <div class="myth reveal"><strong>误区 01</strong>所有茶都用沸水。绿茶、黄茶、嫩白茶容易被烫出苦味，水温低一点更友好。</div>
+      <div class="myth reveal"><strong>误区 02</strong>茶叶放越多越香。放太多容易苦涩，宁可先少放，再慢慢加。</div>
+      <div class="myth reveal"><strong>误区 03</strong>所有茶都要洗茶。绿茶、黄茶和嫩白茶通常不需要；紧压黑茶、老茶可快速润洗一次。</div>
+      <div class="myth reveal"><strong>误区 04</strong>一直泡着不喝。乌龙、红茶、黑茶久泡会苦涩，用盖碗要及时出汤。</div>
+      <div class="myth reveal"><strong>误区 05</strong>空腹喝很浓的茶。新手建议饭后喝、淡一点，别一次喝太浓太多。</div>
+      <div class="myth reveal"><strong>误区 06</strong>迷信“功效”。茶是日常饮品，不是药。喜欢味道、喝得舒服最重要。</div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <div class="wrap">
+    <div class="cta reveal">
+      <div>
+        <h2>先测口味，再定预算，<br>最后照着泡。</h2>
+        <p>参数只是起点，你的舌头才是最终标准。</p>
+      </div>
+      <a class="btn" href="#taste">测一下我的口味</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== 页脚 ===== -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="logo-mark">茶</span>
+      <b>茶小楼</b>
+    </div>
+    <div class="footer-note">给职场新人的茶入门指南 · 参数与价格仅作参考，口味由你决定</div>
+  </div>
+</footer>
+
+<script>
+const teas = [
+  /* ========== 绿茶 ========== */
+  {
+    id: "longjing", name: "西湖龙井", category: "绿茶", glyph: "龙",
+    reps: "炒青绿茶 · 浙江杭州",
+    desc: "清香、豆香或栗香，鲜爽甘醇。中国名茶之首，也是新手最容易接受、也最容易泡苦的一款。",
+    temp: "80–85°C", time: "30–45 秒", ratio: "3g / 150ml 玻璃杯", vessel: "玻璃杯或盖碗",
+    taste: "鲜爽、豆香、微甜，泡重了会苦",
+    steps: ["温杯后投茶约 3g，薄薄铺满杯底即可。","80–85°C 热水沿杯壁低斟，先倒三分之一润茶，再补满。","等 30–45 秒即可喝，不要盖盖子闷。","喝到剩三分之一续水，第二泡适当缩短。"],
+    tip: "新手最常见错误：刚烧开的沸水直冲、泡着不喝。会明显苦。"
+  },
+  {
+    id: "biluochun", name: "碧螺春", category: "绿茶", glyph: "碧",
+    reps: "炒青绿茶 · 江苏苏州",
+    desc: "香气清雅，带花果香，茶汤柔甜。芽叶极嫩，水温要更低，注水要轻。",
+    temp: "75–85°C", time: "1 分钟左右", ratio: "2–3g / 300ml", vessel: "玻璃杯",
+    taste: "清甜、花果香、鲜爽",
+    steps: ["玻璃杯先少量热水温杯。","投茶 2–3g，沿杯壁缓慢注水，避免猛冲茶叶。","静置约 1 分钟，温热时小口喝。","剩三分之一续水，第二泡约 40–60 秒。"],
+    tip: "茶叶很嫩，不建议洗茶；水温过高会把鲜甜感烫掉。"
+  },
+  {
+    id: "huangshan", name: "黄山毛峰", category: "绿茶", glyph: "黄",
+    reps: "烘青绿茶 · 安徽黄山",
+    desc: "条索细扁，兰花香或栗香，滋味鲜醇。比龙井柔和一些，适合作为绿茶入门。",
+    temp: "80–85°C", time: "1–2 分钟", ratio: "3g / 300ml", vessel: "玻璃杯、盖碗",
+    taste: "兰花香、鲜醇、回甘",
+    steps: ["温杯投茶 3g。","80–85°C 注水，沿杯壁低斟。","1–2 分钟后饮用，别盖盖闷。","剩三分之一续水。"],
+    tip: "烘青绿茶香气偏幽，别用太高水温或太多茶把香气压住。"
+  },
+  {
+    id: "taiping", name: "太平猴魁", category: "绿茶", glyph: "太",
+    reps: "尖茶 · 安徽黄山",
+    desc: "叶片又长又直，兰香高爽，滋味醇厚。外形很特别，泡在玻璃杯里很有观赏性。",
+    temp: "85°C 左右", time: "1–2 分钟", ratio: "3–4g / 300ml", vessel: "高玻璃杯",
+    taste: "兰香、醇厚、甘甜",
+    steps: ["高玻璃杯温杯，投茶 3–4g。","85°C 热水沿杯壁注满。","1–2 分钟后喝，叶片会慢慢舒展。","续水时留三分之一。"],
+    tip: "叶片大，别用手掰碎；碎茶出味太快容易苦。"
+  },
+  {
+    id: "liuan", name: "六安瓜片", category: "绿茶", glyph: "六",
+    reps: "片茶 · 安徽六安",
+    desc: "无芽无梗，单片叶制成，滋味浓醇，带栗香。在绿茶里口感偏厚，适合喜欢味道足一点的人。",
+    temp: "85°C 左右", time: "1–2 分钟", ratio: "3g / 300ml", vessel: "玻璃杯、盖碗",
+    taste: "栗香、浓醇、耐泡",
+    steps: ["温杯投茶 3g。","85°C 注水，可稍高冲激发香气。","1–2 分钟饮用，别久闷。","可续水 3 次左右。"],
+    tip: "片茶出味比芽茶快，第一泡别泡太久。"
+  },
+  {
+    id: "xinyang", name: "信阳毛尖", category: "绿茶", glyph: "信",
+    reps: "针形绿茶 · 河南信阳",
+    desc: "细圆紧直，白毫明显，栗香或花香，鲜爽回甘。",
+    temp: "80–85°C", time: "1–2 分钟", ratio: "3g / 300ml", vessel: "玻璃杯",
+    taste: "栗香、鲜爽、回甘明显",
+    steps: ["温杯后投茶 3g。","80–85°C 水沿杯壁注入。","1–2 分钟后喝。","留三分之一续水。"],
+    tip: "白毫多不代表要洗，第一泡就是精华。"
+  },
+  {
+    id: "anji", name: "安吉白茶", category: "绿茶", glyph: "安",
+    reps: "白叶茶 · 浙江安吉",
+    desc: "名字叫白茶，其实是绿茶。春季嫩叶偏白，氨基酸含量高，几乎不苦，鲜甜感很强，对新手极度友好。",
+    temp: "80–85°C", time: "1 分钟左右", ratio: "3g / 300ml", vessel: "玻璃杯",
+    taste: "极鲜、清甜、几乎不苦",
+    steps: ["温杯投茶 3g。","80–85°C 水轻柔注满。","约 1 分钟即可喝。","续水留三分之一。"],
+    tip: "虽然叫白茶，但按绿茶方式泡，别用沸水。"
+  },
+  {
+    id: "enshi", name: "恩施玉露", category: "绿茶", glyph: "恩",
+    reps: "蒸青绿茶 · 湖北恩施",
+    desc: "中国少见的蒸青绿茶，色泽翠绿，香气清鲜，带一点海苔般的鲜爽感。",
+    temp: "80°C 左右", time: "1 分钟左右", ratio: "3g / 300ml", vessel: "玻璃杯、盖碗",
+    taste: "清鲜、海苔香、柔爽",
+    steps: ["温杯投茶 3g。","80°C 水沿杯壁低斟。","约 1 分钟饮用。","留根续水。"],
+    tip: "蒸青茶怕高温久闷，水温宁低勿高。"
+  },
+
+  /* ========== 白茶 ========== */
+  {
+    id: "yinzhen", name: "白毫银针", category: "白茶", glyph: "银",
+    reps: "芽头白茶 · 福建福鼎 / 政和",
+    desc: "全芽头，满披白毫，汤色浅杏黄，毫香清甜。白茶里最清雅、也最清淡的一款。",
+    temp: "85–90°C", time: "15–20 秒", ratio: "5g / 110ml 盖碗", vessel: "盖碗",
+    taste: "毫香、清甜、汤感柔",
+    steps: ["盖碗温杯，投茶 5g。","85–90°C 水沿壁缓注。","15–20 秒出汤，不要久闷。","后续每泡延长 5–10 秒。"],
+    tip: "银针清淡，投茶少了会寡，投茶多了会苦，5g/110ml 是比较稳的起点。"
+  },
+  {
+    id: "baimudan", name: "白牡丹", category: "白茶", glyph: "白",
+    reps: "一芽一二叶 · 福建福鼎",
+    desc: "介于银针和寿眉之间，有芽有叶，花香清甜，汤感比银针厚一些，是白茶入门的平衡之选。",
+    temp: "90–95°C", time: "5–8 秒快出", ratio: "5g / 110ml", vessel: "盖碗",
+    taste: "花香、清甜、柔和",
+    steps: ["盖碗温杯，投茶 5g。","90–95°C 注水，5–8 秒快出汤。","不要把茶汤留在盖碗里。","后续逐泡延长。"],
+    tip: "新白牡丹别闷；老白茶可以用 100°C 甚至煮。"
+  },
+  {
+    id: "shoumei", name: "寿眉 / 贡眉", category: "白茶", glyph: "寿",
+    reps: "叶梗白茶 · 福建福鼎 / 政和",
+    desc: "叶片较粗老，新茶清爽，老寿眉醇厚，常出枣香、药香。适合盖碗泡，也适合煮。",
+    temp: "95–100°C；老茶可煮", time: "20 秒左右", ratio: "5–7g / 110ml", vessel: "盖碗、煮茶壶",
+    taste: "醇厚、甜润、枣香 / 木质香",
+    steps: ["盖碗投茶 5–7g。","沸水快速润洗一次，倒掉。","再次注沸水，20 秒左右出汤。","老寿眉可取 3–5g 加水煮 3–5 分钟。"],
+    tip: "煮茶时茶量要少，煮久了会浓苦。新手先泡，再试煮。"
+  },
+
+  /* ========== 黄茶 ========== */
+  {
+    id: "junshan", name: "君山银针", category: "黄茶", glyph: "君",
+    reps: "芽头黄茶 · 湖南岳阳",
+    desc: "黄茶里最出名的一款，芽头肥壮，黄汤黄叶，滋味甜醇。比绿茶多一道“闷黄”，口感更柔。",
+    temp: "85–90°C", time: "40 秒左右", ratio: "3g / 150ml", vessel: "玻璃杯、盖碗",
+    taste: "甜醇、柔和、少苦涩",
+    steps: ["温杯投茶 3g。","85–90°C 水沿壁注入。","40 秒左右饮用。","留三分之一续水。"],
+    tip: "黄茶存在感低但很好喝，别用沸水，也别闷盖。"
+  },
+  {
+    id: "mengding", name: "蒙顶黄芽", category: "黄茶", glyph: "蒙",
+    reps: "芽形黄茶 · 四川雅安",
+    desc: "来自蒙顶山，芽叶嫩黄，甜香明显，汤感柔顺。",
+    temp: "85–90°C", time: "40 秒左右", ratio: "3g / 150ml", vessel: "玻璃杯、盖碗",
+    taste: "甜香、柔顺、鲜醇",
+    steps: ["温杯投茶 3g。","85–90°C 注水。","约 40 秒饮用。","续水留根。"],
+    tip: "黄芽很嫩，水温高会苦，出汤别拖。"
+  },
+  {
+    id: "huoshan", name: "霍山黄芽", category: "黄茶", glyph: "霍",
+    reps: "黄芽茶 · 安徽霍山",
+    desc: "外形似雀舌，香气清甜，滋味醇和，是黄茶里比较清爽的一支。",
+    temp: "85°C 左右", time: "40–50 秒", ratio: "3g / 150ml", vessel: "玻璃杯",
+    taste: "清甜、醇和、栗香",
+    steps: ["温杯投茶 3g。","85°C 水沿壁注满。","40–50 秒后喝。","留根续水。"],
+    tip: "黄茶和绿茶一样怕高温久闷，记住“低温、快喝”。"
+  },
+
+  /* ========== 乌龙茶 ========== */
+  {
+    id: "tieguanyin", name: "铁观音", category: "乌龙茶", glyph: "铁",
+    reps: "闽南乌龙 · 福建安溪",
+    desc: "清香型偏花香清甜，浓香型更焙火醇厚。乌龙茶讲究快出汤，闷久了容易苦。",
+    temp: "95–100°C", time: "8–12 秒", ratio: "7g / 110ml", vessel: "盖碗",
+    taste: "花香、清甜；浓香型更醇",
+    steps: ["盖碗烫热，投茶 7g。","沸水高冲注满。","第一泡 8–12 秒内出汤，倒干净。","后续每泡延长 5–10 秒。"],
+    tip: "乌龙茶最怕闷。觉得苦，先减茶量或缩短出汤。"
+  },
+  {
+    id: "dahongpao", name: "大红袍", category: "乌龙茶", glyph: "大",
+    reps: "闽北乌龙 · 福建武夷山",
+    desc: "焙火香明显，带坚果、焦糖气息，滋味醇厚。名字容易误会，它可不是红茶。",
+    temp: "95–100°C", time: "8–15 秒", ratio: "7g / 110ml", vessel: "盖碗",
+    taste: "焙火香、醇厚、回甘",
+    steps: ["盖碗温杯，投茶 7g。","沸水快速润洗一次，倒掉。","再次注水，8–15 秒出汤。","逐泡延长，别泡在水里。"],
+    tip: "大红袍是乌龙茶，不是红茶。焙火茶耐泡，但别一开始就闷。"
+  },
+  {
+    id: "rougui", name: "武夷肉桂", category: "乌龙茶", glyph: "肉",
+    reps: "闽北乌龙 · 武夷岩茶",
+    desc: "以香气锐利著称，常有桂皮香、花果香，茶气足。喜欢香气高扬的人会很爱。",
+    temp: "100°C", time: "5–10 秒", ratio: "7g / 110ml", vessel: "盖碗",
+    taste: "桂皮香、花果香、辛锐",
+    steps: ["盖碗温杯投茶 7g。","沸水高冲，快速润洗一次。","再次注水，5–10 秒快出。","后面逐泡延长。"],
+    tip: "肉桂香气冲，出汤慢容易苦，前几泡一定快。"
+  },
+  {
+    id: "shuixian", name: "武夷水仙", category: "乌龙茶", glyph: "水",
+    reps: "闽北乌龙 · 武夷岩茶",
+    desc: "汤感醇厚，兰花香或木质香，比肉桂柔和，适合喜欢醇滑口感的人。",
+    temp: "100°C", time: "8–12 秒", ratio: "7g / 110ml", vessel: "盖碗",
+    taste: "兰花香、醇厚、木质味",
+    steps: ["温杯投茶 7g。","沸水润洗一次。","注水后 8–12 秒出汤。","后续延长。"],
+    tip: "老丛水仙木质味更明显，新手可以先从普通水仙试起。"
+  },
+  {
+    id: "fenghuang", name: "凤凰单丛", category: "乌龙茶", glyph: "凤",
+    reps: "广东乌龙 · 广东潮州",
+    desc: "香型极其丰富，蜜兰香、鸭屎香、芝兰香……香气高扬，茶汤有劲。单丛很耐泡，但出汤要快。",
+    temp: "95–100°C", time: "5–10 秒", ratio: "6–7g / 110ml", vessel: "盖碗",
+    taste: "蜜兰香 / 花香高扬、回甘强",
+    steps: ["盖碗温杯，投茶 6–7g。","沸水高冲，快速润洗。","第一泡 5–10 秒出汤。","逐泡延长，可泡很多道。"],
+    tip: "单丛香气高但容易苦，新手先从蜜兰香入手，出汤要快。"
+  },
+  {
+    id: "dongding", name: "冻顶乌龙", category: "乌龙茶", glyph: "冻",
+    reps: "台湾乌龙 · 台湾南投",
+    desc: "发酵和焙火适中，花香带奶香，汤感圆润，苦涩低，对新手比较友好。",
+    temp: "95°C 左右", time: "10–20 秒", ratio: "6g / 110ml", vessel: "盖碗、小壶",
+    taste: "花香、奶香、圆润",
+    steps: ["温杯投茶 6g。","95°C 注水。","10–20 秒出汤。","后续适当延长。"],
+    tip: "冻顶比闽北岩茶轻柔，水温可以略低一点。"
+  },
+  {
+    id: "dongfang", name: "东方美人", category: "乌龙茶", glyph: "东",
+    reps: "台湾乌龙 · 台湾新竹",
+    desc: "被小绿叶蝉叮咬后发酵较重，带蜜香、果香，茶汤橙红，口感甜润，几乎没有苦涩。",
+    temp: "90–95°C", time: "10–15 秒", ratio: "5–6g / 110ml", vessel: "盖碗",
+    taste: "蜜香、果香、甜润",
+    steps: ["温杯投茶 5–6g。","90–95°C 注水。","10–15 秒出汤。","后续延长。"],
+    tip: "东方美人发酵偏重，别用太低水温，否则香气出不来。"
+  },
+
+  /* ========== 红茶 ========== */
+  {
+    id: "zhengshan", name: "正山小种", category: "红茶", glyph: "正",
+    reps: "小种红茶 · 福建武夷山桐木关",
+    desc: "世界红茶鼻祖。传统款有松烟香，现代款偏花果蜜香，茶汤红亮甜醇。",
+    temp: "90–95°C", time: "5–10 秒", ratio: "4g / 150ml", vessel: "盖碗、瓷壶",
+    taste: "松烟香 / 花果蜜香、甜醇",
+    steps: ["温杯投茶 4g。","90–95°C 注水。","5–10 秒出汤，别久闷。","可续水多次，逐次延长。"],
+    tip: "红茶久泡容易酸涩，前几泡快出汤更稳。"
+  },
+  {
+    id: "jinjunmei", name: "金骏眉", category: "红茶", glyph: "金",
+    reps: "芽头红茶 · 福建武夷山",
+    desc: "全芽头，茶汤金黄，蜜香、花果香细腻，甜感好，是红茶里偏精致的一支。",
+    temp: "85–90°C", time: "5–8 秒", ratio: "3–4g / 150ml", vessel: "盖碗",
+    taste: "蜜香、花果香、细腻甜润",
+    steps: ["温杯投茶 3–4g。","85–90°C 水沿壁注入。","5–8 秒出汤。","后续稍微延长。"],
+    tip: "金骏眉芽嫩，别用沸水猛冲，容易酸涩。"
+  },
+  {
+    id: "qimen", name: "祁门红茶", category: "红茶", glyph: "祁",
+    reps: "工夫红茶 · 安徽祁门",
+    desc: "“红茶皇后”，香气细腻，花果香、蜜香交织，汤感柔顺。清饮很舒服，也适合调饮。",
+    temp: "90–95°C", time: "5–10 秒", ratio: "3–4g / 150ml", vessel: "盖碗、瓷壶",
+    taste: "蜜香、花果香、柔顺",
+    steps: ["温杯投茶 3–4g。","90–95°C 注水。","5–10 秒出汤。","逐泡延长。"],
+    tip: "祁红香气细，别投太多茶把香气压住。"
+  },
+  {
+    id: "dianhong", name: "滇红", category: "红茶", glyph: "滇",
+    reps: "云南工夫红茶 · 云南临沧 / 凤庆",
+    desc: "大叶种红茶，滋味浓强，甜香明显，金毫多。适合喜欢味道足、做奶茶也出色。",
+    temp: "90–95°C", time: "5–10 秒", ratio: "4–5g / 150ml", vessel: "盖碗、瓷壶",
+    taste: "甜香、浓强、金毫显",
+    steps: ["温杯投茶 4–5g。","90–95°C 注水。","5–10 秒出汤。","可续水多次。"],
+    tip: "滇红浓强度高，清饮别泡太久，做奶茶可以稍浓。"
+  },
+
+  /* ========== 黑茶 ========== */
+  {
+    id: "anhua", name: "安化黑茶", category: "黑茶", glyph: "湖",
+    reps: "湖南黑茶 · 湖南安化",
+    desc: "后发酵茶，常有陈香、木质香，汤感醇和。天尖、茯砖、花砖都属于安化黑茶。",
+    temp: "100°C", time: "10–15 秒", ratio: "6–8g / 110ml", vessel: "盖碗、紫砂壶、煮茶壶",
+    taste: "陈香、醇和、木质香",
+    steps: ["投茶 6–8g。","沸水快速润洗一次。","再次注沸水，10–15 秒出汤。","后续延长，也可煮饮。"],
+    tip: "紧压茶先润洗，帮助叶片舒展；别一开始就闷太久。"
+  },
+  {
+    id: "liubao", name: "六堡茶", category: "黑茶", glyph: "广",
+    reps: "广西黑茶 · 广西梧州",
+    desc: "陈香、槟榔香或木质香，汤感醇滑。适合沸水冲泡，也可煮饮。",
+    temp: "100°C", time: "10–15 秒", ratio: "6–7g / 110ml", vessel: "盖碗、紫砂壶、煮茶壶",
+    taste: "陈香、槟榔香、醇滑",
+    steps: ["投茶 6–7g，沸水快速润洗一次。","再次注沸水，10–15 秒出汤。","可连续冲泡多次。","煮饮时茶量减半，煮 3–5 分钟。"],
+    tip: "六堡茶陈味明显，新手可以先从年份较新的试起。"
+  },
+  {
+    id: "yaan", name: "雅安藏茶", category: "黑茶", glyph: "藏",
+    reps: "四川黑茶 · 四川雅安",
+    desc: "传统边销茶，滋味醇厚，陈香明显。常被用来煮酥油茶，也可以清饮。",
+    temp: "100°C", time: "10–15 秒", ratio: "6–8g / 110ml", vessel: "盖碗、煮茶壶",
+    taste: "陈香、醇厚、耐煮",
+    steps: ["投茶 6–8g，沸水润洗一次。","注沸水，10–15 秒出汤。","可煮饮，茶量减半。","逐泡延长。"],
+    tip: "藏茶原料较粗老，需要沸水才能出味。"
+  },
+
+  /* ========== 普洱茶 ========== */
+  {
+    id: "shengpu", name: "普洱生茶", category: "普洱茶", glyph: "生",
+    reps: "云南大叶种 · 西双版纳 / 临沧 / 普洱",
+    desc: "自然陈化，新生茶苦涩明显、茶气强，随年份增长逐渐转醇。山头风格差异很大：老班章霸气，冰岛清甜，易武温柔，景迈带蜜香。",
+    temp: "95–100°C", time: "8–12 秒", ratio: "6–7g / 110ml", vessel: "盖碗",
+    taste: "新生茶苦涩、回甘强；老生茶转醇厚陈香",
+    steps: ["盖碗温杯，投茶 6–7g。","沸水快速润洗一次，立刻倒掉。","再次注沸水，8–12 秒出汤。","新生茶一定快出汤，后面逐泡延长。"],
+    tip: "新生茶别闷，否则苦涩很重。想喝柔和一点，可以选年份稍长的生普。"
+  },
+  {
+    id: "shupu", name: "普洱熟茶", category: "普洱茶", glyph: "熟",
+    reps: "人工渥堆发酵 · 云南",
+    desc: "经过渥堆发酵，褪去苦涩，转为醇厚顺滑，常有陈香、木质香。对肠胃比较友好，适合日常喝。",
+    temp: "100°C", time: "8–12 秒", ratio: "6–8g / 110ml", vessel: "盖碗、紫砂壶",
+    taste: "醇厚、顺滑、陈香 / 木质香",
+    steps: ["盖碗烫热，投茶 6–8g。","沸水快速润洗一次，去堆味。","再次注沸水，8–12 秒出汤。","逐泡延长，别长时间闷在壶里。"],
+    tip: "熟普不是越浓越好。新手先快出汤，觉得淡再延长。"
+  },
+  {
+    id: "banzhang", name: "老班章", category: "普洱茶", glyph: "班",
+    reps: "名山头生普 · 云南西双版纳布朗山",
+    desc: "号称“茶王”，茶气最足，滋味浓强，苦底明显但化得快，回甘猛烈。价格高，新手不必从它开始。",
+    temp: "95–100°C", time: "5–10 秒", ratio: "6g / 110ml", vessel: "盖碗",
+    taste: "霸气、苦底强、回甘猛烈",
+    steps: ["投茶 6g，沸水快速润洗。","注水后 5–10 秒出汤，千万别闷。","逐泡延长。","新手可减到 4–5g。"],
+    tip: "老班章茶气强，投茶宁少勿多，出汤宁快勿慢。"
+  },
+  {
+    id: "bingdao", name: "冰岛", category: "普洱茶", glyph: "冰",
+    reps: "名山头生普 · 云南临沧勐库",
+    desc: "以清冽甘甜著称，苦涩极低，汤感细腻，冰糖甜明显。和老班章的霸气完全两个方向。",
+    temp: "95–100°C", time: "8–12 秒", ratio: "6g / 110ml", vessel: "盖碗",
+    taste: "清冽、冰糖甜、细腻",
+    steps: ["投茶 6g，沸水润洗一次。","注水后 8–12 秒出汤。","后续逐泡延长。","冰岛甜感突出，别投太多茶压住它。"],
+    tip: "冰岛价格差异大，新手先试小样，不必追名寨。"
+  },
+  {
+    id: "yiwu", name: "易武", category: "普洱茶", glyph: "易",
+    reps: "名山头生普 · 云南西双版纳",
+    desc: "古六大茶山之一，风格温柔敦厚，香高水柔，苦涩低，汤感细腻。很多人喜欢的“柔甜型”生普。",
+    temp: "95–100°C", time: "8–12 秒", ratio: "6–7g / 110ml", vessel: "盖碗",
+    taste: "柔甜、香高、汤感细腻",
+    steps: ["投茶 6–7g，沸水润洗。","注水后 8–12 秒出汤。","逐泡延长。","易武偏柔，出汤可以比班章稍缓一点。"],
+    tip: "易武柔不等于淡，投茶量别太少，否则会显得水薄。"
+  },
+  {
+    id: "jingmai", name: "景迈", category: "普洱茶", glyph: "景",
+    reps: "名山头生普 · 云南普洱澜沧",
+    desc: "以蜜香和兰花香著称，柔和中庸，涩感稍显但化得开，是香气型普洱的代表。",
+    temp: "95–100°C", time: "8–12 秒", ratio: "6g / 110ml", vessel: "盖碗",
+    taste: "蜜香、兰花香、柔和",
+    steps: ["投茶 6g，沸水润洗。","注水后 8–12 秒出汤。","逐泡延长。","景迈香好，前几泡别闷。"],
+    tip: "景迈涩感比易武明显，出汤快一点会更顺。"
+  }
+];
+
+/* ====== 决策层：参考价 / 预算档 / 适合场景 / 口味 ====== */
+const teaMeta = {
+  longjing:   { price: 180, scenes: ["办公室","待客","送礼"], flavor: ["香","甜"] },
+  biluochun:  { price: 120, scenes: ["待客","送礼","独饮"], flavor: ["甜","香"] },
+  huangshan:  { price: 40,  scenes: ["办公室","独饮","待客"], flavor: ["香","甜"], beginner: true },
+  taiping:    { price: 150, scenes: ["待客","独饮","送礼"], flavor: ["香","醇"] },
+  liuan:      { price: 60,  scenes: ["办公室","独饮"], flavor: ["醇","苦"] },
+  xinyang:    { price: 50,  scenes: ["办公室","独饮"], flavor: ["香","甜"], beginner: true },
+  anji:       { price: 100, scenes: ["办公室","独饮"], flavor: ["甜","香"], beginner: true },
+  enshi:      { price: 70,  scenes: ["办公室","独饮"], flavor: ["香","甜"] },
+  yinzhen:    { price: 220, scenes: ["送礼","待客","独饮"], flavor: ["甜","香"] },
+  baimudan:   { price: 80,  scenes: ["办公室","独饮","待客"], flavor: ["甜","香"], beginner: true },
+  shoumei:    { price: 25,  scenes: ["煮饮","饭后","独饮","办公室"], flavor: ["甜","醇"], beginner: true },
+  junshan:    { price: 150, scenes: ["送礼","待客"], flavor: ["甜","醇"] },
+  mengding:   { price: 90,  scenes: ["独饮","待客"], flavor: ["甜","香"] },
+  huoshan:    { price: 60,  scenes: ["办公室","独饮"], flavor: ["甜","香"] },
+  tieguanyin: { price: 50,  scenes: ["待客","饭后","独饮"], flavor: ["香","甜"] },
+  dahongpao:  { price: 100, scenes: ["待客","饭后","送礼"], flavor: ["醇","香"] },
+  rougui:     { price: 120, scenes: ["独饮","待客","饭后"], flavor: ["香","苦"] },
+  shuixian:   { price: 60,  scenes: ["独饮","饭后","待客"], flavor: ["醇","香"] },
+  fenghuang:  { price: 90,  scenes: ["待客","独饮","饭后"], flavor: ["香","苦"] },
+  dongding:   { price: 70,  scenes: ["办公室","待客","独饮"], flavor: ["香","甜"] },
+  dongfang:   { price: 130, scenes: ["待客","送礼","独饮"], flavor: ["甜","香"] },
+  zhengshan:  { price: 60,  scenes: ["办公室","下午茶","饭后","调饮"], flavor: ["甜","醇"], beginner: true },
+  jinjunmei:  { price: 450, scenes: ["送礼","待客","下午茶"], flavor: ["甜","香"] },
+  qimen:      { price: 60,  scenes: ["办公室","下午茶","待客","调饮"], flavor: ["香","甜"], beginner: true },
+  dianhong:   { price: 35,  scenes: ["办公室","下午茶","调饮"], flavor: ["甜","醇"], beginner: true },
+  anhua:      { price: 30,  scenes: ["饭后","煮饮","办公室"], flavor: ["醇"] },
+  liubao:     { price: 30,  scenes: ["饭后","煮饮","独饮"], flavor: ["醇"] },
+  yaan:       { price: 20,  scenes: ["煮饮","饭后"], flavor: ["醇"] },
+  shengpu:    { price: 40,  scenes: ["独饮","待客","饭后"], flavor: ["苦","香"] },
+  shupu:      { price: 35,  scenes: ["办公室","饭后","煮饮"], flavor: ["醇","甜"], beginner: true },
+  banzhang:   { price: 800, scenes: ["独饮","待客","送礼"], flavor: ["苦","醇"] },
+  bingdao:    { price: 600, scenes: ["待客","送礼","独饮"], flavor: ["甜"] },
+  yiwu:       { price: 120, scenes: ["独饮","待客","饭后"], flavor: ["甜","香"] },
+  jingmai:    { price: 90,  scenes: ["独饮","待客","饭后"], flavor: ["香","甜"] }
+};
+
+const tierOf = p => p <= 30 ? 1 : p <= 80 ? 2 : p <= 200 ? 3 : 4;
+
+teas.forEach(t => {
+  const m = teaMeta[t.id] || {};
+  t.price = m.price !== undefined ? m.price : 60;
+  t.scenes = m.scenes || ["独饮"];
+  t.flavor = m.flavor || ["醇"];
+  t.beginner = !!m.beginner;
+  t.budget = tierOf(t.price);
+});
+
+const SCENES = ["办公室","独饮","待客","送礼","饭后","煮饮","下午茶","调饮"];
+const FLAVORS = ["苦","甜","香","醇"];
+
+const BUDGET_TIERS = [
+  {
+    level: 1, short: "≤¥30", range: "≤ ¥30 / 50g", name: "口粮区",
+    title: "口粮区 · 天天喝不心疼",
+    what: "这个价位买到的是「原料不稀缺、工艺成熟」的茶：黑茶、寿眉、大叶种红茶、基础熟普。香气不会多惊艳，但汤感正、耐泡、适合大杯闷泡。",
+    pick: "优先选生产日期新、包装简单（铝箔袋 / 牛皮纸）的口粮装；不用追求名山头和精致礼盒。",
+    avoid: "别指望明前龙井、白毫银针、正岩肉桂；看到「9.9 包邮老班章」直接跳过。",
+    advice: "先买 100–250g 试一个月，喝得完再回购。口粮茶买贵不如买对。"
+  },
+  {
+    level: 2, short: "¥30–80", range: "¥30–80 / 50g", name: "主力区",
+    title: "主力区 · 日常好喝的分水岭",
+    what: "大多数人的长期主力都落在这一档：烘青绿茶、工夫红茶、口粮乌龙、白牡丹、基础熟普。这里已经能喝到清晰的花香、蜜香和回甘。",
+    pick: "同一品种比「等级」更实用——特级和一级的差距，往往小于两家店之间的差距。",
+    avoid: "别在这个价位追「名山头」「大师手作」这类标签，溢价主要来自故事。",
+    advice: "同一款茶买两家对比，差价 30% 以内选稳定、标注清楚的那家。"
+  },
+  {
+    level: 3, short: "¥80–200", range: "¥80–200 / 50g", name: "风味区",
+    title: "风味区 · 喝得出产地和工艺",
+    what: "核心产区与名优品种的入门款：西湖龙井、碧螺春、安吉白茶、正岩、单丛、白毫银针。香气层次和汤感厚度都明显上一个台阶。",
+    pick: "看三件事：产地（具体到县 / 山场）、等级、采摘时间（明前 / 雨前 / 秋茶）。比看品牌有用。",
+    avoid: "这个价位最容易为「包装」和「故事」付费；礼盒装常常一半价钱在盒子上。",
+    advice: "先买 50g 小样，喝完再回购；绿茶当年喝完，别囤。"
+  },
+  {
+    level: 4, short: "¥200+", range: "¥200+ / 50g", name: "尝鲜与送礼",
+    title: "尝鲜与送礼 · 先买小样",
+    what: "芽头茶、名山头、品牌礼盒：白毫银针、金骏眉、老班章、冰岛都在这一档。喝的是稀缺性和辨识度，不是「更好喝」的保证。",
+    pick: "送礼看包装完整性、生产日期和保质期；自饮只看小样，别为标签买单。",
+    avoid: "名山头假货最多；没有可信渠道，别买「老班章」「冰岛」的便宜散茶。",
+    advice: "这一档价格和好喝程度不成正比。同预算买 3 份 50g 小样，比买 1 份 150g 更值。"
+  }
+];
+
+/* ====== 元素 ====== */
+const grid = document.getElementById('teaGrid');
+const searchInput = document.getElementById('searchInput');
+const filters = document.getElementById('filters');
+const resultCount = document.getElementById('resultCount');
+
+const chevron = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+
+const state = { category: "全部", scene: "全部", budget: "全部", flavor: "全部" };
+
+/* ====== 渲染茶叶 ====== */
+function renderTeas(){
+  const kw = searchInput.value.trim().toLowerCase();
+  const filtered = teas.filter(t => {
+    if(state.category !== "全部" && t.category !== state.category) return false;
+    if(state.scene !== "全部" && t.scenes.indexOf(state.scene) === -1) return false;
+    if(state.budget !== "全部" && String(t.budget) !== state.budget) return false;
+    if(state.flavor !== "全部" && t.flavor.indexOf(state.flavor) === -1) return false;
+    if(kw){
+      const hay = [
+        t.name, t.category, t.reps, t.desc, t.taste, t.temp, t.time,
+        t.scenes.join(" "), t.flavor.join(" "), "¥" + t.price,
+        t.beginner ? "新手友好 新手" : ""
+      ].join(" ").toLowerCase();
+      if(!hay.includes(kw)) return false;
+    }
+    return true;
+  });
+
+  if(!filtered.length){
+    grid.innerHTML = `<div class="empty">没有找到相关茶叶。试试「普洱」「办公室」「甜」，或清空筛选。<br><button type="button" data-reset>清空筛选</button></div>`;
+    resultCount.innerHTML = `没有匹配结果`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(tea => `
+    <article class="tea-card" data-id="${tea.id}">
+      <div class="tea-top">
+        <div class="tea-glyph">${tea.glyph}</div>
+        <div class="tea-badges">
+          <span class="tea-cat">${tea.category}</span>
+          ${tea.beginner ? '<span class="tea-new">新手友好</span>' : ''}
+        </div>
+      </div>
+      <h3>${tea.name}</h3>
+      <div class="tea-reps">${tea.reps}</div>
+      <p class="tea-desc">${tea.desc}</p>
+      <div class="tea-scenes">
+        <span class="scene-label">适合</span>
+        ${tea.scenes.map(s => `<button type="button" class="scene-tag" data-scene="${s}" title="按「${s}」筛选">${s}</button>`).join('')}
+      </div>
+      <div class="tea-meta">
+        <div><small>水温</small><strong>${tea.temp}</strong></div>
+        <div><small>第一泡</small><strong>${tea.time}</strong></div>
+        <div><small>参考价 /50g</small><strong>¥${tea.price}</strong></div>
+      </div>
+      <button class="tea-toggle" type="button">如何冲泡 ${chevron}</button>
+      <div class="tea-detail">
+        <h4>建议参数</h4>
+        <ul>
+          <li>投茶量：${tea.ratio}</li>
+          <li>器具：${tea.vessel}</li>
+          <li>口感：${tea.taste}</li>
+          <li>预算档：${BUDGET_TIERS[tea.budget - 1].short} / 50g（${BUDGET_TIERS[tea.budget - 1].name}）</li>
+        </ul>
+        <h4>怎么喝</h4>
+        <ul>
+          ${tea.steps.map(s => `<li>${s}</li>`).join('')}
+        </ul>
+        <div class="tea-tip">${tea.tip}</div>
+      </div>
+    </article>
+  `).join('');
+
+  const active = [state.category, state.scene, state.budget, state.flavor].filter(v => v !== "全部").length;
+  resultCount.innerHTML = active || kw
+    ? `筛出 <b>${filtered.length}</b> 款 / 共 ${teas.length} 款`
+    : `共 <b>${teas.length}</b> 款茶`;
+}
+
+function toggleCard(card, force){
+  const btn = card.querySelector('.tea-toggle');
+  const open = force === undefined ? !card.classList.contains('open') : force;
+  card.classList.toggle('open', open);
+  btn.innerHTML = open ? `收起 ${chevron}` : `如何冲泡 ${chevron}`;
+}
+
+/* ====== 首屏 30 秒选茶器 ====== */
+const pick = { scene: "办公室", budget: 2, flavor: "甜" };
+const PICK_SCENES = ["办公室","独饮","待客","饭后"];
+
+function renderPick(){
+  document.getElementById('pickScene').innerHTML = PICK_SCENES.map(s =>
+    `<button type="button" class="pick-chip ${pick.scene === s ? 'on' : ''}" data-pick="scene" data-value="${s}">${s}</button>`
+  ).join('');
+  document.getElementById('pickBudget').innerHTML = BUDGET_TIERS.map(b =>
+    `<button type="button" class="pick-chip ${pick.budget === b.level ? 'on' : ''}" data-pick="budget" data-value="${b.level}">${b.short}</button>`
+  ).join('');
+  document.getElementById('pickFlavor').innerHTML = FLAVORS.map(f =>
+    `<button type="button" class="pick-chip ${pick.flavor === f ? 'on' : ''}" data-pick="flavor" data-value="${f}">${f}</button>`
+  ).join('');
+
+  const inScene = teas.filter(t => t.scenes.indexOf(pick.scene) > -1);
+  const inFlavor = teas.filter(t => t.flavor.indexOf(pick.flavor) > -1);
+
+  let list = inScene.filter(t => t.budget === pick.budget && t.flavor.indexOf(pick.flavor) > -1);
+  let note = "";
+
+  // 口味优先：场景 + 口味有交集时，放宽预算，而不是换一款口味不符的茶
+  if(!list.length){
+    list = inScene.filter(t => t.flavor.indexOf(pick.flavor) > -1);
+    if(list.length) note = `「${pick.scene} + 这一档」没有典型的「${pick.flavor}」味，给你口味最接近的（价格可能不在这一档）。`;
+  }
+  // 再退一步：场景 + 预算，保场景和花钱
+  if(!list.length){
+    list = inScene.filter(t => t.budget === pick.budget);
+    if(list.length) note = `这一档没有典型的「${pick.flavor}」味，给你同场景里口感最接近的。`;
+  }
+  // 最后退到口味本身
+  if(!list.length){
+    list = inFlavor.slice();
+    if(list.length) note = `「${pick.scene}」暂时没有匹配的茶，先按口味推荐。`;
+  }
+  if(!list.length){
+    list = teas.slice();
+    note = "没有完全匹配的组合，先给你一杯最稳的口粮。";
+  }
+
+  // 排序：预算档最接近的优先，其次新手友好，再次价格低
+  list.sort((a, b) => {
+    const da = Math.abs(a.budget - pick.budget);
+    const db = Math.abs(b.budget - pick.budget);
+    if(da !== db) return da - db;
+    if(a.beginner !== b.beginner) return a.beginner ? -1 : 1;
+    return a.price - b.price;
+  });
+  const t0 = list[0];
+
+  document.getElementById('pickResult').innerHTML = `
+    <div class="pr-label">今天喝这杯</div>
+    <div class="pr-main">
+      <b>${t0.name}</b>
+      <span class="pr-price">¥${t0.price} / 50g</span>
+    </div>
+    <div class="pr-meta">${t0.category} · ${t0.temp} · ${t0.time} · ${t0.vessel}</div>
+    <div class="pr-note">${note || `${pick.scene}也能泡，${BUDGET_TIERS[t0.budget - 1].name}。`}</div>
+    <button class="pr-btn" type="button" data-tea-link="${t0.id}">看它的冲泡卡 →</button>
+  `;
+}
+
+/* ====== 办公室泡法 ====== */
+const officeModes = [
+  {
+    id: "mug", num: "01", name: "马克杯 + 饮水机", label: "马克杯 + 饮水机",
+    lead: "最省事的方案：少放茶、别盖盖、2–3 分钟就喝。目标是「不苦」，不是「泡得好」。",
+    params: [["投茶","2–3g（约一个瓶盖）"],["水温","热水档 ≈ 85–90°C"],["等待","2–3 分钟"],["续水","2–3 次"]],
+    steps: [
+      "先用热水涮一遍杯子，倒掉——去味、温杯，茶香更清楚。",
+      "投茶 2–3g，薄薄铺在杯底就够了。",
+      "沿杯壁注满热水，别对着茶叶冲，也别拿勺子搅。",
+      "2–3 分钟后喝；剩 1/3 时续水，能续 2–3 次。"
+    ],
+    warn: "别用饮水机的「温水档」——温度不够，香气出不来，只剩水味。宁可热水晾一会儿。",
+    memo: "记法：2g 茶 + 满杯热水 + 不盖盖，2 分钟后开喝。",
+    teas: ["shupu","dianhong","shoumei","anhua"]
+  },
+  {
+    id: "thermos", num: "02", name: "保温杯（通勤 / 出差）", label: "保温杯",
+    lead: "保温杯等于持续高温闷煮：只放黑茶、熟普、老白茶，量要少，别泡一整天。",
+    params: [["投茶","1.5–2g"],["水温","100°C 沸水"],["时间","2 小时内喝完"],["续水","别反复续一整天"]],
+    steps: [
+      "先用沸水润茶 10 秒倒掉，去掉仓味和浮尘。",
+      "投茶 1.5–2g——保温杯最忌放多，放多了必苦。",
+      "注满沸水，盖子别拧太紧，留一点缝，避免一直加压闷着。",
+      "2 小时内喝完；要续水就把茶渣倒掉重泡，别一整天反复续。"
+    ],
+    warn: "绿茶、黄茶、新白茶、清香型乌龙不要进保温杯，会焖黄、发苦、发闷，浪费好茶。",
+    memo: "记法：1.5g 茶 + 沸水 + 2 小时内清空，别续一整天。",
+    teas: ["shupu","liubao","anhua","shoumei"]
+  },
+  {
+    id: "glass", num: "03", name: "玻璃杯 / 带滤网杯 + 开水", label: "玻璃杯 + 开水",
+    lead: "最通用的办公室方案：绿茶、白茶、红茶都能泡。唯一的变量是水温。",
+    params: [["投茶","3g / 300ml"],["水温","80–90°C"],["等待","1–2 分钟"],["续水","留 1/3 再加水"]],
+    steps: [
+      "温杯后投茶 3g，薄薄一层铺满杯底。",
+      "没有温度计：沸水开盖晾 6–8 分钟大约 85°C；或先倒 1/3 凉水，再加热水。",
+      "沿杯壁注满，别盖盖子闷——盖盖会把青味和苦味一起闷出来。",
+      "1–2 分钟喝，剩 1/3 续水；第二泡时间缩短，第三泡再延长。"
+    ],
+    warn: "刚烧开的水别直冲嫩芽，鲜甜会被烫掉，只剩苦。",
+    memo: "记法：3g 茶 + 晾过 6 分钟的水 + 不盖盖，1–2 分钟喝。",
+    teas: ["anji","huangshan","baimudan","zhengshan"]
+  },
+  {
+    id: "gaiwan", num: "04", name: "盖碗 / 快客杯（午休 10 分钟）", label: "盖碗 / 快客杯",
+    lead: "想喝出层次就上盖碗：投茶多一点、出汤快一点，别让茶汤留在碗里。",
+    params: [["投茶","6–7g / 110ml"],["水温","95–100°C"],["出汤","8–15 秒"],["续水","逐泡延长 5–10 秒"]],
+    steps: [
+      "盖碗烫热，投茶 6–7g，大约铺满碗底。",
+      "沸水高冲注满，第一泡快速润洗倒掉（岩茶、单丛、生普必做）。",
+      "再次注水，8–15 秒内出汤，一定倒干净。",
+      "后面每泡延长 5–10 秒，能泡 6–8 道。"
+    ],
+    warn: "办公室最常见的翻车：茶汤留在盖碗里忘了倒，下一秒就苦。定个 10 秒的闹钟。",
+    memo: "记法：7g 茶 + 沸水 + 10 秒出汤，倒干净再说话。",
+    teas: ["tieguanyin","fenghuang","rougui","shengpu"]
+  }
+];
+
+let officeIdx = 0;
+
+function miniTeaHTML(id, extra){
+  const t = teas.find(x => x.id === id);
+  if(!t) return '';
+  return `<button type="button" class="mini-tea" data-tea-link="${t.id}"><b>${t.name}</b><span>¥${t.price}/50g${extra ? ' · ' + extra : ''}</span></button>`;
+}
+
+function renderOffice(){
+  document.getElementById('modeTabs').innerHTML = officeModes.map((m, i) =>
+    `<button type="button" class="mode-tab ${i === officeIdx ? 'active' : ''}" data-mode="${i}">${m.num} ${m.label}</button>`
+  ).join('');
+
+  const m = officeModes[officeIdx];
+  document.getElementById('modePanel').innerHTML = `
+    <div class="mode-panel">
+      <div class="mode-head">
+        <div class="mode-badge">${m.num}</div>
+        <div>
+          <h3>${m.name}</h3>
+          <p>${m.lead}</p>
+        </div>
+      </div>
+      <div class="mode-body">
+        <div>
+          <h4>怎么泡</h4>
+          <ol class="mode-steps">${m.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+          <div class="mode-warn"><b>避坑</b>${m.warn}</div>
+          <p class="mode-memo">${m.memo}</p>
+        </div>
+        <div>
+          <h4>参数</h4>
+          <div class="mode-params">
+            ${m.params.map(p => `<div><small>${p[0]}</small><strong>${p[1]}</strong></div>`).join('')}
+          </div>
+          <h4>这个方案适合</h4>
+          <div class="mini-list">${m.teas.map(id => miniTeaHTML(id)).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ====== 按预算选茶 ====== */
+let budgetIdx = 1;
+
+function budgetTeaHTML(t){
+  return `<button type="button" class="bp-tea" data-tea-link="${t.id}">
+    <span class="bpt-top"><b>${t.name}</b><em>¥${t.price}</em></span>
+    <span class="bpt-taste">${t.taste}</span>
+  </button>`;
+}
+
+function renderBudget(){
+  document.getElementById('budgetTabs').innerHTML = BUDGET_TIERS.map((b, i) => {
+    const n = teas.filter(t => t.budget === b.level).length;
+    return `<button type="button" class="budget-tab ${i === budgetIdx ? 'active' : ''}" data-budget="${i}">
+      <span class="bt-range">${b.short}</span>
+      <span class="bt-name">${b.name} · ${n} 款</span>
+    </button>`;
+  }).join('');
+
+  const b = BUDGET_TIERS[budgetIdx];
+  const list = teas.filter(t => t.budget === b.level).sort((a, c) => a.price - c.price);
+
+  document.getElementById('budgetPanel').innerHTML = `
+    <div class="budget-panel">
+      <div class="bp-head">
+        <h3>${b.title}</h3>
+        <div class="bp-range">${b.range}</div>
+      </div>
+      <div class="bp-grid">
+        <div class="bp-text">
+          <p>${b.what}</p>
+          <p><b>怎么挑：</b>${b.pick}</p>
+          <div class="bp-note avoid"><b>别买</b>${b.avoid}</div>
+          <div class="bp-note"><b>建议</b>${b.advice}</div>
+        </div>
+        <div>
+          <div class="bp-h4">这一档的 ${list.length} 款 · 点开看冲泡卡</div>
+          <div class="bp-teas">${list.map(budgetTeaHTML).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ====== 口味测试 ====== */
+const quizQuestions = [
+  {
+    q: "早上第一杯茶，你想要什么感觉？",
+    opts: [
+      { t: "立刻清醒，有点冲", s: { 苦: 2 } },
+      { t: "甜甜润润，舒服就好", s: { 甜: 2 } },
+      { t: "一开盖就香", s: { 香: 2 } },
+      { t: "像喝汤一样厚实", s: { 醇: 2 } }
+    ]
+  },
+  {
+    q: "你能接受多苦？",
+    opts: [
+      { t: "越苦越上头，回甘才爽", s: { 苦: 2 } },
+      { t: "最好带点甜，微苦能忍", s: { 甜: 2 } },
+      { t: "香气够就行，苦不苦其次", s: { 香: 2 } },
+      { t: "要顺滑，别刺激", s: { 醇: 2 } }
+    ]
+  },
+  {
+    q: "喝茶时你最在意哪一点？",
+    opts: [
+      { t: "香气高低、香型变化", s: { 香: 2 } },
+      { t: "甜度和回甘", s: { 甜: 2 } },
+      { t: "汤感厚薄、顺不顺滑", s: { 醇: 2 } },
+      { t: "茶气、刺激感", s: { 苦: 2 } }
+    ]
+  },
+  {
+    q: "平时喝咖啡或饮料，你通常选？",
+    opts: [
+      { t: "美式 / 纯茶，不加糖", s: { 苦: 2 } },
+      { t: "拿铁 / 奶茶，喜欢奶香", s: { 醇: 2 } },
+      { t: "果茶 / 花茶，香最重要", s: { 香: 2 } },
+      { t: "甜的，越甜越好", s: { 甜: 2 } }
+    ]
+  }
+];
+
+const tasteResults = {
+  苦: {
+    name: "苦味党", sub: "浓强 · 有茶气 · 回甘猛烈",
+    badge: "苦",
+    desc: "你要的不是甜，是「有劲」。苦涩化得快的茶才过瘾：生普的茶气、岩茶的骨感、单丛的锐利，都是你的菜。判断标准不是苦不苦，而是苦完能不能迅速回甘。",
+    teas: ["banzhang","shengpu","rougui","fenghuang"],
+    brew: "投茶比标准多 1g，出汤比标准快 2–3 秒；水一定够烫（95–100°C）。苦化得开，靠的是高温和快出汤。",
+    avoid: "别从老班章入门——先喝口粮生普和普通岩茶，建立对「苦能化」的判断，再往上走。"
+  },
+  甜: {
+    name: "甜润党", sub: "清甜 · 少苦涩 · 汤感柔",
+    badge: "甜",
+    desc: "你最怕苦，喜欢入口就甜、喝完嘴里留着甜味的茶。冰岛的冰糖甜、东方美人的蜜香、安吉白茶的鲜甜，都是同一条路。",
+    teas: ["bingdao","dongfang","anji","jinjunmei"],
+    brew: "水温比标准低 5°C，别用沸水猛冲；出汤宁快勿慢。投茶少一点，甜感更清楚。",
+    avoid: "别一开始就买「浓香」「足火」标签的茶，也别用保温杯焖——甜感最容易被高温破坏。"
+  },
+  香: {
+    name: "香气党", sub: "花香 · 蜜香 · 香型丰富",
+    badge: "香",
+    desc: "你喝茶一半是喝香气。凤凰单丛的蜜兰香、景迈的兰花香、铁观音的清花香、碧螺春的花果香，都能让你闻着就开心。",
+    teas: ["fenghuang","jingmai","tieguanyin","biluochun"],
+    brew: "水温要够（95°C 以上），高冲注水激发香气；出汤要快，香型才立得住。杯子选收口的，香气聚得住。",
+    avoid: "香气型茶最怕久闷和受潮。买回来密封、避光、别放冰箱（绿茶除外）。"
+  },
+  醇: {
+    name: "醇厚党", sub: "汤感厚 · 顺滑 · 陈香木质",
+    badge: "醇",
+    desc: "你要的是「像喝汤」的厚度和顺滑。熟普的陈香、大红袍的焙火、水仙的木质味、六堡的槟榔香，都是这一路。",
+    teas: ["shupu","dahongpao","shuixian","liubao"],
+    brew: "用沸水，投茶别太少（否则水薄）；出汤可以比标准慢 3–5 秒，甚至煮饮。厚感来自茶量和温度，不是靠闷。",
+    avoid: "别用太低的水温泡黑茶和熟普——温度不够，厚感出不来，只剩水味。"
+  }
+};
+
+let quizStep = 0;
+let quizScores = { 苦: 0, 甜: 0, 香: 0, 醇: 0 };
+let quizAnswers = [];
+
+function renderQuiz(){
+  const el = document.getElementById('quiz');
+
+  if(quizStep >= quizQuestions.length){
+    el.innerHTML = quizResultHTML();
+    return;
+  }
+
+  const q = quizQuestions[quizStep];
+  const letters = ["A","B","C","D"];
+  el.innerHTML = `
+    <div class="quiz-progress">
+      <span class="quiz-step">第 ${quizStep + 1} / ${quizQuestions.length} 题</span>
+      ${quizQuestions.map((_, i) => `<span class="qp"><i style="width:${i < quizStep ? 100 : 0}%"></i></span>`).join('')}
+    </div>
+    <h3 class="quiz-q">${q.q}</h3>
+    <div class="quiz-opts">
+      ${q.opts.map((o, i) => `<button type="button" class="quiz-opt" data-opt="${i}"><span class="k">${letters[i]}</span>${o.t}</button>`).join('')}
+    </div>
+    <div class="quiz-foot">没有标准答案，凭第一反应选，测出来更准。</div>
+  `;
+}
+
+function quizResultHTML(){
+  const dims = FLAVORS;
+  const total = dims.reduce((a, d) => a + quizScores[d], 0) || 1;
+  const maxV = Math.max(...dims.map(d => quizScores[d]));
+  const tied = dims.filter(d => quizScores[d] === maxV);
+
+  // 平分时以第 3 题（你最在意什么）为准，避免总被「苦」抢先
+  const q3map = ["香", "甜", "醇", "苦"];
+  let top = tied[0];
+  const preferred = q3map[quizAnswers[2]];
+  if(tied.length > 1 && tied.indexOf(preferred) > -1) top = preferred;
+
+  const sorted = dims.slice().sort((a, b) => quizScores[b] - quizScores[a]);
+  const second = sorted.filter(d => d !== top)[0];
+  const r = tasteResults[top];
+  const maxScore = quizScores[top] || 1;
+
+  const bars = sorted.map(d => {
+    const pct = Math.round(quizScores[d] / total * 100);
+    return `<div class="bar ${d === top ? 'top' : ''}">
+      <em>${d}</em>
+      <span class="track"><span class="fill" style="width:${Math.max(pct, 2)}%"></span></span>
+      <i>${pct}%</i>
+    </div>`;
+  }).join('');
+
+  const teaCards = r.teas.slice()
+    .map(id => teas.find(x => x.id === id))
+    .filter(Boolean)
+    .sort((a, b) => a.price - b.price)
+    .map(t => `<button type="button" class="bp-tea" data-tea-link="${t.id}">
+      <span class="bpt-top"><b>${t.name}</b><em>¥${t.price}</em></span>
+      <span class="bpt-taste">${t.scenes.slice(0, 2).join(" · ")} · ${t.temp}</span>
+    </button>`).join('');
+
+  const ratio = quizScores[second] / maxScore;
+  const near = ratio >= 0.85
+    ? `你的「${second}」分也很高，两条路都可以试。`
+    : ratio >= 0.6
+      ? `「${second}」也不低，第二杯可以往那个方向试。`
+      : `「${second}」不是你的偏好，可以先跳过那类。`;
+
+  return `
+    <div class="qr-head">
+      <div class="qr-badge">${r.badge}</div>
+      <div>
+        <div class="qr-title">你是「${r.name}」</div>
+        <div class="qr-sub">${r.sub}</div>
+      </div>
+    </div>
+    <p class="qr-desc">${r.desc}</p>
+    <div class="bars">${bars}</div>
+    <p class="qr-desc" style="margin:0 0 6px;font-size:13.5px;color:var(--ink-3)">${near}</p>
+
+    <div class="qr-block">
+      <h4>从这里开始（4 款）</h4>
+      <div class="qr-teas">${teaCards}</div>
+    </div>
+
+    <div class="qr-block">
+      <h4>冲泡怎么调</h4>
+      <div class="qr-tip"><b>按你的口味</b>${r.brew}</div>
+      <div class="qr-tip avoid" style="margin-top:8px"><b>先避开</b>${r.avoid}</div>
+    </div>
+
+    <div class="qr-actions">
+      <button type="button" class="btn btn-primary btn-sm" data-quiz-flavor="${top}">看「${top}」味的茶</button>
+      <button type="button" class="btn btn-ghost btn-sm" data-quiz-reset>重新测一次</button>
+    </div>
+  `;
+}
+
+/* ====== 交互：定位到某款茶 ====== */
+function syncChips(){
+  filters.querySelectorAll('.chip').forEach(c => {
+    const type = c.dataset.type;
+    c.classList.toggle('active', state[type] === c.dataset.value);
+  });
+}
+
+function focusTea(id){
+  const tea = teas.find(t => t.id === id);
+  if(!tea) return;
+  state.category = "全部";
+  state.scene = "全部";
+  state.budget = "全部";
+  state.flavor = "全部";
+  searchInput.value = "";
+  syncChips();
+  renderTeas();
+
+  const card = grid.querySelector(`.tea-card[data-id="${id}"]`);
+  if(!card) return;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  setTimeout(() => {
+    if(!card.classList.contains('open')) toggleCard(card, true);
+    card.classList.add('flash');
+    setTimeout(() => card.classList.remove('flash'), 2900);
+  }, 420);
+}
+
+/* ====== 事件 ====== */
+filters.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  state[chip.dataset.type] = chip.dataset.value;
+  syncChips();
+  renderTeas();
+});
+
+searchInput.addEventListener('input', renderTeas);
+
+grid.addEventListener('click', e => {
+  const reset = e.target.closest('[data-reset]');
+  if(reset){
+    state.category = "全部";
+    state.scene = "全部";
+    state.budget = "全部";
+    state.flavor = "全部";
+    searchInput.value = "";
+    syncChips();
+    renderTeas();
+    return;
+  }
+  const scene = e.target.closest('.scene-tag');
+  if(scene){
+    state.scene = scene.dataset.scene;
+    syncChips();
+    renderTeas();
+    document.getElementById('teas').scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  const btn = e.target.closest('.tea-toggle');
+  if(btn) toggleCard(btn.closest('.tea-card'));
+});
+
+document.getElementById('pickScene').addEventListener('click', e => {
+  const b = e.target.closest('[data-pick]');
+  if(!b) return;
+  pick.scene = b.dataset.value;
+  renderPick();
+});
+document.getElementById('pickBudget').addEventListener('click', e => {
+  const b = e.target.closest('[data-pick]');
+  if(!b) return;
+  pick.budget = Number(b.dataset.value);
+  renderPick();
+});
+document.getElementById('pickFlavor').addEventListener('click', e => {
+  const b = e.target.closest('[data-pick]');
+  if(!b) return;
+  pick.flavor = b.dataset.value;
+  renderPick();
+});
+
+document.getElementById('modeTabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-mode]');
+  if(!b) return;
+  officeIdx = Number(b.dataset.mode);
+  renderOffice();
+});
+
+document.getElementById('budgetTabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-budget]');
+  if(!b) return;
+  budgetIdx = Number(b.dataset.budget);
+  renderBudget();
+});
+
+document.getElementById('quiz').addEventListener('click', e => {
+  const opt = e.target.closest('[data-opt]');
+  if(opt){
+    const q = quizQuestions[quizStep];
+    const idx = Number(opt.dataset.opt);
+    const scores = q.opts[idx].s;
+    Object.keys(scores).forEach(k => { quizScores[k] += scores[k]; });
+    quizAnswers[quizStep] = idx;
+    quizStep += 1;
+    renderQuiz();
+    return;
+  }
+  if(e.target.closest('[data-quiz-reset]')){
+    quizStep = 0;
+    quizScores = { 苦: 0, 甜: 0, 香: 0, 醇: 0 };
+    quizAnswers = [];
+    renderQuiz();
+    return;
+  }
+  const flavBtn = e.target.closest('[data-quiz-flavor]');
+  if(flavBtn){
+    state.category = "全部";
+    state.scene = "全部";
+    state.budget = "全部";
+    state.flavor = flavBtn.dataset.quizFlavor;
+    searchInput.value = "";
+    syncChips();
+    renderTeas();
+    document.getElementById('teas').scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
+
+document.addEventListener('click', e => {
+  const link = e.target.closest('[data-tea-link]');
+  if(!link) return;
+  e.preventDefault();
+  focusTea(link.dataset.teaLink);
+});
+
+/* ====== 初始化 ====== */
+renderTeas();
+renderPick();
+renderOffice();
+renderBudget();
+renderQuiz();
+
+/* ====== 滚动进场 ====== */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if(en.isIntersecting){
+      en.target.classList.add('in');
+      io.unobserve(en.target);
+    }
+  });
+}, { threshold: .1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 5) * 80 + 'ms';
+  io.observe(el);
+});
+
+/* ====== 导航滚动阴影 ====== */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+</script>
+
+</body>
+</html>
