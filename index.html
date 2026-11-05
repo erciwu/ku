@@ -593,12 +593,12 @@ const DEFAULT_FOLDERS = [
     {n:'飞书', u:'https://www.feishu.cn'},
     {n:'企业微信', u:'https://work.weixin.qq.com'},
     {n:'钉钉', u:'https://www.dingtalk.com'},
-    {n:'百度', u:'https://www.baidu.com'},
     {n:'PDF24', u:'https://tools.pdf24.org/zh/'},
     {n:'懒人Excel', u:'https://www.lanrenexcel.com/'},
     {n:'163邮箱', u:'https://mail.163.com/'},
     {n:'QQ邮箱', u:'https://mail.qq.com/'},
-    {n:'Md2word', u:'https://erciwu.github.io/ku/md2word.html'}
+    {n:'Md2word', u:'https://erciwu.github.io/ku/md2word.html'},
+    {n:'超级简历', u:'https://www.wondercv.com'}
   ]},
   { key:'news', name:'新闻资讯', icon:'fas fa-newspaper', sites:[
     {n:'央视网', u:'https://www.cctv.cn/'},
@@ -681,7 +681,7 @@ const DEFAULT_FOLDERS = [
     {n:'站长之家', u:'https://www.chinaz.com/'},
     {n:'快科技', u:'https://www.mydrivers.com/'},
     {n:'爱范儿', u:'https://www.ifanr.com'},
-    {n:'华为', u:'https://www.huawei.com/cn'},
+    {n:'华为商城', u:'https://www.vmall.com'},
     {n:'苹果', u:'https://apple.com.cn'},
     {n:'小米商城', u:'https://www.mi.com'},
     {n:'GitHub', u:'https://github.com/'},
@@ -700,8 +700,8 @@ const DEFAULT_QUICK = [
   { n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL }
 ];
 
-const KEY = 'juzi-nav-v38';
-const OLD_KEYS = ['juzi-nav-v37','juzi-nav-v36','juzi-nav-v35'];
+const KEY = 'juzi-nav-v39';
+const OLD_KEYS = ['juzi-nav-v38','juzi-nav-v37','juzi-nav-v36','juzi-nav-v35'];
 const MODE_KEY = 'juzi-mode';
 const RECENT_KEY = 'juzi-recent';
 const OFFWORK_KEY = 'juzi-offwork';
@@ -731,13 +731,10 @@ function migrateNational(d){
   if(!d || !Array.isArray(d.folders)) return d;
   const gov = d.folders.find(f => f.key === 'gov' || f.name === '政务采购');
   if(gov && Array.isArray(gov.sites)){
-    // 移除地方站点
     gov.sites = gov.sites.filter(s => LOCAL_GOV_URLS.indexOf(s.u) === -1);
-    // 补充全国站点
     NATIONAL_GOV_SITES.forEach(ns => {
       if(!gov.sites.some(s => s.u === ns.u)) gov.sites.push({ n:ns.n, u:ns.u });
     });
-    // 确保招采平台在最后
     const hasZb = gov.sites.some(s => s.u === ZHAOBIAO_URL);
     if(!hasZb) gov.sites.push({ n:ZHAOBIAO_NAME, u:ZHAOBIAO_URL });
     else {
@@ -749,17 +746,43 @@ function migrateNational(d){
   return d;
 }
 
+/* ===== v39 迁移：华为→华为商城；职场办公去百度、加超级简历 ===== */
+function migrateV39(d){
+  if(!d || !Array.isArray(d.folders)) return d;
+  d.folders.forEach(f => {
+    if(f.key === 'techchannel' || f.name === '科技频道'){
+      if(Array.isArray(f.sites)){
+        f.sites.forEach(s => {
+          if(s.u === 'https://www.huawei.com/cn' || s.u === 'https://www.huawei.com' || s.n === '华为'){
+            s.n = '华为商城';
+            s.u = 'https://www.vmall.com';
+          }
+        });
+      }
+    }
+    if(f.key === 'office' || f.name === '职场办公'){
+      if(Array.isArray(f.sites)){
+        f.sites = f.sites.filter(s => !(s.n === '百度' && /baidu\.com/.test(s.u)));
+        if(!f.sites.some(s => s.u === 'https://www.wondercv.com')){
+          f.sites.push({ n:'超级简历', u:'https://www.wondercv.com' });
+        }
+      }
+    }
+  });
+  return d;
+}
+
 function buildDefault(){
   return { theme:'cloud', folders: DEFAULT_FOLDERS.map(f => ({ id:uid(), key:f.key, name:f.name, icon:f.icon, sites:f.sites.map(s => ({ n:s.n, u:s.u })) })) };
 }
 function load(){
-  let raw = null, fromOld = false;
+  let raw = null;
   try{
     raw = localStorage.getItem(KEY);
     if(!raw){
       for(const k of OLD_KEYS){
         const v = localStorage.getItem(k);
-        if(v){ raw = v; fromOld = true; break; }
+        if(v){ raw = v; break; }
       }
     }
   }catch(e){}
@@ -775,6 +798,7 @@ function load(){
         });
         if(!d.theme || !THEMES[d.theme]) d.theme = 'cloud';
         migrateNational(d);
+        migrateV39(d);
         try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){}
         return d;
       }
@@ -831,7 +855,6 @@ function loadQuick(){
   }
   if(!arr) arr = DEFAULT_QUICK.map(q => ({ ...q }));
 
-  // 迁移：去掉地方站点快捷项，替换 B站，确保橘子搜索和招采存在
   const filtered = [];
   arr.forEach(q => {
     if(!q || !q.u) return;
@@ -1440,6 +1463,7 @@ fileInput.addEventListener('change', e => {
       d.folders.forEach(f => { if(!f.id) f.id = uid(); if(!f.key) f.key = f.id; if(!f.icon) f.icon = 'fas fa-folder'; if(!Array.isArray(f.sites)) f.sites = []; f.sites.forEach(s => { if(typeof s.n !== 'string') s.n = '未命名'; if(typeof s.u !== 'string') s.u = ''; }); if(typeof f.name !== 'string' || !f.name) f.name = '未命名'; });
       state = { theme:(d.theme && THEMES[d.theme]) ? d.theme : 'cloud', folders:d.folders };
       migrateNational(state);
+      migrateV39(state);
       applyTheme(state.theme); save(); currentFilter = 'all';
       renderSidebar(); renderSections(); renderDock();
       alert('导入成功！');
