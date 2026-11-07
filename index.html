@@ -309,6 +309,7 @@ body[data-mode="dark"]{
   font-family:inherit;
   font-size:14px;
   transition:all .15s ease;
+  text-decoration:none;
 }
 .htool:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.34);color:#fff}
 .htool.on{background:#fff;color:var(--primary);border-color:#fff}
@@ -1200,6 +1201,17 @@ body[data-mode="dark"] .work-block b{color:var(--primary-hover)}
   .stats-inline{display:none}
   .clock-inline{display:none}
 
+  /* 手机端：只保留帮助按钮，其余工具全部隐藏 */
+  #btnEdit,
+  #btnHealth,
+  #btnMode,
+  #btnTheme,
+  #btnExport,
+  #btnImport,
+  #btnFav,
+  #exportDrop{display:none !important}
+  #btnHelp{display:grid !important}
+
   .mobile-menu-btn{
     display:grid;
     width:30px;height:30px;
@@ -1329,6 +1341,7 @@ body[data-mode="dark"] .work-block b{color:var(--primary-hover)}
       <button class="htool" id="btnExport" title="导出"><i class="fas fa-download"></i></button>
       <button class="htool" id="btnImport" title="导入"><i class="fas fa-upload"></i></button>
       <button class="htool" id="btnFav" title="收藏本页"><i class="far fa-star"></i></button>
+      <a class="htool" id="btnHelp" href="https://erciwu.github.io/ku/help.html" target="_blank" rel="noopener noreferrer" title="使用帮助"><i class="fas fa-circle-question"></i></a>
       <div class="dropdown" id="exportDrop">
         <button id="exportJson"><i class="fas fa-file-code"></i> 导出 JSON</button>
       </div>
