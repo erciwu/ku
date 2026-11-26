@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>大连市招采平台导航</title>
+<title>招标采购网站导航</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script>
 (function(){
@@ -774,7 +774,7 @@ body{
     <div class="brand">
       <button class="mobile-menu-btn" id="btnMobileMenu" title="菜单"><i class="fas fa-bars"></i></button>
       <div class="logo"><i class="fas fa-gavel"></i></div>
-      <span class="brand-name">大连市招采平台导航</span>
+      <span class="brand-name">招标采购网站导航</span>
     </div>
     <div class="top-divider"></div>
 
@@ -867,13 +867,20 @@ const websites = [
 
   { name:'中国招标公共服务平台（搜大连二字）', url:'https://bulletin.cebpubservice.com/', category:'national', icon:'fas fa-globe' },
   { name:'中国政府采购平台（搜大连二字）', url:'https://www.ccgp.gov.cn/', category:'national', icon:'fas fa-flag' },
+  { name:'军队采购网', url:'https://www.plap.mil.cn', category:'national', icon:'fas fa-shield-halved' },
   { name:'全网招投标资讯（镖镖行·标标都行）', url:'https://www.biaobiaoxing.com/notice', category:'national', icon:'fas fa-newspaper' },
   { name:'大企汇（企业采购数字化平台，搜大连）', url:'https://www.daqihui.com/', category:'national', icon:'fas fa-building' },
   { name:'中国采购与招标网辽宁招标网（须注册，搜大连）', url:'https://www.chinabidding.cn/sa/liaoning/', category:'national', icon:'fas fa-search' },
   { name:'谛听招标（AI驱动型招标平台，须注册，搜大连）', url:'https://www.infochina.cn/t/', category:'national', icon:'fas fa-robot' },
   { name:'中国通用招标网（综合招标采购，必须注册供应商）', url:'https://www.china-tender.com.cn/', category:'national', icon:'fas fa-file-contract' },
   { name:'全国公共资源交易平台', url:'https://www.ggzy.gov.cn/', category:'national', icon:'fas fa-sitemap' },
-  { name:'#企业中标项目查询#（查询2019年以来中标/成交信息）', url:'https://data.ggzy.gov.cn/#/home', category:'national', icon:'fas fa-database' }
+  { name:'#企业中标项目查询#（查询2019年以来中标/成交信息）', url:'https://data.ggzy.gov.cn/#/home', category:'national', icon:'fas fa-database' },
+
+  { name:'信用中国', url:'https://www.creditchina.gov.cn', category:'tool', icon:'fas fa-certificate' },
+  { name:'执行信息公开网', url:'https://zxgk.court.gov.cn', category:'tool', icon:'fas fa-gavel' },
+  { name:'政府采购严重违法失信查询', url:'https://www.ccgp.gov.cn/search/cr', category:'tool', icon:'fas fa-magnifying-glass' },
+  { name:'国家企业信用信息公示', url:'https://www.gsxt.gov.cn/index.html', category:'tool', icon:'fas fa-building' },
+  { name:'爱企查', url:'https://aiqicha.baidu.com', category:'tool', icon:'fas fa-magnifying-glass-dollar' }
 ];
 
 const categoryIcons = {
@@ -881,16 +888,18 @@ const categoryIcons = {
   university:'fas fa-university',
   hospital:'fas fa-hospital',
   enterprise:'fas fa-industry',
-  national:'fas fa-globe-asia'
+  national:'fas fa-globe-asia',
+  tool:'fas fa-toolbox'
 };
 const categoryNames = {
   government:'政府平台',
   university:'高校采购',
   hospital:'医院采购',
   enterprise:'国企 / 企业',
-  national:'全国平台'
+  national:'全国平台',
+  tool:'信用查询'
 };
-const categoryOrder = ['government','hospital','university','enterprise','national'];
+const categoryOrder = ['government','hospital','university','enterprise','national','tool'];
 
 /* ============================================================
    访问记录
@@ -1189,6 +1198,18 @@ function setupToolButtons(){
 }
 
 /* ============================================================
+   搜索框：点击时隐藏提示文字
+   ============================================================ */
+function setupSearchPlaceholder(){
+  const input = document.querySelector('.topbar-search input');
+  if(!input) return;
+  const placeholder = input.getAttribute('placeholder') || '';
+  input.addEventListener('focus', () => { input.placeholder = ''; });
+  input.addEventListener('click', () => { input.placeholder = ''; });
+  input.addEventListener('blur', () => { input.placeholder = placeholder; });
+}
+
+/* ============================================================
    收藏
    ============================================================ */
 function setupFavorite(){
@@ -1274,6 +1295,7 @@ document.addEventListener('DOMContentLoaded', function(){
   updateVisitedStat();
   applyTheme();
   setupToolButtons();
+  setupSearchPlaceholder();
   setupFavorite();
 
   activeCategory = categoryOrder[0];
